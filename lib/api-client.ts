@@ -24,7 +24,7 @@ const clearCookie = (name: string) => {
   }
 };
 
-const BASE_URL = typeof window === "undefined" ? "https://golden-circle.net" : "";
+const BASE_URL = typeof window === "undefined" ? (process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.net") : "";
 
 export async function apiRequest<T = any>(
   endpoint: string,
