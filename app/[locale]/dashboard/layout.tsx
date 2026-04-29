@@ -12,7 +12,6 @@ const navItems = [
   { key: "transactions", iconPath: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" },
   { key: "deposit", iconPath: "M12 5v14m-7-7l7 7 7-7" },
   { key: "orders", iconPath: "M16 11V3H8v8H2l10 10 10-10h-6z", href: "orders/new" },
-  { key: "buy-silver", iconPath: "M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z", href: "buy/silver", disabled: true },
   { key: "profile", iconPath: "M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 3a4 4 0 100 8 4 4 0 000-8z" },
   { key: "home", iconPath: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6", href: "/" },
 ];
@@ -24,7 +23,7 @@ const labels: Record<string, { ar: string; en: string }> = {
   withdraw: { ar: "سحب", en: "Withdraw" },
   "buy-gold": { ar: "شراء ذهب", en: "Buy Gold" },
   "buy-silver": { ar: "شراء فضة", en: "Buy Silver" },
-  orders: { ar: "شراء ذهب", en: "Buy Gold" },
+  orders: { ar: "شراء ذهب وفضة", en: "Buy Gold & Silver" },
   notifications: { ar: "الإشعارات", en: "Notifications" },
   profile: { ar: "الملف الشخصي", en: "Profile" },
   home: { ar: "الصفحة الرئيسية", en: "Home" },
