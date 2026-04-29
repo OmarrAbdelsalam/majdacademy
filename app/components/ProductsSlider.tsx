@@ -2,7 +2,7 @@
 
 import { useLang } from "../i18n/LangContext";
 import { useState, useEffect, useCallback } from "react";
-import { getLiveProducts } from "../../lib/api";
+import { getLiveProducts, getSilverLiveProducts } from "../../lib/api";
 
 type ProductItem = {
   id: number;
@@ -189,6 +189,7 @@ function ProductPopup({ item, isRTL, onClose }: { item: ProductItem; isRTL: bool
 export default function ProductsSlider() {
   const { lang, isRTL } = useLang();
   const [showAllGold, setShowAllGold] = useState(false);
+  const [showAllSilver, setShowAllSilver] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [goldItems, setGoldItems] = useState<ProductItem[]>([]);
   const [silverItems, setSilverItems] = useState<ProductItem[]>([]);
@@ -200,27 +201,31 @@ export default function ProductsSlider() {
     setLoading(true);
     setEmpty(false);
 
-    getLiveProducts(lang).then((res) => {
+    Promise.all([
+      getLiveProducts(lang),
+      getSilverLiveProducts(lang),
+    ]).then(([goldRes, silverRes]) => {
       if (cancelled) return;
 
-      if ("success" in res && res.success === false) {
-        // API failed — keep skeleton showing (don't show hardcoded data)
+      if ("success" in goldRes && goldRes.success === false) {
         setLoading(true);
         return;
       }
 
-      const data = (res as { data: ApiProduct[] | null }).data;
-      const products: ApiProduct[] = Array.isArray(data) ? data : [];
+      const goldData = (goldRes as { data: ApiProduct[] | null }).data;
+      const goldProducts: ApiProduct[] = Array.isArray(goldData) ? goldData : [];
 
-      if (products.length === 0) {
+      const silverData = (silverRes as { data: ApiProduct[] | null }).data;
+      const silverProducts: ApiProduct[] = Array.isArray(silverData) ? silverData : [];
+
+      if (goldProducts.length === 0 && silverProducts.length === 0) {
         setEmpty(true);
         setLoading(false);
         return;
       }
 
-      const mapped = products.map(mapApiProduct);
-      setGoldItems(mapped.filter((p) => !p.isSilver));
-      setSilverItems(mapped.filter((p) => p.isSilver));
+      setGoldItems(goldProducts.filter(p => p.metal_type !== "silver").map(mapApiProduct));
+      setSilverItems(silverProducts.map(mapApiProduct));
       setLoading(false);
     });
 
@@ -235,6 +240,8 @@ export default function ProductsSlider() {
         : "Gold is your ultimate safe haven during crises. Buy freely anytime with zero commission.",
       items: goldItems,
       isSilverCat: false,
+      showAll: showAllGold,
+      setShowAll: setShowAllGold,
     },
     {
       title: isRTL ? "سبائك الفضة" : "Silver Bars",
@@ -243,6 +250,8 @@ export default function ProductsSlider() {
         : "Silver's value grows over time. Start your investment journey today and build for the future.",
       items: silverItems,
       isSilverCat: true,
+      showAll: showAllSilver,
+      setShowAll: setShowAllSilver,
     },
   ];
 
@@ -282,96 +291,7 @@ export default function ProductsSlider() {
 
               {/* Slider Container */}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 -mt-20 md:-mt-28">
-                {category.isSilverCat ? (
-                  /* ── Silver "Coming Soon" Card ── */
-                  <div className="w-full flex justify-center pb-12">
-                    <div
-                      className="relative overflow-hidden w-full max-w-2xl rounded-[32px] border border-white/30 p-8 md:p-12 flex flex-col items-center text-center gap-5"
-                      style={{
-                        background: "linear-gradient(135deg, rgba(255,255,255,0.85) 0%, rgba(245,245,245,0.7) 50%, rgba(255,255,255,0.9) 100%)",
-                        backdropFilter: "blur(20px)",
-                        WebkitBackdropFilter: "blur(20px)",
-                        boxShadow: "0 8px 40px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.9)",
-                      }}
-                    >
-                      {/* Shimmer sweep animation */}
-                      <div
-                        className="absolute inset-0 pointer-events-none"
-                        style={{
-                          background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.7) 50%, transparent 60%)",
-                          backgroundSize: "200% 100%",
-                          animation: "shimmerSweep 3s ease-in-out infinite",
-                        }}
-                      />
-
-                      {/* Decorative ring */}
-                      <div className="relative z-10 w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center"
-                        style={{
-                          background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 35%, #0f3460 70%, #533483 100%)",
-                          boxShadow: "0 6px 24px rgba(15,52,96,0.3), inset 0 1px 2px rgba(255,255,255,0.1)",
-                        }}
-                      >
-                        <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white/80 flex items-center justify-center"
-                          style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,0.05)" }}
-                        >
-                          {/* Animated bell icon */}
-                          <svg
-                            width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#888"
-                            strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"
-                            className="md:w-8 md:h-8"
-                            style={{ animation: "bellRing 2.5s ease-in-out infinite" }}
-                          >
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-                          </svg>
-                        </div>
-                      </div>
-
-                      {/* Coming Soon text */}
-                      <div className="relative z-10 flex flex-col items-center gap-2">
-                        <h3
-                          className="text-[22px] sm:text-[28px] md:text-[32px] font-extrabold tracking-tight leading-tight"
-                          style={{
-                            background: "linear-gradient(135deg, #888 0%, #555 40%, #999 70%, #666 100%)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                            backgroundClip: "text",
-                          }}
-                        >
-                          {isRTL ? "قريبـاً" : "Coming Soon"}
-                        </h3>
-                        <p className="text-[13px] sm:text-[15px] text-[#777] font-medium max-w-md leading-relaxed">
-                          {isRTL
-                            ? "نجهّز لك تشكيلة مميزة من سبائك الفضة عيار 999.. استنونا قريب!"
-                            : "We're preparing an exclusive collection of 999 fine silver bars. Stay tuned!"}
-                        </p>
-                      </div>
-
-                      {/* Decorative dots */}
-                      <div className="relative z-10 flex items-center gap-2 mt-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#ccc] animate-pulse" style={{ animationDelay: "0s" }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#bbb] animate-pulse" style={{ animationDelay: "0.3s" }} />
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#aaa] animate-pulse" style={{ animationDelay: "0.6s" }} />
-                      </div>
-
-                      {/* Keyframes injected via style tag */}
-                      <style>{`
-                        @keyframes shimmerSweep {
-                          0% { background-position: 200% 0; }
-                          100% { background-position: -200% 0; }
-                        }
-                        @keyframes bellRing {
-                          0%, 100% { transform: rotate(0deg); }
-                          10% { transform: rotate(14deg); }
-                          20% { transform: rotate(-12deg); }
-                          30% { transform: rotate(8deg); }
-                          40% { transform: rotate(-4deg); }
-                          50% { transform: rotate(0deg); }
-                        }
-                      `}</style>
-                    </div>
-                  </div>
-                ) : loading ? (
+                {loading ? (
                   <div className="w-full flex lg:flex-wrap lg:justify-center gap-4 md:gap-6 overflow-x-auto lg:overflow-x-visible pb-12 snap-x lg:snap-none snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                     {Array.from({ length: 6 }).map((_, i) => (
                       <SkeletonCard key={i} />
@@ -386,7 +306,7 @@ export default function ProductsSlider() {
                 ) : (
                   <>
                     <div className="w-full flex lg:flex-wrap lg:justify-center gap-4 md:gap-6 overflow-x-auto lg:overflow-x-visible pb-12 snap-x lg:snap-none snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                      {category.items.slice(0, (!showAllGold) ? 8 : category.items.length).map((item) => (
+                      {category.items.slice(0, (!category.showAll) ? 8 : category.items.length).map((item) => (
                         <div
                           key={item.id}
                           onClick={() => setSelectedProduct(item)}
@@ -431,10 +351,10 @@ export default function ProductsSlider() {
                       ))}
                     </div>
 
-                    {!showAllGold && category.items.length > 8 && (
+                    {!category.showAll && category.items.length > 8 && (
                       <div className="hidden sm:flex w-full justify-center mt-2 mb-10">
                         <button
-                          onClick={() => setShowAllGold(true)}
+                          onClick={() => category.setShowAll(true)}
                           className="px-10 py-3.5 rounded-full border-[1.5px] border-[#1a1a1a] text-[#1a1a1a] font-bold text-sm hover:bg-[#1a1a1a] hover:text-white transition-all duration-300 shadow-sm active:scale-95"
                         >
                           {isRTL ? "عرض المزيد" : "Show More"}

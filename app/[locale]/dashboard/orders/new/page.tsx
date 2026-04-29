@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useLang } from "../../../../i18n/LangContext";
-import { getLiveProducts, getBranches, validateCart, submitOrder, getCurrentPrices, getProfile, getStates, getCities } from "../../../../../lib/api";
+import { getLiveProducts, getSilverLiveProducts, getBranches, validateCart, submitOrder, getCurrentPrices, getProfile, getStates, getCities } from "../../../../../lib/api";
 import { useRouter } from "next/navigation";
 import { SearchableSelect } from "../../../../../components/ui/searchable-select";
 
@@ -28,6 +28,8 @@ export default function NewOrderPage() {
   
   const [branches, setBranches] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
+  const [silverProducts, setSilverProducts] = useState<any[]>([]);
+  const [productTab, setProductTab] = useState<"gold" | "silver">("gold");
   const [cart, setCart] = useState<{ id: string | number; quantity: number }[]>([]);
   const [prices, setPrices] = useState<any>(null);
   const [validationData, setValidationData] = useState<any>(null);
@@ -60,6 +62,16 @@ export default function NewOrderPage() {
           ? res.products
           : [];
         setProducts(list);
+      }
+    });
+    getSilverLiveProducts(lang).then(res => {
+      if (res.success) {
+        const list = Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data?.data)
+          ? res.data.data
+          : [];
+        setSilverProducts(list);
       }
     });
     getProfile(lang).then(res => {
@@ -218,7 +230,16 @@ export default function NewOrderPage() {
             {/* Products section */}
             <div className="flex flex-col gap-3">
               <label className="text-[13px] font-semibold text-[#888]">{tr.products}</label>
-              {products.length === 0 ? (
+            {/* Product tabs */}
+              <div className="flex gap-2 bg-[#f5f5f5] p-1 rounded-xl w-fit mb-1">
+                <button type="button" onClick={() => setProductTab("gold")} className={`px-5 py-2 rounded-lg text-[13px] font-bold transition-all ${productTab === "gold" ? "bg-white shadow-sm text-[#C9A84C]" : "text-[#999]"}`}>
+                  {isRTL ? "ذهب" : "Gold"}
+                </button>
+                <button type="button" onClick={() => setProductTab("silver")} className={`px-5 py-2 rounded-lg text-[13px] font-bold transition-all ${productTab === "silver" ? "bg-white shadow-sm text-[#9CA3AF]" : "text-[#999]"}`}>
+                  {isRTL ? "فضة" : "Silver"}
+                </button>
+              </div>
+              {(productTab === "gold" ? products : silverProducts).length === 0 ? (
                 <div className="border-2 border-dashed border-[#eee] rounded-2xl p-8 text-center">
                   <div className="w-16 h-16 rounded-2xl bg-[#f7f7f7] flex items-center justify-center mx-auto mb-3">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 11V3H8v8H2l10 10 10-10h-6z"/></svg>
@@ -227,8 +248,8 @@ export default function NewOrderPage() {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-2">
-                    {products.map(p => {
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-2">
+                    {(productTab === "gold" ? products : silverProducts).map(p => {
                       const qty = cart.find(item => item.id === p.id)?.quantity || 0;
                       const unitPrice = Number(p.price_amount ?? String(p.price).replace(/,/g, "") ?? 0);
                       return (
@@ -279,7 +300,8 @@ export default function NewOrderPage() {
                       <span className="text-[13px] font-semibold text-white/60">{tr.total}</span>
                       <span className="text-[16px] font-extrabold text-[#C9A84C]">
                         {cart.reduce((sum, item) => {
-                          const p = products.find(pr => pr.id === item.id);
+                          const allProducts = [...products, ...silverProducts];
+                          const p = allProducts.find(pr => pr.id === item.id);
                           const price = Number(p?.price_amount ?? String(p?.price ?? "0").replace(/,/g, ""));
                           return sum + (price * item.quantity);
                         }, 0).toLocaleString()} EGP
@@ -386,7 +408,7 @@ export default function NewOrderPage() {
             <h3 className="text-[14px] font-bold text-[#1a1a1a] mb-4 pb-3 border-b border-[#f0f0f0]">{isRTL ? "المنتجات" : "Products"}</h3>
             <div className="flex flex-col gap-4">
               {validationData?.products?.map((p: any, idx: number) => {
-                const originalProduct = products.find(pr => pr.id === p.id);
+                const originalProduct = [...products, ...silverProducts].find(pr => pr.id === p.id);
                 const imageUrl = originalProduct?.image || p.image;
                 return (
                   <div key={`${p.id}-${idx}`} className="flex items-center gap-4">

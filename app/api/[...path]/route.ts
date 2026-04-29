@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-const BACKEND = "https://golden-circle.net";
+const BACKEND = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.net";
 
 // Headers to forward from the client request to the backend
 const FORWARD_HEADERS = [

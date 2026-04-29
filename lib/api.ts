@@ -8,7 +8,9 @@ export const verifyPasswordCode = (body: any, locale: string) => apiRequest("/ap
 export const changePassword = (body: any, locale: string) => apiRequest("/api/password/change", { method: "POST", body: JSON.stringify(body), locale });
 
 export const getCurrentPrices = (locale?: string) => apiRequest("/api/current-prices", { method: "GET", locale });
-export const getLiveProducts = (locale?: string) => apiRequest("/api/products-live", { method: "GET", locale });
+export const getProducts = (locale?: string) => apiRequest("/api/products", { method: "GET", locale });
+export const getLiveProducts = (locale?: string) => apiRequest("/api/products-live?metal_type=gold", { method: "GET", locale });
+export const getSilverLiveProducts = (locale?: string) => apiRequest("/api/products-live?metal_type=silver", { method: "GET", locale });
 
 export const getWallet = (locale?: string) => apiRequest("/api/user/wallet", { method: "GET", locale });
 export const getTransactions = (page: number = 1, type: string = "all", locale?: string) => apiRequest(`/api/user/transactions?page=${page}&type=${type}`, { method: "GET", locale });
