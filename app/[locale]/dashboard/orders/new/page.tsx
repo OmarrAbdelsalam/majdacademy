@@ -169,7 +169,6 @@ export default function NewOrderPage() {
     const res = await submitOrder(getOrderPayload(), lang);
     if (res.success) {
       setSuccess(isRTL ? "تم تأكيد الطلب بنجاح" : "Order confirmed successfully");
-      setTimeout(() => router.push(`/${lang}/dashboard/transactions`), 2000);
     } else {
       if (res.message?.toLowerCase().includes("insufficient funds")) {
         setShowFundError(true);
@@ -445,14 +444,8 @@ export default function NewOrderPage() {
           </div>
 
           <div className="flex gap-3">
-            {success ? (
-              <div className="w-full text-center px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 font-bold">{success}</div>
-            ) : (
-              <>
-                <button onClick={() => setStep("select")} className="flex-1 py-3.5 rounded-xl text-[14px] font-bold bg-[#F7F7F8] text-[#888] hover:bg-[#eee] transition-all">{tr.back}</button>
-                <button onClick={handleSubmit} disabled={loading} className="flex-1 py-3.5 rounded-xl text-[14px] font-bold transition-all shadow-md active:scale-[0.99]" style={{ background: 'linear-gradient(135deg, #C9A84C 0%, #E8C96A 100%)', color: '#1a1a1a' }}>{tr.submitOrder}</button>
-              </>
-            )}
+            <button onClick={() => setStep("select")} disabled={loading || !!success} className="flex-1 py-3.5 rounded-xl text-[14px] font-bold bg-[#F7F7F8] text-[#888] hover:bg-[#eee] transition-all disabled:opacity-50">{tr.back}</button>
+            <button onClick={handleSubmit} disabled={loading || !!success} className="flex-1 py-3.5 rounded-xl text-[14px] font-bold transition-all shadow-md active:scale-[0.99] disabled:opacity-50" style={{ background: 'linear-gradient(135deg, #C9A84C 0%, #E8C96A 100%)', color: 'white' }}>{tr.submitOrder}</button>
           </div>
           {error && !success && <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-medium mt-4">{error}</div>}
         </div>
@@ -483,6 +476,31 @@ export default function NewOrderPage() {
                   className="w-full py-3.5 bg-[#f5f5f5] text-[#1a1a1a] rounded-xl font-bold text-[15px] hover:bg-[#eee] transition-all active:scale-[0.98]"
                 >
                   {isRTL ? "إلغاء" : "Cancel"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Success Modal */}
+      {success && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[24px] shadow-2xl w-full max-w-sm overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-8 flex flex-col items-center text-center">
+              <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-5">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{isRTL ? "نجاح" : "Success"}</h3>
+              <p className="text-[14px] text-[#888] font-medium mb-8">
+                {success}
+              </p>
+              <div className="flex flex-col gap-3 w-full">
+                <button 
+                  onClick={() => router.push(`/${lang}/dashboard/transactions?filter=order`)}
+                  className="w-full py-3.5 bg-gradient-to-r from-[#10B981] to-[#059669] text-white rounded-xl font-bold text-[15px] shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:shadow-[0_6px_25px_rgba(16,185,129,0.4)] transition-all active:scale-[0.98]"
+                >
+                  {isRTL ? "متابعة الطلب" : "Track Order"}
                 </button>
               </div>
             </div>

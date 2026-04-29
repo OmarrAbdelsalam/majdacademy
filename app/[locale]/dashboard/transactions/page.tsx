@@ -2,12 +2,15 @@
 import { useState, useEffect } from "react";
 import { useLang } from "../../../i18n/LangContext";
 import { getTransactions, getTransactionDetails } from "../../../../lib/api";
+import { useSearchParams } from "next/navigation";
 
 const TYPES = ["deposit", "order"] as const;
 
 export default function TransactionsPage() {
   const { isRTL, lang } = useLang();
-  const [activeFilter, setActiveFilter] = useState<string>("deposit");
+  const searchParams = useSearchParams();
+  const initialFilter = searchParams?.get("filter") === "order" ? "order" : "deposit";
+  const [activeFilter, setActiveFilter] = useState<string>(initialFilter);
   const [selectedTx, setSelectedTx] = useState<string | null>(null);
 
   const tr = {
@@ -63,9 +66,12 @@ export default function TransactionsPage() {
 
   const handleRowClick = async (id: string) => {
     setSelectedTx(id);
+    setTxDetails(null);
     const res = await getTransactionDetails(id, lang);
     if (res.success && res.data) {
       setTxDetails(res.data);
+    } else {
+      setSelectedTx(null);
     }
   };
 
@@ -142,19 +148,28 @@ export default function TransactionsPage() {
       )}
 
       {/* Details Modal */}
-      {selectedTx && txDetails && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setSelectedTx(null)}>
+      {/* Details Modal */}
+      {selectedTx && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => {setSelectedTx(null); setTxDetails(null);}}>
           <div className="bg-white p-8 rounded-3xl max-w-sm w-full m-4" onClick={e => e.stopPropagation()}>
-            <h3 className="font-bold text-lg mb-4 text-center">{txDetails.title}</h3>
-            <div className="space-y-3 text-[14px]">
-              <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "رقم العملية" : "ID"}:</span> <span className="font-semibold">{txDetails.id}</span></div>
-              <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "النوع" : "Type"}:</span> <span className="font-semibold">{txDetails.sub_title || txDetails.title}</span></div>
-              <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "المبلغ" : "Amount"}:</span> <span className="font-semibold">{txDetails.operation}{Number(txDetails.total).toLocaleString()} EGP</span></div>
-              <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "الحالة" : "Status"}:</span> <span className="font-semibold">{txDetails.status}</span></div>
-              <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "التاريخ" : "Date"}:</span> <span className="font-semibold">{txDetails.date}</span></div>
-              {txDetails.weight && <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "الوزن" : "Weight"}:</span> <span className="font-semibold">{txDetails.weight} {isRTL ? "جم" : "g"}</span></div>}
-            </div>
-            <button onClick={() => {setSelectedTx(null); setTxDetails(null);}} className="w-full mt-6 py-3 bg-[#f5f5f5] rounded-xl font-bold">{isRTL ? "إغلاق" : "Close"}</button>
+            {!txDetails ? (
+               <div className="flex justify-center items-center h-32">
+                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#C9A84C]"></div>
+               </div>
+            ) : (
+              <>
+                <h3 className="font-bold text-lg mb-4 text-center text-[#1a1a1a]">{txDetails.title}</h3>
+                <div className="space-y-3 text-[14px]">
+                  <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "رقم العملية" : "ID"}:</span> <span className="font-semibold text-[#1a1a1a]">{txDetails.id}</span></div>
+                  <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "النوع" : "Type"}:</span> <span className="font-semibold text-[#1a1a1a]">{txDetails.sub_title || txDetails.orderType || txDetails.title}</span></div>
+                  <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "المبلغ" : "Amount"}:</span> <span className="font-semibold text-[#1a1a1a]">{txDetails.operation || ""}{Number(txDetails.total).toLocaleString()} EGP</span></div>
+                  <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "الحالة" : "Status"}:</span> <span className="font-semibold text-[#1a1a1a]">{txDetails.status}</span></div>
+                  <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "التاريخ" : "Date"}:</span> <span className="font-semibold text-[#1a1a1a]">{txDetails.date}</span></div>
+                  {txDetails.weight && <div className="flex justify-between"><span className="text-[#888]">{isRTL ? "الوزن" : "Weight"}:</span> <span className="font-semibold text-[#1a1a1a]">{txDetails.weight} {isRTL ? "جم" : "g"}</span></div>}
+                </div>
+                <button onClick={() => {setSelectedTx(null); setTxDetails(null);}} className="w-full mt-6 py-3 bg-[#f5f5f5] text-[#1a1a1a] rounded-xl font-bold">{isRTL ? "إغلاق" : "Close"}</button>
+              </>
+            )}
           </div>
         </div>
       )}
