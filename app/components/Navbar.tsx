@@ -70,6 +70,7 @@ export default function Navbar() {
 
   const navItems = [
     { label: lang === "en" ? "Home" : "الرئيسية", href: isHome ? "#home" : "/" },
+    { label: lang === "en" ? "Prices" : "الأسعار", href: `/${lang}/prices` },
     { label: lang === "en" ? "Products" : "المنتجات", href: isHome ? "#products" : "/#products" },
     { label: lang === "en" ? "Features" : "المميزات", href: isHome ? "#features" : "/#features" },
     { label: lang === "en" ? "FAQ" : "الأسئلة الشائعة", href: isHome ? "#faq" : "/#faq" },
