@@ -49,8 +49,8 @@ const FeaturesSection = () => {
       num: 1,
       title: isRTL ? "بدون عمولات خفية." : "Zero Hidden Commissions.",
       desc: isRTL
-        ? "استثمر بأفضل أسعار السوق المباشرة بدون أي عمولات خفية أو مصاريف إضافية عند الشراء. نحن نضمن لك أقصى قيمة لأموالك."
-        : "Invest at the best direct market prices with absolutely no hidden commissions or extra fees on buying.",
+        ? "اشتري بأفضل أسعار السوق المباشرة بدون أي عمولات خفية أو مصاريف إضافية. نحن نضمن لك أقصى قيمة لأموالك."
+        : "Buy at the best direct market prices with absolutely no hidden commissions or extra fees on buying.",
     },
     {
       num: 2,
@@ -66,21 +66,21 @@ const FeaturesSection = () => {
       num: 3,
       title: isRTL ? "شركة قانونية مرخصة." : "Licensed Legal Company.",
       desc: isRTL
-        ? "شركتنا تعمل بترخيص رسمي من وزارة التموين ومصلحة الدمغة والموازين لضمان حقوقك بالكامل، مع تقديم دعم فني مستمر في أي وقت."
-        : "We operate with official licenses from the Ministry of Supply and Purity Control to fully guarantee your rights, with continuous technical support.",
+        ? "شركتنا تعمل بترخيص رسمي من وزارة الاستثمار ومصلحة الدمغة والموازين لضمان حقوقك بالكامل، مع تقديم دعم فني مستمر في أي وقت."
+        : "We operate with official licenses from the Ministry of Investment and Purity Control to fully guarantee your rights, with continuous technical support.",
       metrics: [
         { val: "32600", label: isRTL ? "السجل التجاري" : "Commercial Reg." },
         { val: "755-992-512", label: isRTL ? "الرقم الضريبي" : "Tax Number" },
-        { val: isRTL ? "مرخصة" : "Certified", label: isRTL ? "وزارة التموين" : "Ministry of Supply" },
+        { val: isRTL ? "مرخصة" : "Certified", label: isRTL ? "وزارة الاستثمار" : "Ministry of Investment" },
         { val: "100%", label: isRTL ? "قانونية بالكامل" : "Fully Legal" },
       ],
     },
     {
       num: 4,
-      title: isRTL ? "استثمار مطابق للشريعة." : "Sharia Compliant Investment.",
+      title: isRTL ? "شراء متوافق مع الشريعة." : "Sharia Compliant Purchases.",
       desc: isRTL
-        ? "نضمن لك استثماراً حلالاً 100% ومتوافقاً تماماً مع ضوابط الشريعة الإسلامية لضمان راحة بالك."
-        : "We guarantee a 100% Halal investment fully compliant with Islamic Sharia rules for your peace of mind.",
+        ? "نضمن لك شراءً حلالاً 100% ومتوافقاً تماماً مع ضوابط الشريعة الإسلامية لضمان راحة بالك."
+        : "We guarantee 100% Halal purchases fully compliant with Islamic Sharia rules for your peace of mind.",
     },
   ];
 
@@ -110,8 +110,8 @@ const FeaturesSection = () => {
                 transition={{ delay: 0.1 }}
               >
                 {isRTL
-                  ? "شركة مصرية مرخّصة رسميًا تعمل في السوق منذ 2023. استثمار مرن بأي مبلغ مع توصيل مؤمن ودعم فني مستمر."
-                  : "An officially licensed Egyptian company operating since 2023. Flexible investment at any amount, with secure delivery and continuous support."}
+                  ? "شركة مصرية مرخّصة رسميًا تعمل في السوق منذ 2023. اشتري الذهب والفضة بأي مبلغ مع توصيل مؤمن ودعم فني مستمر."
+                  : "An officially licensed Egyptian company operating since 2023. Buy gold & silver at any amount, with secure delivery and continuous support."}
               </motion.p>
             </div>
 

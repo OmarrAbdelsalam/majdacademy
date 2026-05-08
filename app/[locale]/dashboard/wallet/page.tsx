@@ -41,12 +41,19 @@ export default function WalletPage() {
       setLoading(false);
     });
     getTransactions(1, "deposit", lang).then(res => {
-      const list = Array.isArray(res.data)
+      const raw = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(list);
+      // Hide orders that contain only Partial Gold — show only bullion (bars/coins)
+      const filtered = raw.filter((tx: any) => {
+        if (!tx.products || !Array.isArray(tx.products) || tx.products.length === 0) return true;
+        return !tx.products.every((p: any) =>
+          (p.product_name || "").toLowerCase().includes("partial gold")
+        );
+      });
+      setTransactions(filtered);
       setLoadingTx(false);
     });
   }, [lang]);

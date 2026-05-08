@@ -19,6 +19,8 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const isHome = pathname === "/" || pathname === "/en" || pathname === "/ar";
+  const isStaticPage = pathname?.includes("/privacy") || pathname?.includes("/terms");
+  const isAuthPage = pathname?.includes("/login") || pathname?.includes("/register");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("/");
@@ -70,7 +72,6 @@ export default function Navbar() {
 
   const navItems = [
     { label: lang === "en" ? "Home" : "الرئيسية", href: isHome ? "#home" : "/" },
-    { label: lang === "en" ? "Prices" : "الأسعار", href: `/${lang}/prices` },
     { label: lang === "en" ? "Products" : "المنتجات", href: isHome ? "#products" : "/#products" },
     { label: lang === "en" ? "Features" : "المميزات", href: isHome ? "#features" : "/#features" },
     { label: lang === "en" ? "FAQ" : "الأسئلة الشائعة", href: isHome ? "#faq" : "/#faq" },
@@ -92,15 +93,17 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`fixed left-0 right-0 z-50 pointer-events-none will-change-[top,padding] ${
-        isCompact ? "top-4 px-4 sm:top-4 sm:px-6" : "top-0 px-0 sm:top-4 sm:px-6"
+      <header className={`${isStaticPage ? "absolute" : "fixed"} left-0 right-0 z-50 pointer-events-none will-change-[top,padding] ${
+        (isCompact && !isStaticPage && !isAuthPage) ? "top-4 px-4 sm:top-4 sm:px-6" : "top-0 px-0 sm:top-4 sm:px-6"
       }`} style={{ transition: 'top 0.5s ease, padding 0.5s ease' }}>
           <div
           className={`mx-auto pointer-events-auto will-change-[max-width,background-color,box-shadow,border-radius] ${
-            isCompact ? "rounded-[32px] md:rounded-full" : "rounded-none sm:rounded-full"
+            (isCompact && !isStaticPage && !isAuthPage) ? "rounded-[32px] md:rounded-full" : "rounded-none sm:rounded-full"
           } ${
             menuOpen
               ? "max-w-full sm:max-w-[1400px] bg-white ring-1 ring-black/5 shadow-md"
+              : (isStaticPage || isAuthPage)
+              ? "max-w-full sm:max-w-[1400px] bg-transparent shadow-none ring-0"
               : isCompact
               ? "max-w-[1200px] bg-white md:bg-white/95 backdrop-blur-xl shadow-[0_24px_50px_rgba(0,0,0,0.15)] ring-1 ring-black/5 md:translate-y-1"
               : isHome

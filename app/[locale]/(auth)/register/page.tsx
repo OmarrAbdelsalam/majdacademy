@@ -24,7 +24,7 @@ export default function RegisterPage() {
 
   const tr = {
     title: isRTL ? "إنشاء حساب" : "Create Account",
-    subtitle: isRTL ? "ابدأ رحلتك في الاستثمار" : "Start your investment journey",
+    subtitle: isRTL ? "ابدأ رحلتك في شراء الذهب" : "Start buying gold today",
     firstname: isRTL ? "الاسم الأول (اختياري)" : "First name (optional)",
     lastname: isRTL ? "اسم العائلة (اختياري)" : "Last name (optional)",
     email: isRTL ? "البريد الإلكتروني" : "Email",
@@ -34,7 +34,7 @@ export default function RegisterPage() {
     submit: isRTL ? "سجّل الآن" : "Sign up",
     haveAccount: isRTL ? "عندك حساب بالفعل؟" : "Already have an account?",
     login: isRTL ? "سجّل دخول" : "Log in",
-    tagline: isRTL ? "استثمر في الذهب والفضة بأمان وسهولة" : "Invest in gold & silver with confidence",
+    tagline: isRTL ? "اشتري الذهب والفضة بأمان وسهولة" : "Buy gold & silver with confidence",
     secured: isRTL ? "منصة مرخّصة ومؤمنة" : "Licensed & secured platform",
   };
 
@@ -95,8 +95,8 @@ export default function RegisterPage() {
         </div>
 
         {/* Form Panel */}
-        <div className="flex-1 bg-white flex flex-col pt-20 md:pt-0">
-          <div className="flex-1 flex items-center justify-center px-6 sm:px-10 py-10 lg:py-0">
+        <div className="flex-1 bg-white flex flex-col pt-32 md:pt-32">
+          <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pb-10 lg:py-10">
             <div className="w-full max-w-[420px]">
               <div className="mb-8">
                 <p className="text-[12px] font-bold text-[#C9A84C] uppercase tracking-[0.2em] mb-2">{tr.subtitle}</p>

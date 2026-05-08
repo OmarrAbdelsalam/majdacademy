@@ -6,8 +6,8 @@ import { useLang } from "../i18n/LangContext";
 const reviewsRow1 = [
   {
     nameAr: "أحمد محمود", nameEn: "Ahmed Mahmoud",
-    textAr: "أفضل موقع للاستثمار في الذهب في مصر. شفاف في التسعير وسهل الطلب. اشتريت سبيكة 50 جرام والتوصيل كان في نفس اليوم.",
-    textEn: "Best gold investment platform in Egypt. Transparent pricing and easy to order. I bought a 50g bar and delivery was same-day.",
+    textAr: "أفضل موقع لشراء الذهب في مصر. شفاف في التسعير وسهل الطلب. اشتريت سبيكة 50 جرام والتوصيل كان في نفس اليوم.",
+    textEn: "Best platform to buy gold in Egypt. Transparent pricing and easy to order. I bought a 50g bar and delivery was same-day.",
     rating: 5,
   },
   {
@@ -115,8 +115,8 @@ export default function Reviews() {
           transition={{ delay: 0.1 }}
         >
           {isRTL
-            ? "آلاف المستثمرين يثقون في GCT Gold كمنصة موثوقة وعالية التقييم للاستثمار في المعادن الثمينة."
-            : "With thousands of reviews, GCT Gold is one of the most trusted and highest rated platforms for precious metals."}
+            ? "آلاف العملاء يثقون في GCT Gold كمنصة موثوقة وعالية التقييم لشراء وبيع الذهب والفضة."
+            : "With thousands of reviews, GCT Gold is one of the most trusted and highest rated platforms to buy and sell precious metals."}
         </motion.p>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
