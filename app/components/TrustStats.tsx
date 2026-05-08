@@ -30,8 +30,8 @@ function AnimatedNumber({ target, duration = 2 }: { target: number; duration?: n
 
 // Review data
 const reviewsRow1 = [
-  { nameAr: "أحمد محمود", nameEn: "Ahmed Mahmoud", textAr: "أفضل موقع للاستثمار في الذهب في مصر. شفاف في التسعير وسهل الطلب. اشتريت سبيكة 50 جرام والتوصيل كان في نفس اليوم.", textEn: "Best gold investment platform in Egypt. Transparent pricing and easy to order. I bought a 50g bar and delivery was same-day.", rating: 5 },
-  { nameAr: "سارة عبدالله", nameEn: "Sara Abdullah", textAr: "بدأت بسبيكة فضة والتجربة كانت ممتازة. الأسعار تنافسية جداً والموقع سلس. أنصح بيه أي حد عايز يستثمر.", textEn: "Started with a silver bar and the experience was excellent. Very competitive prices and smooth website. Highly recommend.", rating: 5 },
+  { nameAr: "أحمد محمود", nameEn: "Ahmed Mahmoud", textAr: "أفضل موقع لشراء الذهب في مصر. شفاف في التسعير وسهل الطلب. اشتريت سبيكة 50 جرام والتوصيل كان في نفس اليوم.", textEn: "Best platform to buy gold in Egypt. Transparent pricing and easy to order. I bought a 50g bar and delivery was same-day.", rating: 5 },
+  { nameAr: "سارة عبدالله", nameEn: "Sara Abdullah", textAr: "بدأت بسبيكة فضة والتجربة كانت ممتازة. الأسعار تنافسية جداً والموقع سلس. أنصح بيه أي حد عايز يشتري ذهب أو فضة.", textEn: "Started with a silver bar and the experience was excellent. Very competitive prices and smooth website. Highly recommend.", rating: 5 },
   { nameAr: "محمد إبراهيم", nameEn: "Mohamed Ibrahim", textAr: "حولت جزء من مدخراتي للذهب عن طريق GCT وكانت أفضل قرار. السبائك معتمدة والعيار مضمون 999.9.", textEn: "Moved part of my savings to gold through GCT and it was the best decision. Certified bars with guaranteed 999.9 purity.", rating: 5 },
   { nameAr: "نورهان حسن", nameEn: "Nourhan Hassan", textAr: "الأسعار محدّثة لحظياً وده ساعدني أشتري في الوقت المناسب. فعلاً منصة محترفة ومأمونة.", textEn: "Prices are updated in real-time which helped me buy at the right time. Truly a professional and secure platform.", rating: 5 },
 ];
@@ -102,7 +102,7 @@ export default function TrustStats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {isRTL ? "موثوق من آلاف المستثمرين في مصر والوطن العربي." : "Trusted by thousands of investors across Egypt & the Arab world."}
+            {isRTL ? "موثوق من آلاف المستخدمين في مصر والوطن العربي." : "Trusted by thousands of users across Egypt & the Arab world."}
           </motion.p>
 
           <motion.h2

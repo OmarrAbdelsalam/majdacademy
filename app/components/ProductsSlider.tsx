@@ -246,8 +246,8 @@ export default function ProductsSlider() {
     {
       title: isRTL ? "سبائك الفضة" : "Silver Bars",
       description: isRTL
-        ? "الفضة مكسبها جاي مع الوقت.. ابدأ استثمارك دلوقتي وابني ثروتك للمستقبل بخطوات بسيطة."
-        : "Silver's value grows over time. Start your investment journey today and build for the future.",
+        ? "الفضة سعرها بيزيد مع الوقت.. اشتري دلوقتي وابني ثروتك للمستقبل بخطوات بسيطة."
+        : "Silver's value grows over time. Buy now and build your wealth for the future.",
       items: silverItems,
       isSilverCat: true,
       showAll: showAllSilver,

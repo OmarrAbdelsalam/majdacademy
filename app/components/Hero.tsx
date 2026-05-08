@@ -125,7 +125,7 @@ export default function Hero() {
             <div className="w-2 h-2 rounded-full bg-[#D39C04]" />
           </div>
           <span className={`text-[11px] sm:text-[13px] font-semibold text-[#999] uppercase ${!isRTL ? 'tracking-[0.2em]' : 'tracking-normal'}`}>
-            {isRTL ? "منصة موثوقة للاستثمار" : "Trusted Investment Platform"}
+            {isRTL ? "منصة موثوقة لشراء الذهب" : "Trusted Gold Trading Platform"}
           </span>
         </motion.div>
 

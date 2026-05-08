@@ -15,7 +15,7 @@ export const t = {
     // Hero
     hero: {
       badge: "Sharia-Compliant · Secure Vaults",
-      h1a: "Play it Safe,",
+      h1a: "Secure Your Money,",
       h1b: "Buy Gold Bars.",
       h1c: "",
       sub: "Buy certified gold & silver bars. GCT Gold is the easiest and most trusted way to protect the value of your money.",
@@ -33,8 +33,8 @@ export const t = {
       ticker: [
         "Live 24K Gold Price: EGP 8,100/g",
         "Live 999 Silver Price: EGP 130/g",
-        "Start Investing Now",
-        "Secure Your Future with GCT Gold"
+        "Buy Gold Now",
+        "Secure Your Wealth with GCT Gold"
       ],
       featuresGrid: {
         headline: "Why Choose GCT Gold?",
@@ -166,7 +166,7 @@ export const t = {
 
     // Footer
     footer: {
-      desc: "Your gateway to gold & silver investments. Sharia-compliant and secure.",
+      desc: "Your trusted destination to buy and sell gold & silver. Sharia-compliant and secure.",
       company: "Company",
       resources: "Resources",
       legal: "Legal",
@@ -213,8 +213,8 @@ export const t = {
       ticker: [
         "سعر الذهب عيار 24 اليوم: 8,100 ج.م/جرام",
         "سعر الفضة عيار 999 اليوم: 130 ج.م/جرام",
-        "ابدأ الاستثمار الآن",
-        "أمن مستقبلك مع GCT Gold"
+        "اشتري الذهب الآن",
+        "احمِ ثروتك مع GCT Gold"
       ],
       featuresGrid: {
         headline: "لماذا تختار GCT Gold؟",
@@ -245,7 +245,7 @@ export const t = {
     },
 
     calc: {
-      eyebrow: "هل أنت مستعد للتداول؟",
+      eyebrow: "هل أنت مستعد للشراء؟",
       h2a: "احسب قيمة",
       h2b: "ذهبك وفضتك",
       h2c: "بسهولة مع الآلة الحاسبة.",
@@ -341,7 +341,7 @@ export const t = {
     },
 
     footer: {
-      desc: "بوابتك إلى استثمارات الذهب والفضة. متوافق مع الشريعة وآمن.",
+      desc: "وجهتك الموثوقة لشراء وبيع الذهب والفضة. متوافق مع الشريعة وآمن.",
       company: "الشركة",
       resources: "الموارد",
       legal: "القانونية",

@@ -14,8 +14,8 @@ export default function Footer() {
   ];
 
   const legalLinks = [
-    { label: isRTL ? "سياسة الخصوصية" : "Privacy Policy", href: "/privacyandpolicy" },
-    { label: isRTL ? "الشروط والأحكام" : "Terms of Service", href: "/termsandconditions" },
+    { label: isRTL ? "سياسة الخصوصية" : "Privacy Policy", href: "/privacy" },
+    { label: isRTL ? "الشروط والأحكام" : "Terms of Service", href: "/terms" },
   ];
 
   const branches = [
@@ -57,8 +57,8 @@ export default function Footer() {
             />
             <p className="text-[14px] text-white leading-[1.8] max-w-[340px] mb-8 text-center lg:text-start">
               {isRTL
-                ? "وجهتك الموثوقة للاستثمار في الذهب والفضة. منصة مرخصة ومتوافقة مع الشريعة الإسلامية."
-                : "Your trusted destination for gold & silver investment. Licensed and fully Sharia-compliant."}
+                ? "وجهتك الموثوقة لشراء الذهب والفضة. منصة مرخصة ومتوافقة مع الشريعة الإسلامية."
+                : "Your trusted destination to buy gold & silver. Licensed and fully Sharia-compliant."}
             </p>
             <div className="flex items-center justify-center lg:justify-start gap-2">
               {socials.map((s) => (

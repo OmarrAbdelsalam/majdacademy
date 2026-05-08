@@ -29,6 +29,14 @@ export default function TransactionsPage() {
 
   const filterLabels: Record<string, string> = { deposit: tr.deposit, order: tr.order };
 
+  // Hide orders that contain only Partial Gold — show only bullion (bars/coins)
+  const isPartialGoldOnly = (tx: any) => {
+    if (!tx.products || !Array.isArray(tx.products) || tx.products.length === 0) return false;
+    return tx.products.every((p: any) =>
+      (p.product_name || "").toLowerCase().includes("partial gold")
+    );
+  };
+
   const [transactions, setTransactions] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
@@ -38,12 +46,12 @@ export default function TransactionsPage() {
   useEffect(() => {
     setLoading(true);
     getTransactions(1, activeFilter, lang).then(res => {
-      const list = Array.isArray(res.data)
+      const raw = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(list);
+      setTransactions(raw.filter((tx: any) => !isPartialGoldOnly(tx)));
       setHasMore(res.data?.hasMore || false);
       setPage(1);
       setLoading(false);
@@ -53,12 +61,12 @@ export default function TransactionsPage() {
   const loadMore = () => {
     const nextPage = page + 1;
     getTransactions(nextPage, activeFilter, lang).then(res => {
-      const list = Array.isArray(res.data)
+      const raw = Array.isArray(res.data)
         ? res.data
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(prev => [...prev, ...list]);
+      setTransactions(prev => [...prev, ...raw.filter((tx: any) => !isPartialGoldOnly(tx))]);
       setHasMore(res.data?.hasMore || false);
       setPage(nextPage);
     });

@@ -98,7 +98,7 @@ export default function GoldCalculator() {
           viewport={{ once: true }}
         >
           <p className="text-[13px] sm:text-[14px] text-white/40 font-semibold mb-3 tracking-wide">
-            {isRTL ? "احسب قيمة استثمارك" : "Calculate Your Investment"}
+            {isRTL ? "احسب سعر الذهب" : "Calculate Gold Price"}
           </p>
           <h2 className="text-[28px] sm:text-[36px] md:text-[42px] font-bold text-white leading-tight tracking-tight">
             {isRTL ? (

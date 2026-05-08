@@ -172,8 +172,8 @@ export default function AboutUs() {
           </h2>
           <p className="text-[14px] sm:text-[17px] text-[#777] max-w-2xl mx-auto leading-relaxed font-medium">
             {isRTL
-              ? "منصة مرخصة ومتوافقة مع الشريعة الإسلامية للاستثمار في الذهب والفضة. نوفر لك سبائك وجنيهات ذهبية وفضية بأسعار تنافسية وتوصيل لباب بيتك."
-              : "A licensed, Sharia-compliant platform for gold and silver investment. We offer premium gold and silver bars and coins at competitive prices with secure doorstep delivery."}
+              ? "منصة مرخصة ومتوافقة مع الشريعة الإسلامية لشراء وبيع الذهب والفضة. نوفر لك سبائك وجنيهات ذهبية وفضية بأسعار تنافسية وتوصيل لباب بيتك."
+              : "A licensed, Sharia-compliant platform to buy and sell gold & silver. We offer premium gold and silver bars and coins at competitive prices with secure doorstep delivery."}
           </p>
         </motion.div>
 

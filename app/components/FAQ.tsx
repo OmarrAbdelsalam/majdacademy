@@ -8,8 +8,8 @@ const faqData = [
   {
     questionAr: "ما هي GCT Gold وكيف تعمل؟",
     questionEn: "What is GCT Gold and how does it work?",
-    answerAr: "GCT Gold هي منصة رقمية موثوقة للاستثمار في الذهب والفضة. تتيح لك شراء السبائك والجنيهات الذهبية بأسعار تنافسية مع إمكانية التوصيل لباب البيت.",
-    answerEn: "GCT Gold is a trusted digital platform for investing in gold and silver. It allows you to buy bars and gold coins at competitive prices with home delivery options.",
+    answerAr: "GCT Gold هي منصة رقمية موثوقة لبيع الذهب والفضة. نوفر لك السبائك والجنيهات الذهبية بأسعار تنافسية مع إمكانية التوصيل لباب البيت.",
+    answerEn: "GCT Gold is a trusted digital platform for selling gold and silver. We offer bars and gold coins at competitive prices with home delivery options.",
   },
   {
     questionAr: "هل السبائك معتمدة ومضمونة؟",
@@ -106,8 +106,8 @@ export default function FAQ() {
               transition={{ delay: 0.1 }}
             >
               {isRTL
-                ? "كل ما تحتاج معرفته عن الاستثمار في الذهب والفضة من خلال منصة GCT Gold."
-                : "Everything you need to know about investing in gold and silver through GCT Gold."}
+                ? "كل ما تحتاج معرفته عن شراء وبيع الذهب والفضة من خلال منصة GCT Gold."
+                : "Everything you need to know about buying and selling gold and silver through GCT Gold."}
             </motion.p>
 
             <motion.a

@@ -55,7 +55,7 @@ export default function LoginPage() {
     submit: isRTL ? "دخول" : "Log in",
     noAccount: isRTL ? "ليس لديك حساب ؟" : "Don't have an account?",
     register: isRTL ? "سجّل الآن" : "Sign up",
-    tagline: isRTL ? "استثمر في الذهب والفضة بأمان وسهولة" : "Invest in gold & silver with confidence",
+    tagline: isRTL ? "اشتري الذهب والفضة بأمان وسهولة" : "Buy gold & silver with confidence",
     secured: isRTL ? "منصة مرخّصة ومؤمنة" : "Licensed & secured platform",
     otpTitle: isRTL ? "أدخل رمز التحقق" : "Enter verification code",
     otpLabel: isRTL ? "رمز OTP" : "OTP code",
@@ -175,8 +175,8 @@ export default function LoginPage() {
       </div>
 
       {/* White Form Panel */}
-      <div className="flex-1 bg-white flex flex-col pt-20 md:pt-0">
-        <div className="flex-1 flex items-center justify-center px-6 sm:px-10 py-10 lg:py-0">
+      <div className="flex-1 bg-white flex flex-col pt-32 md:pt-32">
+        <div className="flex-1 flex items-center justify-center px-6 sm:px-10 pb-10 lg:py-10">
           <div className="w-full max-w-[420px]">
 
             {!otpScreen ? (
