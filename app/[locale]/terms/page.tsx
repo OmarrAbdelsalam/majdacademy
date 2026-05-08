@@ -39,8 +39,8 @@ export default async function TermsAndConditionsPage({
               </h2>
               <p>
                 {isArabic 
-                  ? "باستخدامك لموقع وتطبيق Golden Circle Trading، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي من هذه الشروط، يرجى التوقف عن استخدام خدماتنا فوراً."
-                  : "By accessing and using the Golden Circle Trading website and app, you agree to be bound by all the terms and conditions outlined here. If you do not agree with any of these terms, please stop using our services immediately."}
+                  ? "باستخدامك لموقع Golden Circle Trading، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي من هذه الشروط، يرجى التوقف عن استخدام خدماتنا فوراً."
+                  : "By accessing and using the Golden Circle Trading website, you agree to be bound by all the terms and conditions outlined here. If you do not agree with any of these terms, please stop using our services immediately."}
               </p>
             </section>
 
@@ -64,7 +64,7 @@ export default async function TermsAndConditionsPage({
               <ul className="list-disc list-inside space-y-2 text-zinc-500 dark:text-zinc-400 ml-4 rtl:mr-4 rtl:ml-0">
                 <li>{isArabic ? "الأسعار المعروضة قابلة للتغير اللحظي بناءً على حركة الأسواق العالمية للذهب والفضة." : "Displayed prices are subject to real-time changes based on global gold and silver market movements."}</li>
                 <li>{isArabic ? "يتم تأكيد السعر النهائي للمعاملة فقط عند إتمام عملية الشراء بنجاح." : "The final transaction price is confirmed only upon successful completion of the purchase."}</li>
-                <li>{isArabic ? "يجب أن تكون جميع المدفوعات من خلال الطرق المعتمدة في التطبيق أو الموقع." : "All payments must be made through approved methods within the app or website."}</li>
+                <li>{isArabic ? "يجب أن تكون جميع المدفوعات من خلال الطرق المعتمدة في الموقع." : "All payments must be made through approved methods within the website."}</li>
               </ul>
             </section>
 

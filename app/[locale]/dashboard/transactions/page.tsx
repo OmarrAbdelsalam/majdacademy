@@ -29,8 +29,9 @@ export default function TransactionsPage() {
 
   const filterLabels: Record<string, string> = { deposit: tr.deposit, order: tr.order };
 
-  // Hide orders that contain only Partial Gold — show only bullion (bars/coins)
-  const isPartialGoldOnly = (tx: any) => {
+  // Show only buy orders for bullion (bars/coins) — hide Partial Gold and all sell orders
+  const shouldHide = (tx: any) => {
+    if (tx.type === "sell") return true;
     if (!tx.products || !Array.isArray(tx.products) || tx.products.length === 0) return false;
     return tx.products.every((p: any) =>
       (p.product_name || "").toLowerCase().includes("partial gold")
@@ -51,7 +52,7 @@ export default function TransactionsPage() {
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(raw.filter((tx: any) => !isPartialGoldOnly(tx)));
+      setTransactions(raw.filter((tx: any) => !shouldHide(tx)));
       setHasMore(res.data?.hasMore || false);
       setPage(1);
       setLoading(false);
@@ -66,7 +67,7 @@ export default function TransactionsPage() {
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(prev => [...prev, ...raw.filter((tx: any) => !isPartialGoldOnly(tx))]);
+      setTransactions(prev => [...prev, ...raw.filter((tx: any) => !shouldHide(tx))]);
       setHasMore(res.data?.hasMore || false);
       setPage(nextPage);
     });
