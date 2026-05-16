@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useLang } from "../../../i18n/LangContext";
 import Navbar from "../../../components/Navbar";
 import { register } from "../../../../lib/api";
@@ -12,6 +12,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || lang;
+  const searchParams = useSearchParams();
+  const returnTo = searchParams?.get("returnTo");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -66,7 +68,7 @@ export default function RegisterPage() {
       }
       if (envelope.code === 200) {
         setSuccess(envelope.message || (isRTL ? "تم التسجيل بنجاح" : "Registered successfully"));
-        setTimeout(() => router.push(`/${locale}/login`), 1500);
+        setTimeout(() => router.push(returnTo ? `/${locale}/login?returnTo=${encodeURIComponent(returnTo)}` : `/${locale}/login`), 1500);
       } else {
         setError(envelope.message || (isRTL ? "حدث خطأ غير متوقع" : "Unexpected error"));
       }
@@ -151,7 +153,7 @@ export default function RegisterPage() {
               </form>
 
               <div className="flex items-center gap-4 my-8"><div className="flex-1 h-[1px] bg-[#f0f0f0]" /><span className="text-[11px] font-semibold text-[#ccc] uppercase tracking-wider">{isRTL ? "أو" : "or"}</span><div className="flex-1 h-[1px] bg-[#f0f0f0]" /></div>
-              <p className="text-center text-[14px] text-[#999]">{tr.haveAccount}{" "}<Link href={`/${lang}/login`} className="text-[#1a1a1a] font-bold hover:text-[#C9A84C] transition-colors">{tr.login}</Link></p>
+              <p className="text-center text-[14px] text-[#999]">{tr.haveAccount}{" "}<Link href={returnTo ? `/${lang}/login?returnTo=${encodeURIComponent(returnTo)}` : `/${lang}/login`} className="text-[#1a1a1a] font-bold hover:text-[#C9A84C] transition-colors">{tr.login}</Link></p>
             </div>
           </div>
           <div className="px-10 py-5 flex items-center justify-center"><p className="text-[11px] text-[#ccc]">&copy; {new Date().getFullYear()} Golden Circle Trading</p></div>

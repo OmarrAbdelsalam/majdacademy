@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useLang } from "../../i18n/LangContext";
 import Navbar from "../../components/Navbar";
 import { login, verifyOtp } from "../../../lib/api";
@@ -26,6 +26,8 @@ export default function LoginPage() {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || lang;
+  const searchParams = useSearchParams();
+  const returnTo = searchParams?.get("returnTo");
 
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -42,9 +44,9 @@ export default function LoginPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (getTokenCookie()) {
-      router.push(`/${locale}/dashboard`);
+      router.push(returnTo ? `/${locale}${returnTo.startsWith('/') ? returnTo : `/${returnTo}`}` : `/${locale}/dashboard`);
     }
-  }, [locale, router]);
+  }, [locale, router, returnTo]);
 
   const tr = {
     title: isRTL ? "تسجيل الدخول" : "Log in",
@@ -91,7 +93,7 @@ export default function LoginPage() {
       const data = envelope.data;
       if (data?.access_token) {
         setCookieToken(data.access_token as string);
-        router.push(`/${locale}/dashboard`);
+        router.push(returnTo ? `/${locale}${returnTo.startsWith('/') ? returnTo : `/${returnTo}`}` : `/${locale}/dashboard`);
       } else if (data?.user_id) {
         setUserId(data.user_id as number);
         setOtpScreen(true);
@@ -123,7 +125,7 @@ export default function LoginPage() {
       const data = envelope.data;
       if (data?.access_token) {
         setCookieToken(data.access_token as string);
-        router.push(`/${locale}/dashboard`);
+        router.push(returnTo ? `/${locale}${returnTo.startsWith('/') ? returnTo : `/${returnTo}`}` : `/${locale}/dashboard`);
       } else {
         setError(envelope.message || (isRTL ? "رمز غير صحيح" : "Invalid code"));
       }
@@ -171,7 +173,7 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
-        <div className="absolute bottom-8 left-8 text-white/[0.06] text-[11px] font-bold tracking-[0.3em] uppercase">Golden Circle Trading</div>
+        <div className="absolute bottom-8 left-8 text-white/[0.06] text-[11px] font-bold tracking-[0.3em] uppercase">Golden Circle Gold</div>
       </div>
 
       {/* White Form Panel */}
@@ -261,7 +263,7 @@ export default function LoginPage() {
 
                 <p className="text-center text-[14px] text-[#999]">
                   {tr.noAccount}{" "}
-                  <Link href={`/${lang}/register`} className="text-[#1a1a1a] font-bold hover:text-[#C9A84C] transition-colors">{tr.register}</Link>
+                  <Link href={returnTo ? `/${lang}/register?returnTo=${encodeURIComponent(returnTo)}` : `/${lang}/register`} className="text-[#1a1a1a] font-bold hover:text-[#C9A84C] transition-colors">{tr.register}</Link>
                 </p>
               </>
             ) : (
@@ -314,7 +316,7 @@ export default function LoginPage() {
         </div>
 
         <div className="px-10 py-5 flex items-center justify-center">
-          <p className="text-[11px] text-[#ccc]">&copy; {new Date().getFullYear()} Golden Circle Trading</p>
+          <p className="text-[11px] text-[#ccc]">&copy; {new Date().getFullYear()} Golden Circle Gold</p>
         </div>
       </div>
     </div>

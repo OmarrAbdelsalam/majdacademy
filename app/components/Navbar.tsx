@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useLang } from "../i18n/LangContext";
 import { getProfile } from "../../lib/api";
+import { useCart } from "../cart/CartContext";
 
 const getCookie = (name: string) => {
   if (typeof document === "undefined") return null;
@@ -71,10 +72,10 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const navItems = [
-    { label: lang === "en" ? "Home" : "الرئيسية", href: isHome ? "#home" : "/" },
-    { label: lang === "en" ? "Products" : "المنتجات", href: isHome ? "#products" : "/#products" },
-    { label: lang === "en" ? "Features" : "المميزات", href: isHome ? "#features" : "/#features" },
-    { label: lang === "en" ? "FAQ" : "الأسئلة الشائعة", href: isHome ? "#faq" : "/#faq" },
+    { label: lang === "en" ? "Home" : "الرئيسية", href: isHome ? "#home" : `/${lang}` },
+    { label: lang === "en" ? "Products" : "المنتجات", href: isHome ? "#products" : `/${lang}#products` },
+    { label: lang === "en" ? "Features" : "المميزات", href: isHome ? "#features" : `/${lang}#features` },
+    { label: lang === "en" ? "FAQ" : "الأسئلة الشائعة", href: isHome ? "#faq" : `/${lang}#faq` },
   ];
 
   const handleLogout = () => {
@@ -96,43 +97,41 @@ export default function Navbar() {
       <header className={`${isStaticPage ? "absolute" : "fixed"} left-0 right-0 z-50 pointer-events-none will-change-[top,padding] ${
         (isCompact && !isStaticPage && !isAuthPage) ? "top-4 px-4 sm:top-4 sm:px-6" : "top-0 px-0 sm:top-4 sm:px-6"
       }`} style={{ transition: 'top 0.5s ease, padding 0.5s ease' }}>
-          <div
+        <div
           className={`mx-auto pointer-events-auto will-change-[max-width,background-color,box-shadow,border-radius] ${
-            (isCompact && !isStaticPage && !isAuthPage) ? "rounded-[32px] md:rounded-full" : "rounded-none sm:rounded-full"
+            (isCompact && !isStaticPage && !isAuthPage) ? "rounded-[32px] lg:rounded-full" : "rounded-none sm:rounded-full"
           } ${
             menuOpen
               ? "max-w-full sm:max-w-[1400px] bg-white ring-1 ring-black/5 shadow-md"
               : (isStaticPage || isAuthPage)
               ? "max-w-full sm:max-w-[1400px] bg-transparent shadow-none ring-0"
               : isCompact
-              ? "max-w-[1200px] bg-white md:bg-white/95 backdrop-blur-xl shadow-[0_24px_50px_rgba(0,0,0,0.15)] ring-1 ring-black/5 md:translate-y-1"
-              : isHome
-              ? "max-w-full sm:max-w-[1400px] bg-white md:bg-transparent backdrop-blur-none md:backdrop-blur-none shadow-sm md:shadow-none ring-1 ring-black/5 md:ring-transparent"
-              : "max-w-full sm:max-w-[1400px] bg-white md:bg-white/90 md:backdrop-blur-md shadow-sm ring-1 ring-black/5"
+              ? "max-w-[1200px] bg-white lg:bg-white/95 backdrop-blur-xl shadow-[0_24px_50px_rgba(0,0,0,0.15)] ring-1 ring-black/5 lg:translate-y-1"
+              : "max-w-full sm:max-w-[1400px] bg-white lg:bg-transparent backdrop-blur-none lg:backdrop-blur-none shadow-sm lg:shadow-none ring-1 ring-black/5 lg:ring-transparent"
           }`}
           style={{ transition: 'max-width 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease, border-radius 0.5s ease' }}
         >
 
-          <div className={`flex items-center justify-between gap-4 md:gap-6 transition-all duration-500 ${
-            isCompact ? "px-4 sm:px-8 h-[56px] md:h-[80px]" : "px-4 sm:px-10 h-[60px] md:h-[100px]"
+          <div className={`flex items-center justify-between gap-4 lg:gap-6 transition-all duration-500 ${
+            isCompact ? "px-4 sm:px-8 h-[56px] lg:h-[80px]" : "px-4 sm:px-10 h-[60px] lg:h-[100px]"
           }`}>
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-1 shrink-0 group ml-1 transition-transform duration-300 group-hover:scale-[1.02]">
+            <Link href={`/${lang}`} className="flex items-center gap-1 shrink-0 group ml-1 transition-transform duration-300 group-hover:scale-[1.02]">
               <Image
                 src="/logo.png"
                 alt="Golden Circle"
                 width={80}
                 height={80}
-                className="object-contain h-12 sm:h-14 md:h-16 w-12 sm:w-14 md:w-16 shrink-0"
+                className="object-contain h-12 sm:h-14 lg:h-16 w-12 sm:w-14 lg:w-16 shrink-0"
                 priority
               />
-              <span className={`${isCompact ? "text-[13.5px] sm:text-[14px]" : "text-[15px] sm:text-[18px]"} md:text-[20px] transition-all duration-300 font-bold tracking-[0.1em] text-[#1a1a1a] uppercase leading-none mt-1 md:-mt-1 relative translate-y-[2px] sm:translate-y-[2.5px] md:translate-y-[3.5px] whitespace-nowrap shrink-0`}>
+              <span className={`${isCompact ? "text-[13.5px] sm:text-[14px]" : "text-[15px] sm:text-[18px]"} lg:text-[20px] transition-all duration-300 font-bold tracking-[0.1em] text-[#1a1a1a] uppercase leading-none mt-1 lg:-mt-1 relative translate-y-[2px] sm:translate-y-[2.5px] lg:translate-y-[3.5px] whitespace-nowrap shrink-0`}>
                 GCT FOR GOLD TRADE
               </span>
             </Link>
 
             {/* Desktop navigation links */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden lg:flex items-center gap-8">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
@@ -156,11 +155,11 @@ export default function Navbar() {
             </nav>
 
             {/* Right side actions */}
-            <div className="hidden md:flex items-center gap-5">
+            <div className="hidden lg:flex items-center gap-5">
               {/* Language switcher */}
               <button
                 onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                className="flex items-center gap-1.5 text-[15px] font-semibold text-[#1a1a1a]/70 hover:text-[#1a1a1a] transition-colors duration-300"
+                className="flex items-center gap-1.5 text-[15px] font-semibold text-[#1a1a1a]/70 hover:text-[#1a1a1a] transition-colors duration-300 cursor-pointer"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="opacity-80">
                   <circle cx="12" cy="12" r="10" />
@@ -172,18 +171,21 @@ export default function Navbar() {
 
               <span className="w-[1px] h-4 bg-black/10 mx-1"></span>
 
+              {/* Cart icon */}
+              <CartIcon lang={lang} />
+
               {/* Authentication Button/Menu */}
               {isLoggedIn ? (
                 <div className="relative" ref={userDropdownRef}>
                   <button
                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                    className="flex items-center gap-2 px-2 py-1.5 text-[14px] font-semibold text-[#1a1a1a] bg-transparent rounded-full hover:bg-gray-50 transition-colors outline-none focus:outline-none"
+                    className="flex items-center gap-1.5 px-2 py-1.5 text-[13px] font-semibold text-[#1a1a1a] bg-transparent rounded-full hover:bg-gray-50 transition-colors outline-none focus:outline-none"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C9A84C] to-[#E8C96A] flex items-center justify-center text-white text-[12px] font-bold uppercase shadow-sm">
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#C9A84C] to-[#E8C96A] flex items-center justify-center text-white text-[11px] font-bold uppercase shadow-sm">
                       {userName.charAt(0)}
                     </div>
-                    <span>{userName.split(" ")[0]}</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${userDropdownOpen ? "rotate-180" : ""}`}>
+                    <span className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${scrolled ? 'max-w-0 opacity-0' : 'max-w-[100px] opacity-100'}`}>{userName.split(" ")[0]}</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${userDropdownOpen ? "rotate-180" : ""}`}>
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </button>
@@ -209,7 +211,7 @@ export default function Navbar() {
                 </div>
               ) : (
                 <Link
-                  href="/login"
+                  href={`/${lang}/login`}
                   className="flex items-center gap-2 px-8 py-3.5 text-[14px] font-bold text-white bg-[#1a1a1a] rounded-full hover:bg-black transition-all duration-300 shadow-md group ml-2"
                 >
                   {lang === "en" ? "Login" : "تسجيل الدخول"}
@@ -217,35 +219,38 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Mobile burger */}
-            <button
-              className="md:hidden relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f5f5f5]/80 transition-colors mr-1"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-            >
-              <div className="w-[18px] h-[14px] flex flex-col justify-between">
-                <span
-                  className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 origin-center ${
-                    menuOpen ? "rotate-45 translate-y-[6px]" : ""
-                  }`}
-                />
-                <span
-                  className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 ${
-                    menuOpen ? "opacity-0 scale-x-0" : ""
-                  }`}
-                />
-                <span
-                  className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 origin-center ${
-                    menuOpen ? "-rotate-45 -translate-y-[6px]" : ""
-                  }`}
-                />
-              </div>
-            </button>
+            {/* Mobile cart + burger */}
+            <div className="lg:hidden flex items-center gap-2">
+              <CartIcon lang={lang} />
+              <button
+                className="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f5f5f5]/80 transition-colors mr-1"
+                onClick={toggleMenu}
+                aria-label="Toggle menu"
+              >
+                <div className="w-[18px] h-[14px] flex flex-col justify-between">
+                  <span
+                    className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 origin-center ${
+                      menuOpen ? "rotate-45 translate-y-[6px]" : ""
+                    }`}
+                  />
+                  <span
+                    className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 ${
+                      menuOpen ? "opacity-0 scale-x-0" : ""
+                    }`}
+                  />
+                  <span
+                    className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 origin-center ${
+                      menuOpen ? "-rotate-45 -translate-y-[6px]" : ""
+                    }`}
+                  />
+                </div>
+              </button>
+            </div>
           </div>
 
           {/* Mobile menu */}
           <div
-            className={`md:hidden overflow-hidden ${
+            className={`lg:hidden overflow-hidden ${
               menuOpen ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"
             }`}
             style={{ transition: 'max-height 0.25s ease, opacity 0.2s ease' }}
@@ -282,7 +287,7 @@ export default function Navbar() {
                     }
                     setActiveSection(item.href);
                   }}
-                  className={`flex items-center px-4 py-3.5 rounded-2xl text-[18px] font-medium ${
+                  className={`flex items-center px-4 py-3 rounded-2xl text-[16px] font-medium ${
                     activeSection === item.href ? "text-[#1a1a1a] font-bold" : "text-[#888]"
                   }`}
                 >
@@ -296,24 +301,24 @@ export default function Navbar() {
                     <Link
                       href={`/${lang}/dashboard/wallet`}
                       onClick={() => setMenuOpen(false)}
-                      className="w-full py-3.5 flex items-center justify-center gap-2 text-[17px] font-semibold text-white bg-[#1a1a1a] rounded-2xl shadow-lg"
+                      className="w-full py-3 flex items-center justify-center gap-2 text-[15px] font-semibold text-white bg-[#1a1a1a] rounded-2xl shadow-lg"
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 010-4h14v4M3 5v14a2 2 0 002 2h16v-5M18 14a1 1 0 100 2 1 1 0 000-2z"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12V7H5a2 2 0 010-4h14v4M3 5v14a2 2 0 002 2h16v-5M18 14a1 1 0 100 2 1 1 0 000-2z"/></svg>
                       {lang === "en" ? "Go to Dashboard" : "الذهاب إلى لوحة التحكم"}
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="w-full py-3.5 flex items-center justify-center gap-2 text-[17px] font-semibold text-red-500 bg-red-50 rounded-2xl"
+                      className="w-full py-3 flex items-center justify-center gap-2 text-[15px] font-semibold text-red-500 bg-red-50 rounded-2xl"
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                       {lang === "en" ? "Logout" : "تسجيل الخروج"}
                     </button>
                   </>
                 ) : (
                   <Link
-                    href="/login"
+                    href={`/${lang}/login`}
                     onClick={() => setMenuOpen(false)}
-                    className="w-full py-3.5 flex items-center justify-center gap-1.5 text-[17px] font-semibold text-white bg-[#1a1a1a] rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.15)]"
+                    className="w-full py-3 flex items-center justify-center gap-1.5 text-[15px] font-semibold text-white bg-[#1a1a1a] rounded-2xl shadow-[0_4px_16px_rgba(0,0,0,0.15)]"
                   >
                     {lang === "en" ? "Login" : "تسجيل الدخول"}
                   </Link>
@@ -324,9 +329,9 @@ export default function Navbar() {
                     setLang(lang === "en" ? "ar" : "en");
                     setMenuOpen(false);
                   }}
-                  className="w-full py-3 rounded-2xl border border-[#e0e0e0] text-[17px] font-medium text-[#555] flex items-center justify-center gap-2 mt-2"
+                  className="w-full py-2.5 rounded-2xl border border-[#e0e0e0] text-[15px] font-medium text-[#555] flex items-center justify-center gap-2 mt-2"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
                   </svg>
@@ -340,12 +345,45 @@ export default function Navbar() {
 
       {/* Backdrop overlay for mobile menu */}
       <div
-        className={`fixed inset-0 z-40 bg-black/20 md:hidden ${
+        className={`fixed inset-0 z-40 bg-black/20 lg:hidden ${
           menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setMenuOpen(false)}
         style={{ top: "68px", transition: 'opacity 0.2s ease' }}
       />
     </>
+  );
+}
+
+function CartIcon({ lang }: { lang: string }) {
+  const { totalItems } = useCart();
+  const [bump, setBump] = useState(false);
+
+  useEffect(() => {
+    const handleBump = () => {
+      setBump(true);
+      setTimeout(() => setBump(false), 500);
+    };
+    window.addEventListener("cart-bump", handleBump);
+    return () => window.removeEventListener("cart-bump", handleBump);
+  }, []);
+
+  return (
+    <Link
+      href={`/${lang}/cart`}
+      className={`relative w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#f5f5f5]/80 transition-all duration-300 ${bump ? "scale-125 -translate-y-1 drop-shadow-md text-[#C9A84C]" : ""}`}
+      aria-label="Cart"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={bump ? "#C9A84C" : "#1a1a1a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
+        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <path d="M16 10a4 4 0 0 1-8 0"></path>
+      </svg>
+      {totalItems > 0 && (
+        <span className={`absolute -top-0.5 -end-0.5 min-w-[16px] h-[16px] rounded-full bg-[#C9A84C] flex items-center justify-center text-[9px] font-extrabold text-white px-0.5 shadow-sm transition-transform duration-300 ${bump ? "scale-110" : ""}`}>
+          {totalItems}
+        </span>
+      )}
+    </Link>
   );
 }

@@ -45,7 +45,7 @@ const reviewsRow2 = [
 
 function ReviewCard({ review, isRTL }: { review: typeof reviewsRow1[0]; isRTL: boolean }) {
   return (
-    <div className="shrink-0 w-[300px] sm:w-[340px] bg-white rounded-2xl p-6 sm:p-7 border border-[#f0f0f0] flex flex-col gap-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+    <div className="shrink-0 w-[300px] sm:w-[340px] h-full bg-white rounded-2xl p-6 sm:p-7 border border-[#f0f0f0] flex flex-col gap-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-0.5">
           {Array.from({ length: review.rating }).map((_, si) => (
@@ -131,16 +131,16 @@ export default function TrustStats() {
           <div className="absolute inset-y-0 left-0 w-20 sm:w-40 bg-gradient-to-r from-[#0A0A0A] to-[#0A0A0A]/0 z-10 pointer-events-none"></div>
           <div className="absolute inset-y-0 right-0 w-20 sm:w-40 bg-gradient-to-l from-[#0A0A0A] to-[#0A0A0A]/0 z-10 pointer-events-none"></div>
           <div className="flex w-max animate-scroll-left">
-            <div className="flex gap-5 shrink-0 px-2.5">
+            <div className="flex gap-5 shrink-0 px-2.5 items-stretch">
               {[...reviewsRow1, ...reviewsRow1, ...reviewsRow1].map((review, i) => (
-                <div key={`r1a-${i}`} dir={isRTL ? "rtl" : "ltr"}>
+                <div key={`r1a-${i}`} dir={isRTL ? "rtl" : "ltr"} className="h-full">
                   <ReviewCard review={review} isRTL={isRTL} />
                 </div>
               ))}
             </div>
-            <div className="flex gap-5 shrink-0 px-2.5">
+            <div className="flex gap-5 shrink-0 px-2.5 items-stretch">
               {[...reviewsRow1, ...reviewsRow1, ...reviewsRow1].map((review, i) => (
-                <div key={`r1b-${i}`} dir={isRTL ? "rtl" : "ltr"}>
+                <div key={`r1b-${i}`} dir={isRTL ? "rtl" : "ltr"} className="h-full">
                   <ReviewCard review={review} isRTL={isRTL} />
                 </div>
               ))}
@@ -153,16 +153,16 @@ export default function TrustStats() {
           <div className="absolute inset-y-0 left-0 w-20 sm:w-40 bg-gradient-to-r from-[#0A0A0A] to-[#0A0A0A]/0 z-10 pointer-events-none"></div>
           <div className="absolute inset-y-0 right-0 w-20 sm:w-40 bg-gradient-to-l from-[#0A0A0A] to-[#0A0A0A]/0 z-10 pointer-events-none"></div>
           <div className="flex w-max animate-scroll-right">
-            <div className="flex gap-5 shrink-0 px-2.5">
+            <div className="flex gap-5 shrink-0 px-2.5 items-stretch">
               {[...reviewsRow2, ...reviewsRow2, ...reviewsRow2].map((review, i) => (
-                <div key={`r2a-${i}`} dir={isRTL ? "rtl" : "ltr"}>
+                <div key={`r2a-${i}`} dir={isRTL ? "rtl" : "ltr"} className="h-full">
                   <ReviewCard review={review} isRTL={isRTL} />
                 </div>
               ))}
             </div>
-            <div className="flex gap-5 shrink-0 px-2.5">
+            <div className="flex gap-5 shrink-0 px-2.5 items-stretch">
               {[...reviewsRow2, ...reviewsRow2, ...reviewsRow2].map((review, i) => (
-                <div key={`r2b-${i}`} dir={isRTL ? "rtl" : "ltr"}>
+                <div key={`r2b-${i}`} dir={isRTL ? "rtl" : "ltr"} className="h-full">
                   <ReviewCard review={review} isRTL={isRTL} />
                 </div>
               ))}

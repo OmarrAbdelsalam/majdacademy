@@ -9,7 +9,7 @@ import Footer from "../../components/Footer";
 import WhatsAppButton from "../../components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "أسعار الذهب والفضة اليوم | Golden Circle Trading",
+  title: "أسعار الذهب والفضة اليوم | Golden Circle Gold",
   description:
     "تحديث مباشر لأسعار الذهب عيار 24 و21 و18 وأسعار الفضة في مصر بالجنيه المصري — حاسبة الذهب ومنتجاتنا",
   keywords: [

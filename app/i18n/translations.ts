@@ -18,7 +18,7 @@ export const t = {
       h1a: "Secure Your Money,",
       h1b: "Buy Gold Bars.",
       h1c: "",
-      sub: "Buy certified gold & silver bars. GCT Gold is the easiest and most trusted way to protect the value of your money.",
+      sub: "Buy certified gold & silver bars. GCT Gold is the easiest and most trusted way to protect the value of your assets.",
       cta1: "Download Now",
       cta2: "Get Started",
       storeApple: "App Store",
@@ -38,14 +38,14 @@ export const t = {
       ],
       featuresGrid: {
         headline: "Why Choose GCT Gold?",
-        subheadline: "We've developed investment tools that meet your aspirations and ensure the safety of your funds at every step.",
+        subheadline: "We've developed specialized tools that meet your aspirations and ensure the safety of your funds at every step.",
         items: [
           { title: "Flexible Liquidity", desc: "Easily liquidate your assets anytime you choose." },
           { title: "Secure Delivery", desc: "We provide fully insured delivery right to your doorstep, whenever you need it." },
           { title: "Instant Withdrawals", desc: "All your withdrawal requests are processed instantly upon request without delays." },
           { title: "Trust & Security", desc: "Trusted by many. We continuously work hard to improve our security systems to minimize any potential risks." },
           { title: "Licensed & Sharia Compliant", desc: "An officially licensed Egyptian company since 2023, fully compliant with Islamic Sharia." },
-          { title: "Zero Commissions", desc: "Flexible investment starting with any amount, zero commissions, and 24/7 technical support." }
+          { title: "Zero Commissions", desc: "Flexible buying starting with any amount, zero commissions, and 24/7 technical support." }
         ]
       },
       phone: {
@@ -96,7 +96,7 @@ export const t = {
       h2b: "Started?",
       steps: [
         { num: "01", title: "Download", desc: "Download the app from your preferred store to get started." },
-        { num: "02", title: "Register", desc: "Create your secure account and begin your journey." },
+        { num: "02", title: "Register", desc: "Create your secure account and begin your journey with gold & silver." },
         { num: "03", title: "Deposit Funds", desc: "Add funds to your wallet quickly and manage them securely." },
         { num: "04", title: "Manage Gold & Silver", desc: "Easily buy and track your assets through your personal Portfolio." },
       ],
@@ -109,7 +109,7 @@ export const t = {
       h2b: "You Get?",
       items: [
         { title: "Real-Time Price Tracking.", desc: "Stay updated with live 24K gold & 999 silver prices and set alerts for your target price.", screenLabel: "Live Prices" },
-        { title: "Easy Wallet & Transactions.", desc: "Add money, invest in gold & silver, and manage your transaction history with ease.", screenLabel: "My Wallet" },        { title: "Sharia Compliant.", desc: "Our platform adheres to Islamic financial principles, ensuring all transactions are Halal.", screenLabel: "Compliance" },
+        { title: "Easy Wallet & Transactions.", desc: "Add money, buy gold & silver, and manage your transaction history with ease.", screenLabel: "My Wallet" },        { title: "Sharia Compliant.", desc: "Our platform adheres to Islamic financial principles, ensuring all transactions are Halal.", screenLabel: "Compliance" },
         { title: "Gold Collection Option.", desc: "In-person collection is available for gold starting from 5g bars and silver starting from 500g bars, only for weights listed on the app's Purchases page.", screenLabel: "Collection" },
         { title: "Smooth, Intuitive Experience.", desc: "Enjoy a smooth, user-friendly interface for all your gold & silver transactions.", screenLabel: "Portfolio" },
       ],
@@ -137,7 +137,7 @@ export const t = {
       eyebrow: "Get the App",
       h2a: "Your Gold & Silver, at Your",
       h2b: "Fingertips.",
-      sub: "Your metals, always within reach. Download GCT Gold and manage your investments anytime, anywhere.",
+      sub: "Your metals, always within reach. Download GCT Gold and manage your assets anytime, anywhere.",
       apple: "App Store",
       google: "Google Play",
       appleSub: "Download on the",
@@ -198,7 +198,7 @@ export const t = {
       h1a: "خليك في المضمون،",
       h1b: "اشتري سبائك دهب.",
       h1c: "",
-      sub: "اشتري سبائك دهب وفضة معتمدة. GCT Gold هي الحل الأسهل والأضمن عشان تحمي قيمة ثروتك.",
+      sub: "اشتري سبائك دهب وفضة معتمدة. GCT Gold هي الحل الأسهل والأضمن عشان تحمي قيمة مدخراتك.",
       cta1: "حمّل التطبيق",
       cta2: "ابدأ الآن",
       storeApple: "App Store",
@@ -218,14 +218,14 @@ export const t = {
       ],
       featuresGrid: {
         headline: "لماذا تختار GCT Gold؟",
-        subheadline: "نوفر لك أداة استثمار موثوقة تلبي احتياجاتك وتضمن أمان ثروتك.",
+        subheadline: "نوفر لك أفضل الأدوات التي تلبي احتياجاتك وتضمن أمان مدخراتك.",
         items: [
           { title: "سيولة مرنة", desc: "ينفع تفك السيولة في أي وقت." },
           { title: "توصيل لحد الباب", desc: "توصيل مؤمن ١٠٠٪ لحد باب بيتك في أي وقت تحتاجه." },
           { title: "سحب فوري", desc: "جميع طلبات السحب لدينا تُعالج على الفور بمجرد الطلب." },
           { title: "ثقة وأمان", desc: "نحن نحظى بثقة عدد كبير من الأشخاص. نعمل بجد باستمرار على تحسين مستوى نظامنا الأمني وتقليل المخاطر المحتملة." },
-          { title: "مرخصة وشرعية", desc: "شركة مصرية مرخّصة رسميًا وتعمل في السوق منذ عام ٢٠٢٣، واستثمار حلال ١٠٠٪." },
-          { title: "مرونة وبدون عمولات", desc: "استثمار مرن بأي مبلغ، بدون عمولات مخفية، ودعم فني مستمر." }
+          { title: "مرخصة وشرعية", desc: "شركة مصرية مرخّصة رسميًا وتعمل في السوق منذ عام ٢٠٢٣، وتجارة حلال ١٠٠٪." },
+          { title: "مرونة وبدون عمولات", desc: "شراء مرن بأي مبلغ، بدون عمولات مخفية، ودعم فني مستمر." }
         ]
       },
       phone: {
@@ -274,7 +274,7 @@ export const t = {
       h2b: "تبدأ؟",
       steps: [
         { num: "01", title: "حمّل التطبيق", desc: "حمّل التطبيق من متجرك المفضل للبدء." },
-        { num: "02", title: "سجّل حسابك", desc: "أنشئ حسابك الآمن وابدأ رحلتك الاستثمارية." },
+        { num: "02", title: "سجّل حسابك", desc: "أنشئ حسابك الآمن وابدأ رحلتك مع الذهب والفضة." },
         { num: "03", title: "أضف رصيدك", desc: "أضف أموالاً إلى محفظتك بسرعة وأدِرها بأمان." },
         { num: "04", title: "أدِر ذهبك وفضتك", desc: "اشترِ وتتبّع أصولك بسهولة من خلال محفظتك الشخصية." },
       ],
@@ -286,7 +286,7 @@ export const t = {
       h2b: "ستحصل عليه؟",
       items: [
         { title: "تتبّع الأسعار في الوقت الحقيقي.", desc: "ابقَ على اطلاع بأسعار الذهب 24 قيراط والفضة 999 الحية، وضع تنبيهات للسعر المستهدف.", screenLabel: "الأسعار الحية" },
-        { title: "محفظة ومعاملات سهلة.", desc: "أضف أموالاً، استثمر في الذهب والفضة، وأدِر سجل معاملاتك بكل سهولة.", screenLabel: "محفظتي" },
+        { title: "محفظة ومعاملات سهلة.", desc: "أضف أموالاً، امتلك الذهب والفضة، وأدِر سجل معاملاتك بكل سهولة.", screenLabel: "محفظتي" },
         { title: "متوافق مع الشريعة الإسلامية.", desc: "منصتنا تلتزم بمبادئ التمويل الإسلامي، مما يضمن أن جميع المعاملات حلال.", screenLabel: "الامتثال" },
         { title: "خيار استلام الذهب.", desc: "الاستلام الشخصي متاح للذهب ابتداءً من سبائك 5 جم وللفضة ابتداءً من 500 جم، للأوزان المدرجة في صفحة المشتريات.", screenLabel: "الاستلام" },
         { title: "تجربة سلسة وبديهية.", desc: "استمتع بواجهة سهلة الاستخدام لجميع معاملات الذهب والفضة.", screenLabel: "المحفظة" },
@@ -313,7 +313,7 @@ export const t = {
       eyebrow: "حمّل التطبيق",
       h2a: "ذهبك وفضتك",
       h2b: "في متناول يدك.",
-      sub: "استثماراتك دايماً معاك. حمّل GCT Gold وتابع محفظتك في أي وقت وأي مكان.",
+      sub: "أصولك دايماً معاك. حمّل GCT Gold وتابع محفظتك في أي وقت وأي مكان.",
       apple: "App Store",
       google: "Google Play",
       appleSub: "حمّل من",

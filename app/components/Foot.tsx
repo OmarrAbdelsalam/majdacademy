@@ -19,7 +19,7 @@ export default function Foot() {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <h2 className="text-[32px] sm:text-5xl md:text-6xl font-bold leading-[1.1] tracking-tight text-[#1a1a1a]">
-            {isRTL ? "استثمر بذكاء." : "Invest Smart."}
+            {isRTL ? "ادخر بذكاء." : "Save Smartly."}
             <br />
             <span className={isRTL ? "text-[28px] sm:text-[42px] md:text-[52px]" : ""}>
               {isRTL ? "في الذهب والفضة." : "In Gold & Silver."}

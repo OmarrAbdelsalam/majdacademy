@@ -1,6 +1,5 @@
 "use client";
 import { useLang } from "../i18n/LangContext";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { ApiResponse } from "../../lib/api-client";
 import { getCurrentPrices } from "../../lib/api";
@@ -84,7 +83,7 @@ export default function Hero() {
 
   return (
     <div id="home" className="w-full relative flex flex-col bg-[#FDFBF5] overflow-hidden">
-      {/* Premium subtle gold glows */}
+      {/* Premium subtle gold glows — lighter on mobile */}
       <div className="absolute -top-32 -left-16 w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full bg-gradient-to-br from-[#E9C237]/20 to-transparent blur-[60px] sm:blur-[100px] pointer-events-none z-0"></div>
       <div className="absolute top-1/3 -right-16 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] rounded-full bg-gradient-to-tl from-[#C9A84C]/15 via-[#F5E6A3]/8 to-transparent blur-[50px] sm:blur-[80px] pointer-events-none z-0"></div>
       
@@ -103,7 +102,7 @@ export default function Hero() {
       ></div>
 
       {/* Fine noise texture to give a non-digital, premium physical feel */}
-      <div className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none z-0" style={{
+      <div className="absolute inset-0 opacity-[0.35] mix-blend-overlay pointer-events-none z-0 hidden sm:block" style={{
         backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
       }}></div>
 
@@ -113,11 +112,9 @@ export default function Hero() {
       <div className="w-full flex flex-col items-center text-center mt-4 sm:mt-4 mb-6 sm:mb-6 relative z-10 px-2 sm:px-6">
 
         {/* Trust badge */}
-        <motion.div 
-          className="flex items-center gap-2 mb-7 sm:mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+        <div 
+          className="flex items-center gap-2 mb-7 sm:mb-8 animate-fadeInUp"
+          style={{ animationDelay: '0s' }}
         >
           <div className="flex -space-x-1">
             <div className="w-2 h-2 rounded-full bg-[#FDF1B8]" />
@@ -125,81 +122,69 @@ export default function Hero() {
             <div className="w-2 h-2 rounded-full bg-[#D39C04]" />
           </div>
           <span className={`text-[11px] sm:text-[13px] font-semibold text-[#999] uppercase ${!isRTL ? 'tracking-[0.2em]' : 'tracking-normal'}`}>
-            {isRTL ? "منصة موثوقة لشراء الذهب" : "Trusted Gold Trading Platform"}
+            {isRTL ? "منصة موثوقة لبيع وشراء الذهب" : "Trusted Gold & Silver Platform"}
           </span>
-        </motion.div>
+        </div>
 
         {/* Main Headline */}
-        <motion.h1 
-          className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[72px] font-bold leading-[1.1] tracking-tight mb-6 sm:mb-6 text-[#1a1a1a] px-1 max-w-[1200px]"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+        <h1 
+          className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[72px] font-bold leading-[1.1] tracking-tight mb-6 sm:mb-6 text-[#1a1a1a] px-1 max-w-[1200px] animate-fadeInUp"
+          style={{ animationDelay: '0.1s' }}
         >
           <span className="block mb-0.5 sm:mb-1">
             {h.h1a} <span className="text-[#E4B815]">{h.h1b}</span>
           </span>
           <span className="block">{h.h1c}</span>
-        </motion.h1>
+        </h1>
 
         {/* Description */}
-        <motion.p 
-          className="text-[14px] sm:text-[17px] md:text-[19px] text-[#777] leading-[1.7] max-w-[340px] sm:max-w-[900px] mb-8 sm:mb-8 font-medium px-0"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+        <p 
+          className="text-[14px] sm:text-[17px] md:text-[19px] text-[#777] leading-[1.7] max-w-[340px] sm:max-w-[900px] mb-8 sm:mb-8 font-medium px-0 animate-fadeInUp"
+          style={{ animationDelay: '0.2s' }}
         >
           {h.sub}
-        </motion.p>
-
-
+        </p>
 
         {/* CTA Button */}
-        <motion.div
-          className="mb-0"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
+        <div
+          className="mb-0 animate-fadeInUp"
+          style={{ animationDelay: '0.3s' }}
         >
           <a href="#products" className="inline-flex items-center gap-2 bg-[#1a1a1a] text-white px-8 py-4 rounded-full font-bold text-[15px] sm:text-[17px] hover:bg-black transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
             {isRTL ? "اشتر الآن" : "Buy Now"}
           </a>
-        </motion.div>
+        </div>
 
         {/* Subtle stats */}
-        <motion.div 
-          className="flex items-center gap-3 sm:gap-5 mt-6 sm:mt-6 text-[11px] sm:text-[13px] text-[#999] font-medium leading-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+        <div 
+          className="flex items-center gap-3 sm:gap-5 mt-6 sm:mt-6 text-[11px] sm:text-[13px] text-[#999] font-medium leading-none animate-fadeInUp"
+          style={{ animationDelay: '0.5s' }}
         >
           <span>{h.stats.users}</span>
           <span className="text-[#ddd]">·</span>
           <span>{h.stats.rating}</span>
           <span className="text-[#ddd]">·</span>
           <span>{h.stats.purity}</span>
-        </motion.div>
+        </div>
 
       </div>
 
       {/* BTC Gold Bars - Showcase */}
       <div className="hidden md:flex w-full px-2 sm:px-4 mt-6 md:mt-4 relative z-20 items-center justify-center -space-x-4 sm:-space-x-4 md:-space-x-8" style={{ marginBottom: "-100px" }}>
         {[
-          "/black-1.png",
+          "/black-1.webp",
           "/blue-2.png",
-          "/black-3.png",
+          "/black-3.webp",
         ].map((src, i) => (
-          <motion.img 
+          <img 
             key={i}
             src={src} 
             alt={`Gold Bar ${i + 1}`}
-            className="w-[34%] sm:w-[36%] max-w-[380px] h-auto object-contain relative z-10"
+            className="w-[34%] sm:w-[36%] max-w-[380px] h-auto object-contain relative z-10 animate-fadeInUp"
             style={{ 
               filter: "drop-shadow(0 25px 45px rgba(0,0,0,0.25))",
+              animationDelay: `${0.4 + i * 0.1}s`,
             }}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut", delay: 0.4 + i * 0.1 }}
           />
         ))}
       </div>

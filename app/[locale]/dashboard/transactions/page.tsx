@@ -29,12 +29,12 @@ export default function TransactionsPage() {
 
   const filterLabels: Record<string, string> = { deposit: tr.deposit, order: tr.order };
 
-  // Show only buy orders for bullion (bars/coins) — hide Partial Gold and all sell orders
+  // Hide sell orders and any transaction containing "partial" products
   const shouldHide = (tx: any) => {
     if (tx.type === "sell") return true;
     if (!tx.products || !Array.isArray(tx.products) || tx.products.length === 0) return false;
     return tx.products.every((p: any) =>
-      (p.product_name || "").toLowerCase().includes("partial gold")
+      (p.product_name || "").toLowerCase().includes("partial")
     );
   };
 
@@ -44,6 +44,26 @@ export default function TransactionsPage() {
   const [loading, setLoading] = useState(true);
   const [txDetails, setTxDetails] = useState<any | null>(null);
 
+  // Background-sync real statuses from detail API (list API returns inaccurate status)
+  const syncRealStatuses = async (txList: any[]) => {
+    const orderTxs = txList.filter((tx: any) => tx.id?.startsWith("O-"));
+    if (orderTxs.length === 0) return;
+    const results = await Promise.allSettled(
+      orderTxs.map((tx: any) => getTransactionDetails(tx.id, lang))
+    );
+    setTransactions(prev =>
+      prev.map(tx => {
+        const idx = orderTxs.findIndex((o: any) => o.id === tx.id);
+        if (idx === -1) return tx;
+        const result = results[idx];
+        if (result.status === "fulfilled" && result.value.success && result.value.data?.status) {
+          return { ...tx, status: result.value.data.status };
+        }
+        return tx;
+      })
+    );
+  };
+
   useEffect(() => {
     setLoading(true);
     getTransactions(1, activeFilter, lang).then(res => {
@@ -52,10 +72,13 @@ export default function TransactionsPage() {
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(raw.filter((tx: any) => !shouldHide(tx)));
+      const filtered = raw.filter((tx: any) => !shouldHide(tx));
+      setTransactions(filtered);
       setHasMore(res.data?.hasMore || false);
       setPage(1);
       setLoading(false);
+      // Fetch real statuses in background
+      syncRealStatuses(filtered);
     });
   }, [activeFilter, lang]);
 
@@ -67,9 +90,11 @@ export default function TransactionsPage() {
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      setTransactions(prev => [...prev, ...raw.filter((tx: any) => !shouldHide(tx))]);
+      const filtered = raw.filter((tx: any) => !shouldHide(tx));
+      setTransactions(prev => [...prev, ...filtered]);
       setHasMore(res.data?.hasMore || false);
       setPage(nextPage);
+      syncRealStatuses(filtered);
     });
   };
 
@@ -79,6 +104,12 @@ export default function TransactionsPage() {
     const res = await getTransactionDetails(id, lang);
     if (res.success && res.data) {
       setTxDetails(res.data);
+      // Sync real status back into the list (list API sometimes returns inaccurate status)
+      if (res.data.status) {
+        setTransactions(prev =>
+          prev.map(tx => tx.id === id ? { ...tx, status: res.data.status } : tx)
+        );
+      }
     } else {
       setSelectedTx(null);
     }
@@ -121,7 +152,7 @@ export default function TransactionsPage() {
               const isPlus = tx.operation === "+";
               const statusLower = (tx.status || "").toLowerCase();
               const statusColor =
-                statusLower === "cancel" || statusLower === "cancelled" || statusLower === "ملغي"
+                statusLower === "cancel" || statusLower === "canceled" || statusLower === "cancelled" || statusLower === "ملغي"
                   ? "text-red-500"
                   : statusLower === "مكتمل" || statusLower === "completed" || statusLower === "success"
                   ? "text-emerald-600"
