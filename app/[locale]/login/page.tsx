@@ -27,7 +27,11 @@ export default function LoginPage() {
   const params = useParams();
   const locale = (params?.locale as string) || lang;
   const searchParams = useSearchParams();
-  const returnTo = searchParams?.get("returnTo");
+  const rawReturnTo = searchParams?.get("returnTo");
+  const cleanReturnTo = rawReturnTo ? (rawReturnTo.startsWith('/') ? rawReturnTo : `/${rawReturnTo}`) : null;
+  const redirectPath = cleanReturnTo
+    ? (cleanReturnTo.startsWith(`/${locale}`) ? cleanReturnTo : `/${locale}${cleanReturnTo}`)
+    : `/${locale}/dashboard`;
 
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -44,9 +48,9 @@ export default function LoginPage() {
   // Redirect if already logged in
   useEffect(() => {
     if (getTokenCookie()) {
-      router.push(returnTo ? `/${locale}${returnTo.startsWith('/') ? returnTo : `/${returnTo}`}` : `/${locale}/dashboard`);
+      router.push(redirectPath);
     }
-  }, [locale, router, returnTo]);
+  }, [redirectPath, router]);
 
   const tr = {
     title: isRTL ? "تسجيل الدخول" : "Log in",
@@ -93,7 +97,7 @@ export default function LoginPage() {
       const data = envelope.data;
       if (data?.access_token) {
         setCookieToken(data.access_token as string);
-        router.push(returnTo ? `/${locale}${returnTo.startsWith('/') ? returnTo : `/${returnTo}`}` : `/${locale}/dashboard`);
+        router.push(redirectPath);
       } else if (data?.user_id) {
         setUserId(data.user_id as number);
         setOtpScreen(true);
@@ -125,7 +129,7 @@ export default function LoginPage() {
       const data = envelope.data;
       if (data?.access_token) {
         setCookieToken(data.access_token as string);
-        router.push(returnTo ? `/${locale}${returnTo.startsWith('/') ? returnTo : `/${returnTo}`}` : `/${locale}/dashboard`);
+        router.push(redirectPath);
       } else {
         setError(envelope.message || (isRTL ? "رمز غير صحيح" : "Invalid code"));
       }
@@ -263,7 +267,7 @@ export default function LoginPage() {
 
                 <p className="text-center text-[14px] text-[#999]">
                   {tr.noAccount}{" "}
-                  <Link href={returnTo ? `/${lang}/register?returnTo=${encodeURIComponent(returnTo)}` : `/${lang}/register`} className="text-[#1a1a1a] font-bold hover:text-[#C9A84C] transition-colors">{tr.register}</Link>
+                  <Link href={rawReturnTo ? `/${lang}/register?returnTo=${encodeURIComponent(rawReturnTo)}` : `/${lang}/register`} className="text-[#1a1a1a] font-bold hover:text-[#C9A84C] transition-colors">{tr.register}</Link>
                 </p>
               </>
             ) : (
