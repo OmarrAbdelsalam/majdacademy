@@ -1,10 +1,26 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { useLang } from "../../../i18n/LangContext";
-import { submitDeposit, getWallet } from "../../../../lib/api";
+import { getWallet, createGeideaDeposit, getDepositStatus, submitDeposit } from "../../../../lib/api";
+
+type DepositStatus = "pending" | "paid" | "failed" | "cancelled" | "expired" | "pending_review" | "unknown";
 
 const METHODS = [
+  {
+    id: "geidea",
+    name: "Credit / Debit Card",
+    nameAr: "بطاقة بنكية",
+    desc: "Pay securely via Geidea",
+    descAr: "دفع إلكتروني آمن عبر جيديا",
+    color: "#C9A84C",
+    bg: "bg-amber-50",
+    hidden: true,
+    icon: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+    ),
+  },
   {
     id: "instapay",
     name: "InstaPay",
@@ -21,61 +37,117 @@ const METHODS = [
 
 export default function DepositPage() {
   const { isRTL, lang } = useLang();
-  const [method, setMethod] = useState<string | null>("instapay");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [amount, setAmount] = useState("");
-  const [receiptFile, setReceiptFile] = useState<File | null>(null);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  // Wallet balance
   const [cash, setCash] = useState<number>(0);
   const [loadingWallet, setLoadingWallet] = useState(true);
   const [showBalance, setShowBalance] = useState(false);
 
+  // Method selection
+  const [method, setMethod] = useState<string>("instapay");
+
+  // Shared form
+  const [amount, setAmount] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  // Geidea specific
+  const [currency, setCurrency] = useState("EGP");
+  const [activeDeposit, setActiveDeposit] = useState<{ id: number; trx: string } | null>(null);
+  const [depositResult, setDepositResult] = useState<DepositStatus | "timeout" | null>(null);
+  const [polling, setPolling] = useState(false);
+  const pollingRef = useRef<boolean>(false);
+
+  // InstaPay specific
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
+  const [success, setSuccess] = useState("");
+
   useEffect(() => {
     getWallet(lang).then(res => {
-      if (res.success && res.data) {
-        setCash(Number(res.data.cash) || 0);
-      }
+      if (res.success && res.data) setCash(Number(res.data.cash) || 0);
       setLoadingWallet(false);
     });
   }, [lang]);
 
-  const tr = {
-    title: isRTL ? "إيداع" : "Deposit",
-    subtitle: isRTL ? "أضف رصيد إلى محفظتك" : "Add funds to your wallet",
-    amount: isRTL ? "المبلغ" : "Amount",
-    receipt: isRTL ? "صورة الإيصال" : "Receipt image",
-    uploadReceipt: isRTL ? "ارفع صورة الإيصال" : "Upload receipt image",
-    submit: isRTL ? "إيداع" : "Deposit",
-    back: isRTL ? "العودة لاختيار الطريقة" : "Back",
-    pendingDesc: isRTL ? "سيتم مراجعة الإيصال وإضافة الرصيد خلال أقل من يوم" : "Your receipt will be reviewed and funds added in less than a day",
-    noReceipt: isRTL ? "برجاء رفع الإيصال" : "Please upload receipt",
-    loading: isRTL ? "جارٍ الإرسال..." : "Sending...",
-    cashBalance: isRTL ? "الرصيد الحالي" : "Current Balance",
-    currency: "EGP",
-    name: isRTL ? "الاسم" : "Name",
-    phone: isRTL ? "رقم الهاتف" : "Phone number",
+  // Polling with exponential backoff (Geidea)
+  const startPolling = useCallback((depositId: number) => {
+    pollingRef.current = true;
+    setPolling(true);
+    setDepositResult(null);
+
+    const delays = [2000, 4000, 8000, 16000, 30000, 30000, 30000, 30000, 30000, 30000];
+    let index = 0;
+
+    const poll = async () => {
+      if (!pollingRef.current) return;
+      const res = await getDepositStatus(depositId, lang);
+      if (res.success && res.data) {
+        const status = res.data.status as DepositStatus;
+        if (status !== "pending") {
+          pollingRef.current = false;
+          setPolling(false);
+          setDepositResult(status);
+          if (status === "paid") {
+            // Refresh wallet balance
+            const walletRes = await getWallet(lang);
+            if (walletRes.success && walletRes.data) setCash(Number(walletRes.data.cash) || 0);
+          }
+          return;
+        }
+      }
+      index++;
+      if (index >= delays.length) {
+        pollingRef.current = false;
+        setPolling(false);
+        setDepositResult("timeout");
+        return;
+      }
+      setTimeout(poll, delays[index]);
+    };
+
+    setTimeout(poll, delays[0]);
+  }, [lang]);
+
+  const handleGeideaSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    const numAmount = Number(amount);
+    if (!numAmount || numAmount < 50 || numAmount > 100000) {
+      setError(isRTL ? "المبلغ يجب أن يكون بين 50 و 100,000" : "Amount must be between 50 and 100,000");
+      return;
+    }
+    setLoading(true);
+    const res = await createGeideaDeposit(numAmount, currency, lang);
+    if (res.success && res.data) {
+      const { deposit_id, trx, payment_url } = res.data;
+      setActiveDeposit({ id: deposit_id, trx });
+      window.open(payment_url, "_blank");
+      startPolling(deposit_id);
+    } else {
+      setError(res.message || (isRTL ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again"));
+    }
+    setLoading(false);
   };
 
-  const inputCls = "flex items-center gap-3 bg-[#F7F7F8] rounded-2xl px-5 py-4 border border-transparent focus-within:border-[#E9C237]/60 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(233,194,55,0.08)] transition-all duration-200";
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleInstapaySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccess("");
     if (!name.trim()) { setError(isRTL ? "برجاء إدخال الاسم" : "Please enter your name"); return; }
     if (!phone.trim()) { setError(isRTL ? "برجاء إدخال رقم الهاتف" : "Please enter your phone number"); return; }
-    if (!amount || Number(amount) < 1) { setError(isRTL ? "برجاء إدخال مبلغ صحيح (1 جنيه على الأقل)" : "Please enter a valid amount (min 1 EGP)"); return; }
+    if (!amount || Number(amount) < 50) { setError(isRTL ? "المبلغ يجب أن يكون 50 جنيهاً على الأقل" : "Amount must be at least 50 EGP"); return; }
     if (!receiptFile) { setError(tr.noReceipt); return; }
+
     setLoading(true);
     const body = new FormData();
-    body.append("payment_method", method!);
+    body.append("payment_method", "instapay");
     body.append("name", name);
     body.append("phone", phone);
     body.append("amount", amount);
     body.append("image", receiptFile);
+
     const res = await submitDeposit(body, lang);
     if (res.success) {
       setSuccess(tr.pendingDesc);
@@ -83,12 +155,55 @@ export default function DepositPage() {
       setName("");
       setPhone("");
       setReceiptFile(null);
-      setMethod("instapay");
     } else {
       setError(res.message || (isRTL ? "حدث خطأ" : "Error processing deposit"));
     }
     setLoading(false);
   };
+
+  const resetGeideaDeposit = () => {
+    setActiveDeposit(null);
+    setDepositResult(null);
+    setPolling(false);
+    setAmount("");
+    pollingRef.current = false;
+  };
+
+  const tr = {
+    title: isRTL ? "إيداع" : "Deposit",
+    subtitle: isRTL ? "أضف رصيد إلى محفظتك" : "Add funds to your wallet",
+    cashBalance: isRTL ? "الرصيد الحالي" : "Current Balance",
+    currency: "EGP",
+    amount: isRTL ? "المبلغ" : "Amount",
+    currencyLabel: isRTL ? "العملة" : "Currency",
+    submitGeidea: isRTL ? "إيداع الآن" : "Deposit Now",
+    submitInstapay: isRTL ? "تأكيد الإيداع" : "Confirm Deposit",
+    submitting: isRTL ? "جارٍ الإنشاء..." : "Creating...",
+    sending: isRTL ? "جارٍ الإرسال..." : "Sending...",
+    back: isRTL ? "العودة" : "Back",
+    receipt: isRTL ? "صورة الإيصال" : "Receipt image",
+    uploadReceipt: isRTL ? "ارفع صورة الإيصال" : "Upload receipt image",
+    pendingDesc: isRTL ? "سيتم مراجعة الإيصال وإضافة الرصيد خلال أقل من يوم" : "Your receipt will be reviewed and funds added in less than a day",
+    noReceipt: isRTL ? "برجاء رفع الإيصال" : "Please upload receipt",
+    name: isRTL ? "الاسم" : "Name",
+    phone: isRTL ? "رقم الهاتف" : "Phone number",
+    waitingPayment: isRTL ? "في انتظار تأكيد الدفع..." : "Waiting for payment confirmation...",
+    successTitle: isRTL ? "تم الإيداع بنجاح!" : "Deposit Successful!",
+    successDesc: isRTL ? "تم إضافة الرصيد إلى محفظتك" : "Funds have been added to your wallet",
+    failedTitle: isRTL ? "فشل الدفع" : "Payment Failed",
+    failedDesc: isRTL ? "لم يتم الدفع، حاول مرة أخرى" : "Payment was not completed, please try again",
+    cancelledTitle: isRTL ? "تم إلغاء الدفع" : "Payment Cancelled",
+    cancelledDesc: isRTL ? "تم إلغاء عملية الدفع" : "Payment was cancelled",
+    expiredTitle: isRTL ? "انتهت صلاحية الرابط" : "Link Expired",
+    expiredDesc: isRTL ? "انتهت صلاحية رابط الدفع، ابدأ إيداع جديد" : "Payment link expired, please start a new deposit",
+    timeoutTitle: isRTL ? "لا يزال معلقاً" : "Still Pending",
+    timeoutDesc: isRTL ? "لم يتم التأكيد بعد — راجع سجل الإيداعات لاحقاً" : "Not confirmed yet — check deposit history later",
+    tryAgain: isRTL ? "حاول مرة أخرى" : "Try Again",
+    newDeposit: isRTL ? "إيداع جديد" : "New Deposit",
+    ok: isRTL ? "حسناً" : "OK",
+  };
+
+  const inputCls = "flex items-center gap-3 bg-[#F7F7F8] rounded-2xl px-5 py-4 border border-transparent focus-within:border-[#E9C237]/60 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(233,194,55,0.08)] transition-all duration-200";
 
   const selectedMethod = METHODS.find(m => m.id === method);
 
@@ -127,102 +242,226 @@ export default function DepositPage() {
         </div>
       </div>
 
+      {/* InstaPay Success Modal */}
       {success && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-xl border border-[#f0f0f0] animate-in fade-in zoom-in-95 duration-200">
-            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto mb-5">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-50 flex items-center justify-center mx-auto mb-5">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{isRTL ? "تم الإيداع بنجاح" : "Deposit Successful"}</h3>
+            <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{isRTL ? "تم الإرسال بنجاح" : "Submitted Successfully"}</h3>
             <p className="text-[14px] text-[#888] font-medium mb-8 leading-relaxed">{success}</p>
-            <button onClick={() => { setSuccess(""); setMethod(""); setReceiptFile(null); setAmount(""); setName(""); setPhone(""); }} className="w-full py-3.5 rounded-xl font-bold text-[14px] transition-all bg-[#1a1a1a] text-white hover:bg-[#333]">
+            <button onClick={() => setSuccess("")} className="w-full py-3.5 rounded-xl font-bold text-[14px] transition-all bg-[#1a1a1a] text-white hover:bg-[#333]">
               {isRTL ? "حسناً" : "OK"}
             </button>
           </div>
         </div>
       )}
 
-      {!method ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg">
-          {METHODS.map(m => (
-            <button key={m.id} onClick={() => { setError(""); setSuccess(""); setMethod(m.id); }}
-              className="bg-white rounded-2xl border border-[#f0f0f0] p-6 text-start hover:border-[#C9A84C]/40 hover:shadow-md transition-all duration-200 group">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${m.bg} group-hover:scale-110 transition-transform`}>
-                {m.icon}
-              </div>
-              <p className="text-[16px] font-bold text-[#1a1a1a] mb-1">{isRTL ? m.nameAr : m.name}</p>
-              <p className="text-[13px] text-[#999]">{isRTL ? m.descAr : m.desc}</p>
-            </button>
-          ))}
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-[#f0f0f0] p-8 max-w-lg">
-          {/* Selected method badge & details */}
-          <div className="flex items-center justify-between px-5 py-4 rounded-2xl bg-[#fafafa] border border-[#f0f0f0] mb-6">
-            <div className="flex items-center gap-4">
-              <div className="rounded-lg overflow-hidden flex items-center justify-center">
-                {selectedMethod?.icon}
-              </div>
-            </div>
-            <div className="text-end">
-              <p className="text-[15px] sm:text-[16px] font-extrabold text-[#1a1a1a] tracking-wider tabular-nums">
-                2390001000023734
-              </p>
-              <p className="text-[12px] text-[#888] font-semibold mt-0.5">{isRTL ? "بنك مصر" : "Banque Misr"}</p>
-            </div>
+      {/* Geidea Polling / Result Modal */}
+      {(polling || depositResult) && (
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-xl border border-[#f0f0f0] animate-in fade-in zoom-in-95 duration-200">
+            {polling && !depositResult && (
+              <>
+                <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mx-auto mb-5">
+                  <div className="w-8 h-8 border-3 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
+                </div>
+                <h3 className="text-[18px] font-extrabold text-[#1a1a1a] mb-2">{tr.waitingPayment}</h3>
+                <p className="text-[13px] text-[#888]">{activeDeposit?.trx}</p>
+              </>
+            )}
+            {depositResult === "paid" && (
+              <>
+                <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto mb-5">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.successTitle}</h3>
+                <p className="text-[14px] text-[#888] mb-6">{tr.successDesc}</p>
+                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.ok}</button>
+              </>
+            )}
+            {depositResult === "failed" && (
+              <>
+                <div className="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-5">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </div>
+                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.failedTitle}</h3>
+                <p className="text-[14px] text-[#888] mb-6">{tr.failedDesc}</p>
+                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.tryAgain}</button>
+              </>
+            )}
+            {depositResult === "cancelled" && (
+              <>
+                <div className="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-5">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                </div>
+                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.cancelledTitle}</h3>
+                <p className="text-[14px] text-[#888] mb-6">{tr.cancelledDesc}</p>
+                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.tryAgain}</button>
+              </>
+            )}
+            {depositResult === "expired" && (
+              <>
+                <div className="w-16 h-16 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center mx-auto mb-5">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.expiredTitle}</h3>
+                <p className="text-[14px] text-[#888] mb-6">{tr.expiredDesc}</p>
+                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.newDeposit}</button>
+              </>
+            )}
+            {depositResult === "timeout" && (
+              <>
+                <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-5">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.timeoutTitle}</h3>
+                <p className="text-[14px] text-[#888] mb-6">{tr.timeoutDesc}</p>
+                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.ok}</button>
+              </>
+            )}
           </div>
-
-          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-            <div className="flex flex-col gap-2">
-              <label className="text-[13px] font-semibold text-[#888]">{tr.name}</label>
-              <div className={inputCls}>
-                <input type="text" value={name} onChange={e => setName(e.target.value)}
-                  placeholder={isRTL ? "أدخل اسمك بالكامل" : "Enter your full name"} className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
-                  required />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-[13px] font-semibold text-[#888]">{tr.phone}</label>
-              <div className={inputCls}>
-                <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
-                  placeholder="01xxxxxxxxx" className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
-                  dir="ltr" required />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-[13px] font-semibold text-[#888]">{tr.amount} (EGP)</label>
-              <div className={inputCls}>
-                <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
-                  placeholder="0.00" className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
-                  dir="ltr" required min="1" />
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label className="text-[13px] font-semibold text-[#888]">{tr.receipt}</label>
-              <label className="flex flex-col items-center gap-3 py-8 border-2 border-dashed border-[#eee] rounded-2xl cursor-pointer hover:border-[#C9A84C]/40 transition-colors">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <polyline points="17 8 12 3 7 8"/>
-                  <line x1="12" y1="3" x2="12" y2="15"/>
-                </svg>
-                <span className="text-[13px] text-[#999] font-medium">{receiptFile ? receiptFile.name : tr.uploadReceipt}</span>
-                <input type="file" accept="image/*" className="hidden" onChange={e => setReceiptFile(e.target.files?.[0] || null)} />
-              </label>
-            </div>
-
-            {error && <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-medium">{error}</div>}
-
-            <button type="submit" disabled={loading}
-              className="w-full py-4 font-bold text-[15px] rounded-2xl transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_28px_rgba(0,0,0,0.15)] active:scale-[0.99] disabled:opacity-60"
-              style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)', color: 'white' }}>
-              {loading ? tr.loading : tr.submit}
-            </button>
-          </form>
         </div>
       )}
+
+      {/* Tabs */}
+      <div className="flex gap-2 mb-6 max-w-lg">
+        {METHODS.filter(m => !m.hidden).map(m => (
+          <button 
+            key={m.id} 
+            onClick={() => { setError(""); setSuccess(""); setAmount(""); setMethod(m.id); }}
+            className={`px-5 py-3.5 rounded-xl text-[14px] font-bold transition-all duration-200 flex-1 flex items-center justify-center gap-3 border ${
+              method === m.id 
+                ? "bg-[#f5f5f5] text-[#1a1a1a] border-[#e0e0e0] shadow-sm" 
+                : "bg-white text-[#888] border-[#f0f0f0] hover:border-[#e0e0e0] hover:bg-[#fafafa]"
+            }`}
+          >
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${m.bg}`}>
+              {m.icon}
+            </div>
+            <span>{isRTL ? m.nameAr : m.name}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="bg-white rounded-2xl border border-[#f0f0f0] p-8 max-w-lg">
+        <div className="flex items-center gap-4 mb-6">
+          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${selectedMethod?.bg}`}>
+            {selectedMethod?.icon}
+          </div>
+          <div>
+            <p className="text-[16px] font-bold text-[#1a1a1a]">{isRTL ? selectedMethod?.nameAr : selectedMethod?.name}</p>
+            <p className="text-[13px] text-[#888] mt-0.5">{isRTL ? selectedMethod?.descAr : selectedMethod?.desc}</p>
+          </div>
+        </div>
+
+          {method === "geidea" && (
+            <form className="flex flex-col gap-5" onSubmit={handleGeideaSubmit}>
+
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <label className="text-[13px] font-semibold text-[#888]">{tr.amount} ({currency})</label>
+                  <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">{isRTL ? "حد أقصى 100,000" : "Max 100,000"}</span>
+                </div>
+                <div className={inputCls}>
+                  <input type="number" value={amount} onChange={e => { const val = e.target.value; if (Number(val) > 100000) setAmount("100000"); else setAmount(val); }}
+                    placeholder={isRTL ? `أدخل المبلغ (من أول 50 ${currency === 'EGP' ? 'جنيه' : 'دولار'})` : `Enter amount (min 50 ${currency})`}
+                    className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
+                    dir="ltr" min="50" max="100000" required />
+                  <span className="text-[13px] font-bold text-[#C9A84C]">{currency}</span>
+                </div>
+                <p className="text-[11px] text-[#888] font-medium mt-0.5">
+                  {isRTL ? "لإيداع مبلغ أكبر من 100,000، يمكنك إجراء أكثر من معاملة متتالية." : "To deposit more than 100,000, you can make multiple consecutive transactions."}
+                </p>
+              </div>
+
+              <div className="flex gap-2 flex-wrap">
+                {(currency === "EGP" ? [1000, 5000, 10000, 20000] : [100, 500, 1000, 5000, 10000]).map(v => (
+                  <button key={v} type="button" onClick={() => setAmount(String(v))}
+                    className={`px-4 py-2 rounded-xl text-[12px] font-semibold transition-all border ${amount === String(v) ? "bg-[#C9A84C]/10 text-[#C9A84C] border-[#C9A84C]/30" : "bg-[#f7f7f7] text-[#888] border-transparent hover:bg-[#f0f0f0]"}`}>
+                    {v.toLocaleString("en-US")} {currency}
+                  </button>
+                ))}
+              </div>
+
+              {error && <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-medium">{error}</div>}
+
+              <button type="submit" disabled={loading}
+                className="w-full py-4 font-bold text-[15px] rounded-2xl transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_28px_rgba(0,0,0,0.15)] active:scale-[0.99] disabled:opacity-60 mt-2"
+                style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)', color: 'white' }}>
+                {loading ? tr.submitting : tr.submitGeidea}
+              </button>
+              
+              <p className="text-[12px] text-[#bbb] text-center leading-relaxed">
+                {isRTL ? "سيتم فتح بوابة الدفع Geidea في نافذة جديدة لإتمام عملية الدفع" : "Geidea payment gateway will open in a new window to complete the payment"}
+              </p>
+            </form>
+          )}
+
+          {method === "instapay" && (
+            <form className="flex flex-col gap-5" onSubmit={handleInstapaySubmit}>
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-semibold text-[#888]">{tr.name}</label>
+                <div className={inputCls}>
+                  <input type="text" value={name} onChange={e => setName(e.target.value)}
+                    placeholder={isRTL ? "أدخل اسمك بالكامل" : "Enter your full name"} className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
+                    required />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-semibold text-[#888]">{tr.phone}</label>
+                <div className={inputCls}>
+                  <input type="tel" value={phone} onChange={e => setPhone(e.target.value)}
+                    placeholder="01xxxxxxxxx" className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
+                    dir="ltr" required />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-semibold text-[#888]">{tr.amount} (EGP)</label>
+                <div className={inputCls}>
+                  <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
+                    placeholder={isRTL ? "أدخل المبلغ (من أول 50 جنيه)" : "Enter amount (min 50 EGP)"}
+                    className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
+                    dir="ltr" required min="50" />
+                </div>
+              </div>
+
+              <div className="flex gap-2 flex-wrap">
+                {[1000, 5000, 10000, 20000].map(v => (
+                  <button key={v} type="button" onClick={() => setAmount(String(v))}
+                    className={`px-4 py-2 rounded-xl text-[12px] font-semibold transition-all border ${amount === String(v) ? "bg-[#C9A84C]/10 text-[#C9A84C] border-[#C9A84C]/30" : "bg-[#f7f7f7] text-[#888] border-transparent hover:bg-[#f0f0f0]"}`}>
+                    {v.toLocaleString("en-US")} EGP
+                  </button>
+                ))}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-[13px] font-semibold text-[#888]">{tr.receipt}</label>
+                <label className="flex flex-col items-center gap-3 py-8 border-2 border-dashed border-[#eee] rounded-2xl cursor-pointer hover:border-[#C9A84C]/40 transition-colors bg-[#fafafa]">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  <span className="text-[13px] text-[#999] font-medium">{receiptFile ? receiptFile.name : tr.uploadReceipt}</span>
+                  <input type="file" accept="image/*" className="hidden" onChange={e => setReceiptFile(e.target.files?.[0] || null)} />
+                </label>
+              </div>
+
+              {error && <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-medium">{error}</div>}
+
+              <button type="submit" disabled={loading}
+                className="w-full py-4 font-bold text-[15px] rounded-2xl transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_28px_rgba(0,0,0,0.15)] active:scale-[0.99] disabled:opacity-60 mt-2"
+                style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)', color: 'white' }}>
+                {loading ? tr.sending : tr.submitInstapay}
+              </button>
+            </form>
+          )}
+        </div>
     </div>
   );
 }
+

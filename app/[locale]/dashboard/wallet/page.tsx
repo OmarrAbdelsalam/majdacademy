@@ -46,12 +46,12 @@ export default function WalletPage() {
         : Array.isArray(res.data?.items)
         ? res.data.items
         : [];
-      // Show only buy orders for bullion — hide Partial Gold and all sell orders
+      // Hide sell orders and any transaction containing "partial" products
       const filtered = raw.filter((tx: any) => {
         if (tx.type === "sell") return false;
         if (!tx.products || !Array.isArray(tx.products) || tx.products.length === 0) return true;
         return !tx.products.every((p: any) =>
-          (p.product_name || "").toLowerCase().includes("partial gold")
+          (p.product_name || "").toLowerCase().includes("partial")
         );
       });
       setTransactions(filtered);

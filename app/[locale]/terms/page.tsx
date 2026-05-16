@@ -4,8 +4,8 @@ import Footer from "../../components/Footer";
 import WhatsAppButton from "../../components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "الشروط والأحكام | Golden Circle Trading",
-  description: "الشروط والأحكام الخاصة باستخدام خدمات Golden Circle Trading لشراء السبائك.",
+  title: "الشروط والأحكام | Golden Circle Gold",
+  description: "الشروط والأحكام الخاصة باستخدام خدمات Golden Circle Gold لشراء السبائك.",
 };
 
 export default async function TermsAndConditionsPage({
@@ -39,8 +39,8 @@ export default async function TermsAndConditionsPage({
               </h2>
               <p>
                 {isArabic 
-                  ? "باستخدامك لموقع Golden Circle Trading، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي من هذه الشروط، يرجى التوقف عن استخدام خدماتنا فوراً."
-                  : "By accessing and using the Golden Circle Trading website, you agree to be bound by all the terms and conditions outlined here. If you do not agree with any of these terms, please stop using our services immediately."}
+                  ? "باستخدامك لموقع Golden Circle Gold، فإنك توافق على الالتزام بجميع الشروط والأحكام المذكورة هنا. إذا كنت لا توافق على أي من هذه الشروط، يرجى التوقف عن استخدام خدماتنا فوراً."
+                  : "By accessing and using the Golden Circle Gold website, you agree to be bound by all the terms and conditions outlined here. If you do not agree with any of these terms, please stop using our services immediately."}
               </p>
             </section>
 
@@ -51,8 +51,8 @@ export default async function TermsAndConditionsPage({
               </h2>
               <p>
                 {isArabic 
-                  ? "توفر Golden Circle Trading منصة موثوقة وآمنة لشراء السبائك الذهبية والفضية، متوافقة تماماً مع الشريعة الإسلامية ومطابقة لأعلى معايير الجودة (نقاء 999.9 و 999)."
-                  : "Golden Circle Trading provides a reliable and secure platform for buying gold and silver bars, fully compliant with Islamic Sharia and meeting the highest quality standards (999.9 and 999 purity)."}
+                  ? "توفر Golden Circle Gold منصة موثوقة وآمنة لشراء السبائك الذهبية والفضية، متوافقة تماماً مع الشريعة الإسلامية ومطابقة لأعلى معايير الجودة (نقاء 999.9 و 999)."
+                  : "Golden Circle Gold provides a reliable and secure platform for buying gold and silver bars, fully compliant with Islamic Sharia and meeting the highest quality standards (999.9 and 999 purity)."}
               </p>
             </section>
 
@@ -109,8 +109,8 @@ export default async function TermsAndConditionsPage({
               </h2>
               <p>
                 {isArabic 
-                  ? "تحتفظ Golden Circle Trading بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر أي تغييرات على هذه الصفحة وتُعتبر سارية فور نشرها."
-                  : "Golden Circle Trading reserves the right to amend these terms at any time. Any changes will be posted on this page and will become effective immediately."}
+                  ? "تحتفظ Golden Circle Gold بالحق في تعديل هذه الشروط في أي وقت. سيتم نشر أي تغييرات على هذه الصفحة وتُعتبر سارية فور نشرها."
+                  : "Golden Circle Gold reserves the right to amend these terms at any time. Any changes will be posted on this page and will become effective immediately."}
               </p>
             </section>
 

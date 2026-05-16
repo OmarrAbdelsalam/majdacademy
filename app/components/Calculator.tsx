@@ -62,8 +62,8 @@ export default function CalculatorSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            {isRTL ? "حاسبة" : "Investment"}
-            <span className="text-[#D4A82A]">{isRTL ? " الاستثمار." : " Calculator."}</span>
+            {isRTL ? "حاسبة" : "Price"}
+            <span className="text-[#D4A82A]">{isRTL ? " الذهب والفضة." : " Calculator."}</span>
           </motion.h2>
           <motion.p
             className="text-[13px] sm:text-[15px] lg:text-[17px] text-[#888] leading-relaxed max-w-[520px] lg:max-w-[600px]"

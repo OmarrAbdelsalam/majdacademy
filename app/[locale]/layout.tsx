@@ -19,24 +19,24 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Golden Circle Trading | استثمر في الذهب والفضة بأمان",
-  description: "Golden Circle Trading — شركة مصرية مرخّصة لبيع وشراء السبائك الذهبية والفضية. استثمار مرن يبدأ بأي مبلغ مع تخزين آمن مجاني وتوصيل مؤمن. حمّل التطبيق الآن.",
-  keywords: ["ذهب", "فضة", "سبائك", "استثمار", "Golden Circle", "GCT Gold", "شراء ذهب", "gold investment", "Egypt gold"],
-  authors: [{ name: "Golden Circle Trading" }],
+  title: "Golden Circle Gold | ادخر في الذهب والفضة بأمان",
+  description: "Golden Circle Gold — شركة مصرية مرخّصة لبيع وشراء السبائك الذهبية والفضية. شراء مرن يبدأ بأي مبلغ مع تخزين آمن مجاني وتوصيل مؤمن. حمّل التطبيق الآن.",
+  keywords: ["ذهب", "فضة", "سبائك", "ادخار", "Golden Circle", "GCT Gold", "شراء ذهب", "gold store", "Egypt gold"],
+  authors: [{ name: "Golden Circle Gold" }],
   icons: {
     icon: "/logo-icon.png",
     apple: "/logo-icon.png",
   },
   openGraph: {
-    title: "Golden Circle Trading | استثمر في الذهب والفضة بأمان",
-    description: "شركة مصرية مرخّصة لبيع وشراء السبائك. استثمار مرن، تخزين آمن مجاني، وتوصيل مؤمن.",
-    siteName: "Golden Circle Trading",
+    title: "Golden Circle Gold | ادخر في الذهب والفضة بأمان",
+    description: "شركة مصرية مرخّصة لبيع وشراء السبائك. شراء مرن، تخزين آمن مجاني، وتوصيل مؤمن.",
+    siteName: "Golden Circle Gold",
     type: "website",
     locale: "ar_EG",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Golden Circle Trading | استثمر في الذهب والفضة",
+    title: "Golden Circle Gold | ادخر في الذهب والفضة",
     description: "شركة مصرية مرخّصة لبيع وشراء السبائك. حمّل التطبيق الآن.",
   },
 };

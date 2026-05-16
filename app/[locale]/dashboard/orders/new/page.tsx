@@ -1,13 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useLang } from "../../../../i18n/LangContext";
-import { getLiveProducts, getSilverLiveProducts, getBranches, validateCart, submitOrder, getCurrentPrices, getProfile, getStates, getCities } from "../../../../../lib/api";
+import { getLiveProducts, getSilverLiveProducts, getBranches, validateCart, submitOrder, getCurrentPrices, getProfile, updateProfile, getStates, getCities } from "../../../../../lib/api";
 import { useRouter } from "next/navigation";
 import { SearchableSelect } from "../../../../../components/ui/searchable-select";
 
 export default function NewOrderPage() {
   const { isRTL, lang } = useLang();
   const router = useRouter();
+  const [profile, setProfile] = useState<any>(null);
   const [address, setAddress] = useState("");
   const [state, setState] = useState("");
   const [city, setCity] = useState("");
@@ -76,6 +77,7 @@ export default function NewOrderPage() {
     });
     getProfile(lang).then(res => {
       if (res.success && res.data) {
+        setProfile(res.data);
         if (res.data.mobile) setMobile(res.data.mobile);
         if (res.data.address?.address) setAddress(res.data.address.address);
         if (res.data.address?.city) setCity(res.data.address.city);
@@ -178,6 +180,21 @@ export default function NewOrderPage() {
   const handleSubmit = async () => {
     setError("");
     setLoading(true);
+
+    if (deliveryMethod === "delivery" && profile) {
+      try {
+        await updateProfile({
+          firstname: profile.firstname || "",
+          lastname: profile.lastname || "",
+          address,
+          state,
+          city
+        }, lang);
+      } catch (e) {
+        console.error("Failed to update profile", e);
+      }
+    }
+
     const res = await submitOrder(getOrderPayload(), lang);
     if (res.success) {
       setSuccess(isRTL ? "تم تأكيد الطلب بنجاح" : "Order confirmed successfully");

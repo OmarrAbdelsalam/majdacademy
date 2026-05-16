@@ -59,7 +59,7 @@ const reviewsRow2 = [
 
 function ReviewCard({ review, isRTL }: { review: typeof reviewsRow1[0]; isRTL: boolean }) {
   return (
-    <div className="shrink-0 w-[320px] sm:w-[360px] bg-white rounded-2xl p-6 sm:p-7 border border-[#f0f0f0] flex flex-col gap-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
+    <div className="shrink-0 w-[320px] sm:w-[360px] h-full bg-white rounded-2xl p-6 sm:p-7 border border-[#f0f0f0] flex flex-col gap-4 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
       {/* Stars + Verified */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-0.5">
@@ -135,12 +135,12 @@ export default function Reviews() {
         <div className="absolute inset-y-0 left-0 w-16 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
         <div className="absolute inset-y-0 right-0 w-16 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
         <div className="flex w-max animate-scroll-left gap-5">
-          <div className="flex gap-5 shrink-0">
+          <div className="flex gap-5 shrink-0 items-stretch">
             {reviewsRow1.map((review, i) => (
               <ReviewCard key={`r1a-${i}`} review={review} isRTL={isRTL} />
             ))}
           </div>
-          <div className="flex gap-5 shrink-0">
+          <div className="flex gap-5 shrink-0 items-stretch">
             {reviewsRow1.map((review, i) => (
               <ReviewCard key={`r1b-${i}`} review={review} isRTL={isRTL} />
             ))}
@@ -153,12 +153,12 @@ export default function Reviews() {
         <div className="absolute inset-y-0 left-0 w-16 sm:w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
         <div className="absolute inset-y-0 right-0 w-16 sm:w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
         <div className="flex w-max animate-scroll-right gap-5">
-          <div className="flex gap-5 shrink-0">
+          <div className="flex gap-5 shrink-0 items-stretch">
             {reviewsRow2.map((review, i) => (
               <ReviewCard key={`r2a-${i}`} review={review} isRTL={isRTL} />
             ))}
           </div>
-          <div className="flex gap-5 shrink-0">
+          <div className="flex gap-5 shrink-0 items-stretch">
             {reviewsRow2.map((review, i) => (
               <ReviewCard key={`r2b-${i}`} review={review} isRTL={isRTL} />
             ))}

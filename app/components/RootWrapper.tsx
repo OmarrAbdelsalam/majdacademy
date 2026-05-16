@@ -2,6 +2,7 @@
 import { useLang } from "../i18n/LangContext";
 import { ReactNode, useState, useEffect } from "react";
 import MaintenanceScreen from "./MaintenanceScreen";
+import { CartProvider } from "../cart/CartContext";
 
 export default function RootWrapper({ children }: { children: ReactNode }) {
   const { isRTL } = useLang();
@@ -14,15 +15,17 @@ export default function RootWrapper({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <div
-      dir={isRTL ? "rtl" : "ltr"}
-      lang={isRTL ? "ar" : "en"}
-      style={{
-        fontFamily: "var(--font-tajawal), 'Segoe UI', sans-serif",
-      }}
-    >
-      {children}
-      <MaintenanceScreen visible={maintenance} />
-    </div>
+    <CartProvider>
+      <div
+        dir={isRTL ? "rtl" : "ltr"}
+        lang={isRTL ? "ar" : "en"}
+        style={{
+          fontFamily: "var(--font-tajawal), 'Segoe UI', sans-serif",
+        }}
+      >
+        {children}
+        <MaintenanceScreen visible={maintenance} />
+      </div>
+    </CartProvider>
   );
 }

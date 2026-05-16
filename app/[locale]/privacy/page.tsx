@@ -4,8 +4,8 @@ import Footer from "../../components/Footer";
 import WhatsAppButton from "../../components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "سياسة الخصوصية | Golden Circle Trading",
-  description: "سياسة الخصوصية وكيفية حماية وتأمين بياناتك الشخصية في Golden Circle Trading.",
+  title: "سياسة الخصوصية | Golden Circle Gold",
+  description: "سياسة الخصوصية وكيفية حماية وتأمين بياناتك الشخصية في Golden Circle Gold.",
 };
 
 export default async function PrivacyPolicyPage({
@@ -39,8 +39,8 @@ export default async function PrivacyPolicyPage({
               </h2>
               <p>
                 {isArabic 
-                  ? "في Golden Circle Trading، نولي أهمية قصوى لخصوصيتك وحماية بياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا للمعلومات، استخدامها، وحمايتها عند زيارتك لموقعنا أو استخدام خدماتنا لشراء السبائك."
-                  : "At Golden Circle Trading, we prioritize your privacy and the protection of your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website or use our services to buy precious metals."}
+                  ? "في Golden Circle Gold، نولي أهمية قصوى لخصوصيتك وحماية بياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمعنا للمعلومات، استخدامها، وحمايتها عند زيارتك لموقعنا أو استخدام خدماتنا لشراء السبائك."
+                  : "At Golden Circle Gold, we prioritize your privacy and the protection of your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website or use our services to buy precious metals."}
               </p>
             </section>
 

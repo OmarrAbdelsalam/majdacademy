@@ -26,6 +26,14 @@ export const getPaymentMethods = (locale?: string) => apiRequest("/api/paymentMe
 export const submitDeposit = (body: any, locale?: string) => apiRequest("/api/order/deposit", { method: "POST", body: body instanceof FormData ? body : JSON.stringify(body), locale });
 export const submitWithdraw = (body: any, locale?: string) => apiRequest("/api/order/withdraw", { method: "POST", body: JSON.stringify(body), locale });
 
+// Geidea Wallet Deposits
+export const createGeideaDeposit = (amount: number, currency: string, locale?: string) =>
+  apiRequest("/api/user/wallet/deposits", { method: "POST", body: JSON.stringify({ amount, currency }), locale });
+export const getDepositStatus = (id: number, locale?: string) =>
+  apiRequest(`/api/user/wallet/deposits/${id}`, { method: "GET", locale });
+export const getDepositHistory = (page: number = 1, perPage: number = 20, locale?: string) =>
+  apiRequest(`/api/user/wallet/deposits?page=${page}&per_page=${perPage}`, { method: "GET", locale });
+
 export const buyGold = (body: any, locale?: string) => apiRequest("/api/order/buyGold", { method: "POST", body: JSON.stringify(body), locale });
 export const buySilver = (body: any, locale?: string) => apiRequest("/api/order/buySilver", { method: "POST", body: JSON.stringify(body), locale });
 

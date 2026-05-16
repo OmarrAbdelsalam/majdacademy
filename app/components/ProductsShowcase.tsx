@@ -3,6 +3,8 @@ import { useLang } from "../i18n/LangContext";
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { getLiveProducts, getSilverLiveProducts } from "../../lib/api";
+import { useCart } from "../cart/CartContext";
+import Link from "next/link";
 
 type ProductItem = {
   id: number;
@@ -121,21 +123,6 @@ export default function ProductsShowcase() {
     { id: "silver", labelAr: "فضة", labelEn: "Silver" },
   ];
 
-  const handleBuy = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation();
-      const token = document.cookie
-        .split(";")
-        .find((c) => c.trim().startsWith("gct_token="));
-      if (token) {
-        window.location.href = `/${lang}/dashboard`;
-      } else {
-        window.location.href = `/${lang}/login`;
-      }
-    },
-    [lang]
-  );
-
   return (
     <section
       className="relative w-full bg-white py-20 md:py-28 overflow-hidden"
@@ -252,7 +239,7 @@ export default function ProductsShowcase() {
                         </div>
                       </div>
                       <button
-                        onClick={handleBuy}
+                        onClick={(e) => { e.stopPropagation(); setSelectedProduct(item); }}
                         className="bg-[#1a1a1a] text-white p-2.5 rounded-xl transition-all shadow-sm flex items-center justify-center hover:bg-black"
                       >
                         <svg
@@ -265,9 +252,9 @@ export default function ProductsShowcase() {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         >
-                          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                          <line x1="3" y1="6" x2="21" y2="6"></line>
-                          <path d="M16 10a4 4 0 0 1-8 0"></path>
+                          <circle cx="9" cy="21" r="1"></circle>
+                          <circle cx="20" cy="21" r="1"></circle>
+                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                         </svg>
                       </button>
                     </div>
@@ -300,6 +287,8 @@ export default function ProductsShowcase() {
           onClose={() => setSelectedProduct(null)}
         />
       )}
+
+      {/* Cart Toast has been removed because animation is handled by Navbar */}
     </section>
   );
 }
@@ -316,6 +305,38 @@ function ProductPopup({
   lang: string;
   onClose: () => void;
 }) {
+  const { addItem } = useCart();
+  const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
+
+  const [adding, setAdding] = useState(false);
+
+  const priceNum = parseFloat(String(item.price).replace(/,/g, ""));
+
+  const handleAddToCart = () => {
+    setAdding(true);
+    // Simulate brief loading
+    setTimeout(() => {
+      setAdding(false);
+      setAdded(true);
+      setTimeout(() => {
+        onClose();
+        addItem(
+          {
+            id: item.id,
+            title: item.title,
+            weight: item.weight,
+            price: item.price,
+            priceNum: isNaN(priceNum) ? 0 : priceNum,
+            image: item.image,
+            isSilver: item.isSilver,
+          },
+          qty
+        );
+        setTimeout(() => window.dispatchEvent(new CustomEvent("cart-bump")), 100);
+      }, 1200);
+    }, 400);
+  };
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -456,27 +477,79 @@ function ProductPopup({
           </div>
         </div>
 
-        {/* Buy Now — sticky bottom */}
+        {/* Add to Cart — sticky bottom */}
         <div
-          className="shrink-0 px-6 md:px-8 pt-2 pb-5 md:pb-7 bg-white border-t border-[#f5f5f5]"
+          className="shrink-0 px-6 md:px-8 pt-3 pb-5 md:pb-7 bg-white border-t border-[#f5f5f5]"
           style={{
             paddingBottom: "max(1.25rem, env(safe-area-inset-bottom))",
           }}
         >
+          {/* Quantity selector */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[13px] font-semibold text-[#888]">
+              {isRTL ? "الكمية" : "Quantity"}
+            </span>
+            <div className="flex items-center gap-3 bg-[#f5f5f5] rounded-xl px-1 py-1">
+              <button
+                onClick={() => setQty(Math.max(1, qty - 1))}
+                className="w-9 h-9 rounded-lg bg-white flex items-center justify-center text-[18px] font-bold text-[#888] hover:text-[#1a1a1a] shadow-sm transition-colors"
+              >
+                −
+              </button>
+              <span className="w-8 text-center text-[16px] font-extrabold text-[#1a1a1a]">{qty}</span>
+              <button
+                onClick={() => setQty(qty + 1)}
+                className="w-9 h-9 rounded-lg bg-white flex items-center justify-center text-[18px] font-bold text-[#888] hover:text-[#1a1a1a] shadow-sm transition-colors"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Total */}
+          {qty > 1 && (
+            <div className="flex items-center justify-between mb-3 px-1">
+              <span className="text-[12px] text-[#aaa] font-semibold">{isRTL ? "الإجمالي" : "Total"}</span>
+              <span className="text-[15px] font-extrabold text-[#1a1a1a]" dir="ltr">
+                {(priceNum * qty).toLocaleString("en-US", { maximumFractionDigits: 0 })}
+                <span className={`text-[11px] ms-1 font-bold ${item.isSilver ? "text-[#999]" : "text-[#D4A82A]"}`}>
+                  {isRTL ? "ج.م" : "EGP"}
+                </span>
+              </span>
+            </div>
+          )}
+
           <button
-            onClick={() => {
-              const token = document.cookie
-                .split(";")
-                .find((c) => c.trim().startsWith("gct_token="));
-              if (token) {
-                window.location.href = `/${lang}/dashboard`;
-              } else {
-                window.location.href = `/${lang}/login`;
-              }
-            }}
-            className="w-full flex items-center justify-center gap-2 bg-[#1a1a1a] hover:bg-black text-white py-3.5 md:py-4 rounded-xl md:rounded-2xl font-bold text-[14px] transition-all active:scale-[0.98] shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            onClick={handleAddToCart}
+            disabled={added || adding}
+            className={`w-full flex items-center justify-center gap-2 py-3.5 md:py-4 rounded-xl md:rounded-2xl font-bold text-[14px] transition-all active:scale-[0.98] shadow-[0_4px_16px_rgba(0,0,0,0.12)] ${
+              added
+                ? "bg-[#00472f] text-white"
+                : "bg-[#1a1a1a] hover:bg-black text-white disabled:opacity-80"
+            }`}
           >
-            {isRTL ? "اشتر الآن" : "Buy Now"}
+            {adding ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                {isRTL ? "جاري الإضافة..." : "Adding..."}
+              </>
+            ) : added ? (
+              <>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                {isRTL ? "تمت الإضافة بنجاح" : "Added Successfully"}
+              </>
+            ) : (
+              <>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                {isRTL ? "أضف للسلة" : "Add to Cart"}
+              </>
+            )}
           </button>
         </div>
       </div>
