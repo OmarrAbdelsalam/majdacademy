@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useLang } from "../../i18n/LangContext";
 import Navbar from "../../components/Navbar";
-import { login, verifyOtp } from "../../../lib/api";
+import { login, verifyOtp, initCsrf } from "../../../lib/api";
 
 function setCookieToken(token: string) {
   const expires = new Date();
@@ -81,6 +81,9 @@ export default function LoginPage() {
     if (loginMode === "password" && password.length < 6) { setError(isRTL ? "كلمة المرور يجب أن تكون 6 أحرف على الأقل" : "Password must be at least 6 characters"); return; }
     setLoading(true);
     try {
+      // Fetch CSRF cookie before login
+      await initCsrf();
+
       const body = loginMode === "password"
         ? { user: phone, password }
         : { user: phone };
