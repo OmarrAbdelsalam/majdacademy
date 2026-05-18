@@ -17,6 +17,16 @@ import {
 } from "../../../lib/api";
 import { SearchableSelect } from "../../../components/ui/searchable-select";
 
+/** Returns true if the image URL is a real product image (not a server placeholder) */
+function isRealProductImage(url: string | null | undefined): boolean {
+  if (!url) return false;
+  if (url.includes("placeholder-image") || url.includes("placeholder")) return false;
+  return true;
+}
+
+const GOLD_FALLBACK = "/black-1.png";
+const SILVER_FALLBACK = "/selver.png";
+
 export default function CheckoutPage() {
   const { isRTL, lang } = useLang();
   const router = useRouter();
@@ -385,11 +395,12 @@ export default function CheckoutPage() {
                   <div className="flex flex-col gap-4">
                     {validationData?.products?.map((p: any, idx: number) => {
                       const originalProduct = items.find(pr => pr.id === p.id);
-                      const imageUrl = originalProduct?.image || p.image;
+                      const rawImageUrl = originalProduct?.image || p.image;
+                      const imageUrl = isRealProductImage(rawImageUrl) ? rawImageUrl : (originalProduct?.isSilver ? SILVER_FALLBACK : GOLD_FALLBACK);
                       return (
                         <div key={`${p.id}-${idx}`} className="flex items-center gap-4">
                           <div className="w-10 h-10 rounded-lg bg-white border border-[#f0f0f0] flex items-center justify-center shrink-0 overflow-hidden p-1">
-                            {imageUrl ? <img src={imageUrl} alt={p.name} className="w-full h-full object-contain mix-blend-multiply" /> : <div className="w-5 h-5 bg-[#C9A84C]/20 rounded-full" />}
+                            <img src={imageUrl} alt={p.name} className="w-full h-full object-contain mix-blend-multiply" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-[14px] font-bold text-[#1a1a1a] truncate mb-0.5">{p.name}</p>

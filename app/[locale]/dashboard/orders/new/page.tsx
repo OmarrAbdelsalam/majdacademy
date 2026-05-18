@@ -5,6 +5,16 @@ import { getLiveProducts, getSilverLiveProducts, getBranches, validateCart, subm
 import { useRouter } from "next/navigation";
 import { SearchableSelect } from "../../../../../components/ui/searchable-select";
 
+/** Returns true if the image URL is a real product image (not a server placeholder) */
+function isRealProductImage(url: string | null | undefined): boolean {
+  if (!url) return false;
+  if (url.includes("placeholder-image") || url.includes("placeholder")) return false;
+  return true;
+}
+
+const GOLD_FALLBACK = "/black-1.png";
+const SILVER_FALLBACK = "/selver.png";
+
 export default function NewOrderPage() {
   const { isRTL, lang } = useLang();
   const router = useRouter();
@@ -280,10 +290,10 @@ export default function NewOrderPage() {
                           )}
                           {/* image */}
                           <div className="w-full aspect-square rounded-lg bg-[#f7f7f7] flex items-center justify-center mb-2 overflow-hidden">
-                            {p.image ? (
+                            {isRealProductImage(p.image) ? (
                               <img src={p.image} alt={p.name} className="w-full h-full object-cover rounded-lg" />
                             ) : (
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                              <img src={p.metal_type === "silver" ? SILVER_FALLBACK : GOLD_FALLBACK} alt={p.name} className="w-full h-full object-contain rounded-lg p-2" />
                             )}
                           </div>
                           <p className="text-[11px] font-bold text-[#1a1a1a] leading-snug mb-1 line-clamp-2">{p.name || p.title}</p>
@@ -426,11 +436,12 @@ export default function NewOrderPage() {
             <div className="flex flex-col gap-4">
               {validationData?.products?.map((p: any, idx: number) => {
                 const originalProduct = [...products, ...silverProducts].find(pr => pr.id === p.id);
-                const imageUrl = originalProduct?.image || p.image;
+                const rawImageUrl = originalProduct?.image || p.image;
+                const imageUrl = isRealProductImage(rawImageUrl) ? rawImageUrl : (originalProduct?.metal_type === "silver" ? SILVER_FALLBACK : GOLD_FALLBACK);
                 return (
                   <div key={`${p.id}-${idx}`} className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-xl bg-white border border-[#f0f0f0] flex items-center justify-center shrink-0 overflow-hidden">
-                      {imageUrl ? <img src={imageUrl} alt={p.name} className="w-full h-full object-cover" /> : <div className="w-6 h-6 bg-[#C9A84C]/20 rounded-full" />}
+                      <img src={imageUrl} alt={p.name} className="w-full h-full object-contain p-1" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-[13px] font-bold text-[#1a1a1a] truncate mb-0.5">{p.name}</p>

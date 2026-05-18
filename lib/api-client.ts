@@ -26,9 +26,7 @@ const clearCookie = (name: string) => {
   }
 };
 
-const BASE_URL = typeof window === "undefined" 
-  ? (process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.net") 
-  : "";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.net";
 
 // Global Axios Instance for Client-Side & Sanctum
 export const apiClient = axios.create({

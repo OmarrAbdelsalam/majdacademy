@@ -20,6 +20,14 @@ type ProductItem = {
 const GOLD_FALLBACK = "/black-1.png";
 const SILVER_FALLBACK = "/selver.png";
 
+/** Returns true if the image URL is a real product image (not a server placeholder) */
+function isRealProductImage(url: string | null | undefined): boolean {
+  if (!url) return false;
+  // Detect placeholder URLs returned by the API (e.g. staging.golden-circle.net/placeholder-image/...)
+  if (url.includes("placeholder-image") || url.includes("placeholder")) return false;
+  return true;
+}
+
 function formatPrice(price: number | string): string {
   const num = typeof price === "string" ? parseFloat(price.replace(/,/g, "")) : price;
   if (isNaN(num)) return String(price);
@@ -38,8 +46,7 @@ interface ApiProduct {
 
 function mapApiProduct(p: ApiProduct): ProductItem {
   const isSilver = p.metal_type === "silver";
-  const rawImage = p.image ?? null;
-  const image = rawImage ? rawImage : (isSilver ? SILVER_FALLBACK : GOLD_FALLBACK);
+  const image = isRealProductImage(p.image) ? p.image! : (isSilver ? SILVER_FALLBACK : GOLD_FALLBACK);
   const gain = isSilver ? "22" : "48";
   const weight = p.weight != null ? String(p.weight) : "";
   const price = p.price != null ? formatPrice(p.price) : "0";
