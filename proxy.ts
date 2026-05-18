@@ -6,10 +6,11 @@ const defaultLocale = "en";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static files and API routes
+  // Skip static files, API routes, and payment pages
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
+    pathname.startsWith("/payment") ||
     pathname.includes(".")
   ) {
     return NextResponse.next();
