@@ -1,6 +1,8 @@
-export interface ApiRequestOptions extends RequestInit {
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+
+export interface ApiRequestOptions extends AxiosRequestConfig {
   locale?: string;
-  token?: string; // Optionally pass token explicitly
+  token?: string;
 }
 
 export interface ApiResponse<T = any> {
@@ -24,7 +26,21 @@ const clearCookie = (name: string) => {
   }
 };
 
-const BASE_URL = typeof window === "undefined" ? (process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.net") : "";
+const BASE_URL = typeof window === "undefined" 
+  ? (process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.net") 
+  : "";
+
+// Global Axios Instance for Client-Side & Sanctum
+export const apiClient = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+  withXSRFToken: true, // Automatically handle X-XSRF-TOKEN header
+  headers: {
+    "X-Requested-With": "XMLHttpRequest",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  },
+});
 
 export async function apiRequest<T = any>(
   endpoint: string,
@@ -33,7 +49,7 @@ export async function apiRequest<T = any>(
   try {
     const isBrowser = typeof window !== "undefined";
     
-    // Infer locale from URL if in browser, otherwise fallback to "ar"
+    // Infer locale
     let locale = options.locale;
     if (!locale && isBrowser) {
       const pathLocale = window.location.pathname.split('/')[1];
@@ -41,66 +57,33 @@ export async function apiRequest<T = any>(
         locale = pathLocale;
       }
     }
-    if (!locale) locale = "ar"; // default to ar
+    if (!locale) locale = "ar";
 
-    const headers = new Headers(options.headers || {});
-    if (!headers.has("Accept")) headers.set("Accept", "application/json");
-    headers.set("X-Requested-With", "XMLHttpRequest");
-    
-    // Only set Content-Type if we have a body and it's not FormData
-    if (options.body && options.body instanceof FormData) {
-      // Browser will set multipart/form-data with correct boundary automatically
-    } else {
-      if (!headers.has("Content-Type")) headers.set("Content-Type", "application/json");
-    }
-    
-    headers.set("x-lang", locale);
+    const config: AxiosRequestConfig = {
+      ...options,
+      url: endpoint,
+      data: options.data || (options as any).body,
+      headers: {
+        ...options.headers,
+        "x-lang": locale,
+      },
+    };
 
+    // Handle token if explicitly provided or found in cookies (for backwards compatibility)
     const token = options.token || getCookie("gct_token");
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      config.headers = {
+        ...config.headers,
+        "Authorization": `Bearer ${token}`,
+      };
     }
 
-    const url = endpoint.startsWith("http") ? endpoint : `${BASE_URL}${endpoint}`;
-
-    const res = await fetch(url, {
-      ...options,
-      headers,
-    });
-
-    if (res.status === 503) {
-      if (isBrowser) window.dispatchEvent(new CustomEvent("gct-maintenance"));
-      return { success: false, message: "System under maintenance" };
-    }
-
-    let data: any = {};
-    const text = await res.text();
-    if (text) {
-      try {
-        data = JSON.parse(text);
-      } catch (e) {
-        data = { message: text };
-      }
-    }
-
-    if (res.status === 401) {
-      clearCookie("gct_token");
-      if (isBrowser) window.location.href = `/${locale}/login`;
-      return { success: false, message: "Unauthorized", ...data };
-    }
+    const res: AxiosResponse = await apiClient.request(config);
+    const data = res.data;
 
     if (data && data.code === 503) {
       if (isBrowser) window.dispatchEvent(new CustomEvent("gct-maintenance"));
       return { success: false, message: "System under maintenance" };
-    }
-
-    // Always return message from response if available for 422 etc.
-    if (!res.ok || (data && data.code && data.code !== 200)) {
-      return { 
-        success: false, 
-        message: data?.message || "حدث خطأ غير متوقع",
-        ...data 
-      };
     }
 
     return {
@@ -108,7 +91,34 @@ export async function apiRequest<T = any>(
       ...data
     };
 
-  } catch (error) {
+  } catch (error: any) {
+    const isBrowser = typeof window !== "undefined";
+    const res = error.response;
+
+    if (res) {
+      if (res.status === 503) {
+        if (isBrowser) window.dispatchEvent(new CustomEvent("gct-maintenance"));
+        return { success: false, message: "System under maintenance" };
+      }
+
+      if (res.status === 401) {
+        clearCookie("gct_token");
+        // We might want to keep the redirect logic if it's still needed, 
+        // but Sanctum usually handles sessions via cookies now.
+        if (isBrowser) {
+          const pathLocale = window.location.pathname.split('/')[1] || "ar";
+          window.location.href = `/${pathLocale}/login`;
+        }
+        return { success: false, message: "Unauthorized", ...res.data };
+      }
+
+      return { 
+        success: false, 
+        message: res.data?.message || "حدث خطأ غير متوقع",
+        ...res.data 
+      };
+    }
+
     return { success: false, message: "تعذّر الاتصال بالخادم" };
   }
 }
