@@ -58,6 +58,12 @@ async function handler(request: NextRequest) {
       }
     });
 
+    // Rewrite redirect Location to stay on the local proxy
+    const location = responseHeaders.get("location");
+    if (location && location.startsWith(BACKEND)) {
+      responseHeaders.set("location", location.replace(BACKEND, ""));
+    }
+
     const responseBody = await backendRes.arrayBuffer();
 
     return new Response(responseBody, {

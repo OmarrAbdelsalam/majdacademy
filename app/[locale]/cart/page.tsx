@@ -8,6 +8,13 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { getLiveProducts, getSilverLiveProducts } from "../../../lib/api";
 
+/** Returns true if the image URL is a real product image (not a server placeholder) */
+function isRealProductImage(url: string | null | undefined): boolean {
+  if (!url) return false;
+  if (url.includes("placeholder-image") || url.includes("placeholder")) return false;
+  return true;
+}
+
 export default function CartPage() {
   const { isRTL, lang } = useLang();
   const router = useRouter();
@@ -239,7 +246,7 @@ export default function CartPage() {
                 return (
                   <div key={item.id} className="w-[145px] min-w-[145px] sm:w-auto sm:min-w-0 shrink-0 snap-start bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex flex-col group">
                     <div className="w-full h-[90px] sm:h-auto sm:aspect-square bg-[#FAFAF8] rounded-xl flex items-center justify-center p-2 mb-2.5 group-hover:bg-gray-50 transition-colors shrink-0">
-                      <img src={item.image || (item.isSilver ? '/selver.png' : '/black-1.png')} alt={item.name} className="max-w-[85%] max-h-[85%] object-contain mix-blend-multiply drop-shadow-sm group-hover:scale-110 transition-transform duration-300" />
+                      <img src={isRealProductImage(item.image) ? item.image : (item.isSilver ? '/selver.png' : '/black-1.png')} alt={item.name} className="max-w-[85%] max-h-[85%] object-contain mix-blend-multiply drop-shadow-sm group-hover:scale-110 transition-transform duration-300" />
                     </div>
                     
                     <div className="flex flex-col flex-1 justify-between">
@@ -264,7 +271,7 @@ export default function CartPage() {
                               weight: String(item.weight),
                               price: item.price,
                               priceNum: isNaN(priceNum) ? 0 : priceNum,
-                              image: item.image || (item.isSilver ? '/selver.png' : '/black-1.png'),
+                              image: isRealProductImage(item.image) ? item.image : (item.isSilver ? '/selver.png' : '/black-1.png'),
                               isSilver: item.isSilver,
                             }, 1);
                             setTimeout(() => window.dispatchEvent(new CustomEvent("cart-bump")), 100);

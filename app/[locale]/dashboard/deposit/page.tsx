@@ -16,7 +16,6 @@ const METHODS = [
     descAr: "دفع إلكتروني آمن عبر جيديا",
     color: "#C9A84C",
     bg: "bg-amber-50",
-    hidden: true,
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
     ),
@@ -57,6 +56,8 @@ export default function DepositPage() {
   const [depositResult, setDepositResult] = useState<DepositStatus | "timeout" | null>(null);
   const [polling, setPolling] = useState(false);
   const pollingRef = useRef<boolean>(false);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // InstaPay specific
   const [name, setName] = useState("");
@@ -110,6 +111,29 @@ export default function DepositPage() {
     setTimeout(poll, delays[0]);
   }, [lang]);
 
+  // Detect Geidea return URL from iframe navigation
+  useEffect(() => {
+    if (!paymentUrl || !activeDeposit) return;
+
+    const checkIframeUrl = setInterval(() => {
+      try {
+        const iframe = iframeRef.current;
+        if (iframe?.contentWindow?.location?.href) {
+          const url = iframe.contentWindow.location.href;
+          if (url.includes('/ipn/geidea/return')) {
+            clearInterval(checkIframeUrl);
+            setPaymentUrl(null);
+            startPolling(activeDeposit.id);
+          }
+        }
+      } catch {
+        // Cross-origin — expected, ignore
+      }
+    }, 500);
+
+    return () => clearInterval(checkIframeUrl);
+  }, [paymentUrl, activeDeposit, startPolling]);
+
   const handleGeideaSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -123,8 +147,7 @@ export default function DepositPage() {
     if (res.success && res.data) {
       const { deposit_id, trx, payment_url } = res.data;
       setActiveDeposit({ id: deposit_id, trx });
-      window.open(payment_url, "_blank");
-      startPolling(deposit_id);
+      setPaymentUrl(payment_url);
     } else {
       setError(res.message || (isRTL ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again"));
     }
@@ -165,8 +188,16 @@ export default function DepositPage() {
     setActiveDeposit(null);
     setDepositResult(null);
     setPolling(false);
+    setPaymentUrl(null);
     setAmount("");
     pollingRef.current = false;
+  };
+
+  const closePaymentIframe = () => {
+    setPaymentUrl(null);
+    if (activeDeposit) {
+      startPolling(activeDeposit.id);
+    }
   };
 
   const tr = {
@@ -258,6 +289,35 @@ export default function DepositPage() {
         </div>
       )}
 
+      {/* Geidea Payment Iframe Modal */}
+      {paymentUrl && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl w-full max-w-lg h-[85vh] flex flex-col shadow-2xl border border-[#f0f0f0] animate-in fade-in zoom-in-95 duration-200 overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#f0f0f0]">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
+                </div>
+                <div>
+                  <p className="text-[14px] font-bold text-[#1a1a1a]">{tr.waitingPayment}</p>
+                  <p className="text-[11px] text-[#999]">{activeDeposit?.trx}</p>
+                </div>
+              </div>
+              <button onClick={closePaymentIframe} className="w-8 h-8 rounded-full bg-[#f5f5f5] hover:bg-[#eee] flex items-center justify-center transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <iframe
+              ref={iframeRef}
+              src={paymentUrl}
+              className="flex-1 w-full border-0"
+              allow="payment; publickey-credentials-get"
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation"
+            />
+          </div>
+        </div>
+      )}
+
       {/* Geidea Polling / Result Modal */}
       {(polling || depositResult) && (
         <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
@@ -327,7 +387,7 @@ export default function DepositPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-6 max-w-lg">
-        {METHODS.filter(m => !m.hidden).map(m => (
+        {METHODS.filter(m => !(m as any).hidden).map(m => (
           <button 
             key={m.id} 
             onClick={() => { setError(""); setSuccess(""); setAmount(""); setMethod(m.id); }}
@@ -394,7 +454,7 @@ export default function DepositPage() {
               </button>
               
               <p className="text-[12px] text-[#bbb] text-center leading-relaxed">
-                {isRTL ? "سيتم فتح بوابة الدفع Geidea في نافذة جديدة لإتمام عملية الدفع" : "Geidea payment gateway will open in a new window to complete the payment"}
+                {isRTL ? "سيتم فتح بوابة الدفع Geidea لإتمام عملية الدفع بشكل آمن" : "Geidea secure payment gateway will open to complete your payment"}
               </p>
             </form>
           )}
