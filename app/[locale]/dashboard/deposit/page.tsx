@@ -207,7 +207,7 @@ export default function DepositPage() {
   };
 
   const tr = {
-    title: isRTL ? "إيداع" : "Deposit",
+    title: isRTL ? "إيداع 2026" : "Deposit 2026",
     subtitle: isRTL ? "أضف رصيد إلى محفظتك" : "Add funds to your wallet",
     cashBalance: isRTL ? "الرصيد الحالي" : "Current Balance",
     currency: "EGP",
