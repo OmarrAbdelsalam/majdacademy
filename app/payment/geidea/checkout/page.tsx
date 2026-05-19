@@ -5,10 +5,12 @@ import { Suspense, useEffect, useState } from "react";
 
 declare global {
   interface Window {
-    GeideaCheckout?: {
-      onCardComplete: (callback: (response: any) => void) => void;
-      onPaymentCancel: (callback: () => void) => void;
-      onPaymentError: (callback: (error: any) => void) => void;
+    GeideaCheckout?: new (
+      onSuccess: (response: any) => void,
+      onError: (error: any) => void,
+      onCancel: () => void
+    ) => {
+      startPayment: (sessionId: string) => void;
     };
   }
 }
@@ -36,23 +38,32 @@ function CheckoutInner() {
     script.onload = () => {
       setStatus("ready");
       try {
-        const checkout = window.GeideaCheckout;
-        if (checkout) {
-          checkout.onCardComplete((response: any) => {
-            setStatus("success");
-            setMessage("تم الدفع بنجاح ✓");
-          });
-          checkout.onPaymentCancel(() => {
-            setStatus("cancel");
-            setMessage("تم إلغاء الدفع");
-          });
-          checkout.onPaymentError((error: any) => {
-            setStatus("error");
-            setMessage(error?.message || "حدث خطأ أثناء الدفع");
-          });
+        if (window.GeideaCheckout) {
+          const checkout = new window.GeideaCheckout(
+            (response: any) => {
+              setStatus("success");
+              setMessage("تم الدفع بنجاح ✓");
+              console.log("Geidea payment success:", response);
+            },
+            (error: any) => {
+              setStatus("error");
+              setMessage(error?.message || "حدث خطأ أثناء الدفع");
+              console.error("Geidea payment error:", error);
+            },
+            () => {
+              setStatus("cancel");
+              setMessage("تم إلغاء الدفع");
+            }
+          );
+          
+          checkout.startPayment(sessionId);
+        } else {
+          throw new Error("GeideaCheckout is not defined after script load");
         }
       } catch (err) {
         console.error("Geidea SDK error:", err);
+        setStatus("error");
+        setMessage("Failed to initialize payment");
       }
     };
     script.onerror = () => {
@@ -62,7 +73,9 @@ function CheckoutInner() {
     document.head.appendChild(script);
 
     return () => {
-      document.head.removeChild(script);
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
     };
   }, [sessionId]);
 
@@ -85,7 +98,7 @@ function CheckoutInner() {
         textAlign: "center",
         boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
       }}>
-        {status === "loading" && (
+        {(status === "loading" || status === "ready") && (
           <>
             <div style={{
               width: "48px",
@@ -96,39 +109,20 @@ function CheckoutInner() {
               animation: "spin 1s linear infinite",
               margin: "0 auto 16px",
             }} />
-            <p style={{ color: "#666", fontSize: "16px" }}>جاري تحميل بوابة الدفع...</p>
-          </>
-        )}
-
-        {status === "ready" && (
-          <>
-            <div style={{
-              width: "48px",
-              height: "48px",
-              border: "4px solid #e0e0e0",
-              borderTop: "4px solid #C9A84C",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite",
-              margin: "0 auto 16px",
-            }} />
-            <p style={{ color: "#333", fontSize: "16px", fontWeight: "bold" }}>Geidea Payment</p>
-            <p style={{ color: "#999", fontSize: "13px", marginTop: "8px" }}>{trx}</p>
+            <p style={{ color: "#333", fontSize: "16px", fontWeight: "bold" }}>
+              {status === "loading" ? "جاري تحميل بوابة الدفع..." : "Geidea Payment"}
+            </p>
+            {trx && <p style={{ color: "#999", fontSize: "13px", marginTop: "8px" }}>{trx}</p>}
           </>
         )}
 
         {status === "success" && (
           <>
             <div style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "50%",
-              background: "#4CAF50",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
-              fontSize: "28px",
-              color: "#fff",
+              width: "64px", height: "64px", borderRadius: "50%",
+              background: "#4CAF50", display: "flex", alignItems: "center",
+              justifyContent: "center", margin: "0 auto 16px",
+              fontSize: "28px", color: "#fff",
             }}>✓</div>
             <p style={{ color: "#333", fontSize: "18px", fontWeight: "bold" }}>{message}</p>
           </>
@@ -137,16 +131,10 @@ function CheckoutInner() {
         {status === "error" && (
           <>
             <div style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "50%",
-              background: "#f44336",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
-              fontSize: "28px",
-              color: "#fff",
+              width: "64px", height: "64px", borderRadius: "50%",
+              background: "#f44336", display: "flex", alignItems: "center",
+              justifyContent: "center", margin: "0 auto 16px",
+              fontSize: "28px", color: "#fff",
             }}>✕</div>
             <p style={{ color: "#333", fontSize: "18px", fontWeight: "bold" }}>{message}</p>
           </>
@@ -155,16 +143,10 @@ function CheckoutInner() {
         {status === "cancel" && (
           <>
             <div style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "50%",
-              background: "#FF9800",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              margin: "0 auto 16px",
-              fontSize: "28px",
-              color: "#fff",
+              width: "64px", height: "64px", borderRadius: "50%",
+              background: "#FF9800", display: "flex", alignItems: "center",
+              justifyContent: "center", margin: "0 auto 16px",
+              fontSize: "28px", color: "#fff",
             }}>!</div>
             <p style={{ color: "#333", fontSize: "18px", fontWeight: "bold" }}>{message}</p>
           </>
