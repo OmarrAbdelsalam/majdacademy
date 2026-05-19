@@ -6,10 +6,11 @@ const defaultLocale = "en";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static files, API routes, and payment pages
+  // Skip static files, API routes, sanctum, and payment pages
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
+    pathname.startsWith("/sanctum") ||
     pathname.startsWith("/payment") ||
     pathname.includes(".")
   ) {
@@ -44,5 +45,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|payment|favicon.ico).*)"],
+  matcher: ["/((?!_next|api|sanctum|payment|favicon.ico).*)"],
 };

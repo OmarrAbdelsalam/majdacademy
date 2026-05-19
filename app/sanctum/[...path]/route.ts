@@ -13,6 +13,15 @@ const FORWARD_HEADERS = [
 ];
 
 async function handler(request: NextRequest) {
+  const host = request.headers.get("host") || "";
+  const isLocal = host.includes("localhost") || host.includes("127.0.0.1");
+
+  if (!isLocal) {
+    // On production, Nginx handles /sanctum directly.
+    // If we reach here, act as if the route doesn't exist (old behavior).
+    return new Response("Not Found", { status: 404 });
+  }
+
   const { pathname, search } = request.nextUrl;
   const targetUrl = `${BACKEND}${pathname}${search}`;
 
@@ -72,9 +81,10 @@ async function handler(request: NextRequest) {
       statusText: backendRes.statusText,
       headers: responseHeaders,
     });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Sanctum proxy error:", error?.message || error);
     return Response.json(
-      { code: 500, message: "Backend unreachable", data: null },
+      { code: 500, message: "Backend unreachable", data: null, error: error?.message },
       { status: 502 }
     );
   }

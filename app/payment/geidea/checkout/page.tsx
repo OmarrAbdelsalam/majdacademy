@@ -41,18 +41,19 @@ function CheckoutInner() {
         if (window.GeideaCheckout) {
           const checkout = new window.GeideaCheckout(
             (response: any) => {
-              setStatus("success");
-              setMessage("تم الدفع بنجاح ✓");
-              console.log("Geidea payment success:", response);
+              window.stop();
+              window.close();
             },
             (error: any) => {
-              setStatus("error");
-              setMessage(error?.message || "حدث خطأ أثناء الدفع");
+              if (error && Object.keys(error).length === 0) return; // Ignore empty false-positive errors
               console.error("Geidea payment error:", error);
             },
             () => {
-              setStatus("cancel");
-              setMessage("تم إلغاء الدفع");
+              window.stop();
+              if (window.opener) {
+                window.opener.postMessage("geidea_cancel", "*");
+              }
+              window.close();
             }
           );
           
@@ -80,91 +81,13 @@ function CheckoutInner() {
   }, [sessionId]);
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontFamily: "system-ui, -apple-system, sans-serif",
-      background: "#f5f5f5",
-      direction: "rtl",
-    }}>
-      <div style={{
-        background: "#fff",
-        borderRadius: "16px",
-        padding: "40px",
-        maxWidth: "400px",
-        width: "90%",
-        textAlign: "center",
-        boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-      }}>
-        {(status === "loading" || status === "ready") && (
-          <>
-            <div style={{
-              width: "48px",
-              height: "48px",
-              border: "4px solid #e0e0e0",
-              borderTop: "4px solid #C9A84C",
-              borderRadius: "50%",
-              animation: "spin 1s linear infinite",
-              margin: "0 auto 16px",
-            }} />
-            <p style={{ color: "#333", fontSize: "16px", fontWeight: "bold" }}>
-              {status === "loading" ? "جاري تحميل بوابة الدفع..." : "Geidea Payment"}
-            </p>
-            {trx && <p style={{ color: "#999", fontSize: "13px", marginTop: "8px" }}>{trx}</p>}
-          </>
-        )}
-
-        {status === "success" && (
-          <>
-            <div style={{
-              width: "64px", height: "64px", borderRadius: "50%",
-              background: "#4CAF50", display: "flex", alignItems: "center",
-              justifyContent: "center", margin: "0 auto 16px",
-              fontSize: "28px", color: "#fff",
-            }}>✓</div>
-            <p style={{ color: "#333", fontSize: "18px", fontWeight: "bold" }}>{message}</p>
-          </>
-        )}
-
-        {status === "error" && (
-          <>
-            <div style={{
-              width: "64px", height: "64px", borderRadius: "50%",
-              background: "#f44336", display: "flex", alignItems: "center",
-              justifyContent: "center", margin: "0 auto 16px",
-              fontSize: "28px", color: "#fff",
-            }}>✕</div>
-            <p style={{ color: "#333", fontSize: "18px", fontWeight: "bold" }}>{message}</p>
-          </>
-        )}
-
-        {status === "cancel" && (
-          <>
-            <div style={{
-              width: "64px", height: "64px", borderRadius: "50%",
-              background: "#FF9800", display: "flex", alignItems: "center",
-              justifyContent: "center", margin: "0 auto 16px",
-              fontSize: "28px", color: "#fff",
-            }}>!</div>
-            <p style={{ color: "#333", fontSize: "18px", fontWeight: "bold" }}>{message}</p>
-          </>
-        )}
-      </div>
-
-      <style>{`
-        @keyframes spin {
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
-    </div>
+    <div style={{ minHeight: "100vh", background: "#ffffff" }} />
   );
 }
 
 export default function GeideaCheckoutPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#ffffff" }} />}>
       <CheckoutInner />
     </Suspense>
   );
