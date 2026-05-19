@@ -56,7 +56,8 @@ export default function DepositPage() {
   const [depositResult, setDepositResult] = useState<DepositStatus | "timeout" | null>(null);
   const [polling, setPolling] = useState(false);
   const pollingRef = useRef<boolean>(false);
-  const [geideaIframeSrc, setGeideaIframeSrc] = useState<string | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // InstaPay specific
   const [name, setName] = useState("");
@@ -110,28 +111,16 @@ export default function DepositPage() {
     setTimeout(poll, delays[0]);
   }, [lang]);
 
-  // Listen for messages from the Geidea Blob URL iframe
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (!event.data || typeof event.data !== "object") return;
-      if (event.data.type === "geidea_success") {
-        setGeideaIframeSrc(null);
-        // polling already started when iframe was shown
-      } else if (event.data.type === "geidea_cancel") {
-        setGeideaIframeSrc(null);
+      if (event.data === "geidea_cancel") {
         setDepositResult("cancelled");
-        pollingRef.current = false;
-        setPolling(false);
-      } else if (event.data.type === "geidea_error") {
-        setGeideaIframeSrc(null);
-        setError(event.data.message || (isRTL ? "حدث خطأ أثناء الدفع" : "Payment error occurred"));
-        pollingRef.current = false;
         setPolling(false);
       }
     };
     window.addEventListener("message", handleMessage);
     return () => window.removeEventListener("message", handleMessage);
-  }, [isRTL]);
+  }, []);
 
   const handleGeideaSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,66 +134,26 @@ export default function DepositPage() {
     setLoading(true);
     const res = await createGeideaDeposit(numAmount, currency, lang);
     if (res.success && res.data) {
-      const { deposit_id, trx, payment_url } = res.data;
-
-      // Extract sessionId from the payment_url
-      let sessionId: string | null = null;
-      try {
-        sessionId = new URL(payment_url).searchParams.get("session");
-      } catch (e) {
-        console.error("Failed to parse payment_url:", e);
-      }
-
-      if (!sessionId) {
-        setError(isRTL ? "خطأ في رابط الدفع" : "Invalid payment link");
-        setLoading(false);
-        return;
+      let { deposit_id, trx, payment_url } = res.data;
+      
+      // Override domain for local testing
+      if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+        try {
+          const url = new URL(payment_url);
+          url.protocol = window.location.protocol;
+          url.host = window.location.host;
+          payment_url = url.toString();
+        } catch(e) {}
       }
 
       setActiveDeposit({ id: deposit_id, trx });
-
-      // Build a self-contained HTML page that loads the Geidea SDK
-      // Uses Blob URL so the iframe inherits the parent's origin (not null like srcdoc)
-      const iframeHtml = `<!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{margin:0;background:#fff;}</style></head>
-<body>
-<script src="https://www.merchant.geidea.net/hpp/geideaCheckout.min.js"><\/script>
-<script>
-  function init() {
-    if (!window.GeideaCheckout) { setTimeout(init, 200); return; }
-    try {
-      var checkout = new GeideaCheckout(
-        function(response) {
-          window.parent.postMessage({ type: 'geidea_success' }, '*');
-        },
-        function(error) {
-          console.log('Geidea error callback:', JSON.stringify(error));
-          if (!error) return;
-          if (typeof error === 'object' && Object.keys(error).length === 0) return;
-          var msg = (error && (error.detailedResponseMessage || error.responseMessage || error.message)) || '';
-          if (msg) {
-            window.parent.postMessage({ type: 'geidea_error', message: msg }, '*');
-          }
-        },
-        function() {
-          window.parent.postMessage({ type: 'geidea_cancel' }, '*');
-        }
-      );
-      checkout.startPayment('${sessionId}');
-    } catch(e) {
-      console.error('Geidea SDK init error:', e);
-      window.parent.postMessage({ type: 'geidea_error', message: e.message || 'SDK init failed' }, '*');
-    }
-  }
-  init();
-<\/script>
-</body></html>`;
-
-      const blob = new Blob([iframeHtml], { type: 'text/html' });
-      const blobUrl = URL.createObjectURL(blob);
-      setGeideaIframeSrc(blobUrl);
+      
+      // Open the payment page in a new window AFTER we get the URL
+      window.open(payment_url, "_blank");
+      
+      // Start polling immediately in this original window
       startPolling(deposit_id);
+      
     } else {
       setError(res.message || (isRTL ? "حدث خطأ، حاول مرة أخرى" : "An error occurred, please try again"));
     }
@@ -551,34 +500,6 @@ export default function DepositPage() {
             </form>
           )}
         </div>
-
-      {/* Geidea SDK iframe overlay - full screen, traps any redirect */}
-      {geideaIframeSrc && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(0,0,0,0.5)' }}>
-          <button
-            onClick={() => {
-              setGeideaIframeSrc(null);
-              setDepositResult("cancelled");
-              pollingRef.current = false;
-              setPolling(false);
-            }}
-            style={{
-              position: 'absolute', top: 16, right: 16, zIndex: 10000,
-              width: 40, height: 40, borderRadius: '50%',
-              background: 'rgba(0,0,0,0.6)', color: '#fff', border: 'none',
-              fontSize: 20, cursor: 'pointer', display: 'flex',
-              alignItems: 'center', justifyContent: 'center',
-            }}
-          >✕</button>
-          <iframe
-            src={geideaIframeSrc}
-            style={{
-              width: '100%', height: '100%', border: 'none',
-              background: '#fff',
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 }
