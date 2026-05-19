@@ -267,7 +267,7 @@ export default function DepositPage() {
               </button>
             </div>
             <div className="flex items-baseline gap-2">
-              <span className="text-[32px] sm:text-[40px] font-extrabold text-white leading-none">
+              <span className={`${(loadingWallet ? "..." : showBalance ? cash.toLocaleString() : "••••••").length > 8 ? "text-[22px] sm:text-[32px] md:text-[40px]" : "text-[32px] sm:text-[40px]"} font-extrabold text-white leading-none break-all`}>
                 {loadingWallet ? "..." : showBalance ? cash.toLocaleString() : "••••••"}
               </span>
               <span className="text-[14px] font-bold text-[#C9A84C]">{tr.currency}</span>

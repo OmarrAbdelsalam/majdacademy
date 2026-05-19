@@ -83,7 +83,7 @@ export default function WalletPage() {
               </button>
             </div>
             <div className="flex items-baseline gap-3">
-              <span className="text-[48px] sm:text-[56px] font-extrabold text-white leading-none">
+              <span className={`${(loading ? "..." : showBalance ? cash.toLocaleString() : "••••••").length > 8 ? "text-[28px] sm:text-[44px] md:text-[56px]" : "text-[40px] sm:text-[56px]"} font-extrabold text-white leading-none break-all`}>
                 {loading ? "..." : showBalance ? cash.toLocaleString() : "••••••"}
               </span>
               <span className="text-[18px] font-bold text-[#C9A84C]">{tr.currency}</span>
