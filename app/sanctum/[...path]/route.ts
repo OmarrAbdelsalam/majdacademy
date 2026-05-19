@@ -13,14 +13,8 @@ const FORWARD_HEADERS = [
 ];
 
 async function handler(request: NextRequest) {
-  const host = request.headers.get("host") || "";
-  const isLocal = host.includes("localhost") || host.includes("127.0.0.1");
+  // Proxy the request to the backend for both local and production environments
 
-  if (!isLocal) {
-    // On production, Nginx handles /sanctum directly.
-    // If we reach here, act as if the route doesn't exist (old behavior).
-    return new Response("Not Found", { status: 404 });
-  }
 
   const { pathname, search } = request.nextUrl;
   const targetUrl = `${BACKEND}${pathname}${search}`;
