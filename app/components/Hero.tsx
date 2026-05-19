@@ -122,7 +122,7 @@ export default function Hero() {
             <div className="w-2 h-2 rounded-full bg-[#D39C04]" />
           </div>
           <span className={`text-[11px] sm:text-[13px] font-semibold text-[#999] uppercase ${!isRTL ? 'tracking-[0.2em]' : 'tracking-normal'}`}>
-            {isRTL ? "منصة موثوقة لبيع وشراء الذهب" : "Trusted Gold & Silver Platform"}
+            {isRTL ? "منصة موثوقة لبيع الذهب والفضة" : "Trusted Gold & Silver Platform"}
           </span>
         </div>
 
@@ -150,8 +150,24 @@ export default function Hero() {
           className="mb-0 animate-fadeInUp"
           style={{ animationDelay: '0.3s' }}
         >
-          <a href="#products" className="inline-flex items-center gap-2 bg-[#1a1a1a] text-white px-8 py-4 rounded-full font-bold text-[15px] sm:text-[17px] hover:bg-black transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
-            {isRTL ? "اشتر الآن" : "Buy Now"}
+          <a 
+            href="#products" 
+            onClick={(e) => {
+              e.preventDefault();
+              document.querySelector('#products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            className="inline-flex items-center justify-center min-w-[200px] gap-3 bg-[#1a1a1a] text-white px-8 py-3.5 rounded-full font-bold text-[15px] sm:text-[16px] hover:bg-black transition-all duration-300 hover:-translate-y-1 shadow-[0_4px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.25)]"
+          >
+            <span>{isRTL ? "تصفح المنتجات" : "Browse Products"}</span>
+            {isRTL ? (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="rotate-180">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            )}
           </a>
         </div>
 

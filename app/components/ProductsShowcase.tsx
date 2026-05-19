@@ -85,11 +85,33 @@ export default function ProductsShowcase() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
+
+    // 1. Try to load from cache
+    const cachedGold = localStorage.getItem(`cached_gold_showcase_${lang}`);
+    const cachedSilver = localStorage.getItem(`cached_silver_showcase_${lang}`);
+    
+    if (cachedGold && cachedSilver) {
+      try {
+        const parsedGold = JSON.parse(cachedGold);
+        const parsedSilver = JSON.parse(cachedSilver);
+        if (parsedGold.length > 0 || parsedSilver.length > 0) {
+          setGoldItems(parsedGold.filter((p: any) => p.metal_type !== "silver").map(mapApiProduct));
+          setSilverItems(parsedSilver.map(mapApiProduct));
+          setLoading(false);
+        }
+      } catch (e) {}
+    } else {
+      setLoading(true);
+    }
 
     Promise.all([getLiveProducts(lang), getSilverLiveProducts(lang)]).then(
       ([goldRes, silverRes]) => {
         if (cancelled) return;
+
+        if ("success" in goldRes && goldRes.success === false) {
+          if (!cachedGold) setLoading(true);
+          return;
+        }
 
         const goldData = (goldRes as { data: ApiProduct[] | null }).data;
         const goldProducts: ApiProduct[] = Array.isArray(goldData) ? goldData : [];
@@ -98,6 +120,10 @@ export default function ProductsShowcase() {
         const silverProducts: ApiProduct[] = Array.isArray(silverData)
           ? silverData
           : [];
+
+        // Save to cache
+        localStorage.setItem(`cached_gold_showcase_${lang}`, JSON.stringify(goldProducts));
+        localStorage.setItem(`cached_silver_showcase_${lang}`, JSON.stringify(silverProducts));
 
         setGoldItems(
           goldProducts
@@ -428,7 +454,7 @@ function ProductPopup({
               {item.weight}
             </p>
 
-            <div className="flex items-end justify-between mb-5 pb-5 border-b border-[#f0f0f0]">
+            <div className="flex items-end justify-between mb-2">
               <div>
                 <p className="text-[10px] text-[#bbb] font-bold uppercase tracking-[0.15em] rtl:normal-case rtl:tracking-normal mb-1">
                   {isRTL ? "السعر الحالي" : "Current Price"}
@@ -453,32 +479,6 @@ function ProductPopup({
                 </div>
               </div>
 
-              <div className="flex flex-col items-end gap-1">
-                <p className="text-[10px] text-[#bbb] font-bold uppercase tracking-[0.15em] rtl:normal-case rtl:tracking-normal">
-                  {isRTL ? "لو اشتريت من سنة" : "1 Year Return"}
-                </p>
-                <div className="flex items-center gap-1 bg-[#E8F5E9] px-3 py-1.5 rounded-full">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#2E7D32"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                    <polyline points="17 6 23 6 23 12"></polyline>
-                  </svg>
-                  <span
-                    className="text-[14px] font-extrabold text-[#2E7D32]"
-                    dir="ltr"
-                  >
-                    +{item.gain}%
-                  </span>
-                </div>
-              </div>
             </div>
           </div>
         </div>

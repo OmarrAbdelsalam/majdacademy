@@ -137,7 +137,6 @@ function ProductPopup({ item, isRTL, onClose }: { item: ProductItem; isRTL: bool
           max-h-[85vh] md:max-h-[85vh] overflow-hidden flex flex-col
           rounded-t-[1.5rem] md:rounded-[2rem]
         `}
-        style={{ fontFamily: isRTL ? 'var(--font-tajawal), sans-serif' : 'var(--font-playfair), sans-serif' }}
         onClick={(e) => e.stopPropagation()}
         dir={isRTL ? "rtl" : "ltr"}
       >
@@ -180,8 +179,7 @@ function ProductPopup({ item, isRTL, onClose }: { item: ProductItem; isRTL: bool
               {item.weight}
             </p>
 
-            {/* Price + Gain row */}
-            <div className="flex items-end justify-between mb-5 pb-5 border-b border-[#f0f0f0]">
+            <div className="flex items-end justify-between mb-2">
               <div>
                 <p className="text-[10px] text-[#bbb] font-bold uppercase tracking-[0.15em] rtl:normal-case rtl:tracking-normal mb-1">{isRTL ? "السعر الحالي" : "Current Price"}</p>
                 <div className="flex items-baseline gap-1.5" dir="ltr">
@@ -190,17 +188,6 @@ function ProductPopup({ item, isRTL, onClose }: { item: ProductItem; isRTL: bool
                 </div>
               </div>
 
-              {/* Gain badge */}
-              <div className="flex flex-col items-end gap-1">
-                <p className="text-[10px] text-[#bbb] font-bold uppercase tracking-[0.15em] rtl:normal-case rtl:tracking-normal">{isRTL ? "لو اشتريت من سنة" : "1 Year Return"}</p>
-                <div className="flex items-center gap-1 bg-[#E8F5E9] px-3 py-1.5 rounded-full">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2E7D32" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                    <polyline points="17 6 23 6 23 12"></polyline>
-                  </svg>
-                  <span className="text-[14px] font-extrabold text-[#2E7D32]" dir="ltr">+{item.gain}%</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -313,7 +300,24 @@ export default function ProductsSlider() {
 
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
+    
+    // 1. Try to load from cache
+    const cachedGold = localStorage.getItem(`cached_gold_${lang}`);
+    const cachedSilver = localStorage.getItem(`cached_silver_${lang}`);
+    
+    if (cachedGold && cachedSilver) {
+      try {
+        const parsedGold = JSON.parse(cachedGold);
+        const parsedSilver = JSON.parse(cachedSilver);
+        if (parsedGold.length > 0 || parsedSilver.length > 0) {
+          setGoldItems(parsedGold.filter((p: any) => p.metal_type !== "silver").map(mapApiProduct));
+          setSilverItems(parsedSilver.map(mapApiProduct));
+          setLoading(false);
+        }
+      } catch (e) {}
+    } else {
+      setLoading(true);
+    }
     setEmpty(false);
 
     Promise.all([
@@ -323,7 +327,7 @@ export default function ProductsSlider() {
       if (cancelled) return;
 
       if ("success" in goldRes && goldRes.success === false) {
-        setLoading(true);
+        if (!cachedGold) setLoading(true);
         return;
       }
 
@@ -334,10 +338,14 @@ export default function ProductsSlider() {
       const silverProducts: ApiProduct[] = Array.isArray(silverData) ? silverData : [];
 
       if (goldProducts.length === 0 && silverProducts.length === 0) {
-        setEmpty(true);
+        if (!cachedGold) setEmpty(true);
         setLoading(false);
         return;
       }
+
+      // Save to cache
+      localStorage.setItem(`cached_gold_${lang}`, JSON.stringify(goldProducts));
+      localStorage.setItem(`cached_silver_${lang}`, JSON.stringify(silverProducts));
 
       setGoldItems(goldProducts.filter(p => p.metal_type !== "silver").map(mapApiProduct));
       setSilverItems(silverProducts.map(mapApiProduct));

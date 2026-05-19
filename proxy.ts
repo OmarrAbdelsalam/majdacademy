@@ -6,12 +6,13 @@ const defaultLocale = "en";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip static files, API routes, sanctum, and payment pages
+  // Skip static files, API routes, sanctum, payment, and IPN (Geidea return) pages
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/sanctum") ||
     pathname.startsWith("/payment") ||
+    pathname.startsWith("/ipn") ||
     pathname.includes(".")
   ) {
     return NextResponse.next();
@@ -45,5 +46,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|sanctum|payment|favicon.ico).*)"],
+  matcher: ["/((?!_next|api|sanctum|payment|ipn|favicon.ico).*)"],
 };
