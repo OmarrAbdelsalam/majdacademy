@@ -7,9 +7,9 @@ const BACKEND = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://golden-circle.n
  * Server Component — Geidea IPN return handler.
  *
  * Geidea redirects the user here after payment with query params like:
- *   ?orderId=...&responseCode=000&responseMessage=Success&sessionId=...
+ *   ?provider_status=success&response_code=000&trx=...&deposit_id=...
  *   or (legacy):
- *   ?merchantReferenceId=...&status=success|failed|cancelled
+ *   ?orderId=...&responseCode=000&merchantReferenceId=...&status=success
  *
  * We NEVER trust the client-supplied status. Instead we:
  *   1. Extract the trx reference (merchantReferenceId or orderId).
@@ -27,10 +27,11 @@ export default async function GeideaReturnPage({
 }) {
   const params = await searchParams;
 
-  // Geidea sends either merchantReferenceId (legacy SDK) or orderId (newer)
-  const trx = params.merchantReferenceId || params.orderId || "";
-  const responseCode = params.responseCode || "";
-  const rawStatus = (params.status || "").toLowerCase();
+  // Geidea new return URL fields (provider_status, response_code, trx, deposit_id) + legacy fallbacks
+  const trx = params.trx || params.merchantReferenceId || params.orderId || "";
+  const depositId = params.deposit_id || "";
+  const responseCode = params.response_code || params.responseCode || "";
+  const rawStatus = (params.provider_status || params.status || "").toLowerCase();
 
   // Try to verify server-side using the user's auth token from cookies
   const cookieStore = await cookies();

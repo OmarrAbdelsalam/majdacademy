@@ -126,8 +126,8 @@ export default function DepositPage() {
     e.preventDefault();
     setError("");
     const numAmount = Number(amount);
-    if (!numAmount || numAmount < 50 || numAmount > 100000) {
-      setError(isRTL ? "المبلغ يجب أن يكون بين 50 و 100,000" : "Amount must be between 50 and 100,000");
+    if (!numAmount || numAmount < 10000 || numAmount > 100000) {
+      setError(isRTL ? "المبلغ يجب أن يكون بين 10,000 و 100,000" : "Amount must be between 10,000 and 100,000");
       return;
     }
 
@@ -288,85 +288,51 @@ export default function DepositPage() {
 
 
 
-      {/* Geidea Payment Status — non-blocking bottom toast */}
-      {/* Geidea result toast — appears only when polling has a final result */}
+      {/* Geidea Payment Status Modal */}
       {depositResult && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 animate-in slide-in-from-bottom-4 fade-in duration-300">
-          <div className={`bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.14)] border overflow-hidden ${
-            depositResult === "paid" ? "border-emerald-200" :
-            depositResult === "failed" || depositResult === "cancelled" ? "border-red-200" :
-            "border-amber-200"
-          }`}>
-            {/* colour strip */}
-            <div className={`h-1 w-full ${
-              depositResult === "paid" ? "bg-emerald-400" :
-              depositResult === "failed" || depositResult === "cancelled" ? "bg-red-400" :
-              "bg-amber-400"
-            }`} />
-
-            <div className="p-4 flex items-start gap-3">
-              {/* icon */}
-              <div className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center ${
-                depositResult === "paid" ? "bg-emerald-50 text-emerald-500" :
-                depositResult === "failed" || depositResult === "cancelled" ? "bg-red-50 text-red-500" :
-                "bg-amber-50 text-amber-500"
-              }`}>
-                {depositResult === "paid" && (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                )}
-                {(depositResult === "failed" || depositResult === "cancelled") && (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                )}
-                {(depositResult === "expired" || depositResult === "timeout") && (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                )}
-              </div>
-
-              {/* text */}
-              <div className="flex-1 min-w-0" dir="rtl">
-                <p className="text-[14px] font-extrabold text-[#1a1a1a] leading-snug">
-                  {depositResult === "paid" && tr.successTitle}
-                  {depositResult === "failed" && tr.failedTitle}
-                  {depositResult === "cancelled" && tr.cancelledTitle}
-                  {depositResult === "expired" && tr.expiredTitle}
-                  {depositResult === "timeout" && tr.timeoutTitle}
-                </p>
-                <p className="text-[12px] text-[#888] mt-0.5 leading-snug truncate">
-                  {depositResult === "paid" && tr.successDesc}
-                  {depositResult === "failed" && tr.failedDesc}
-                  {depositResult === "cancelled" && tr.cancelledDesc}
-                  {depositResult === "expired" && tr.expiredDesc}
-                  {depositResult === "timeout" && tr.timeoutDesc}
-                </p>
-              </div>
-
-              {/* action / dismiss */}
-              <div className="shrink-0 flex items-center gap-2">
-                {depositResult !== "paid" && depositResult !== "timeout" && (
-                  <button
-                    onClick={resetGeideaDeposit}
-                    className="text-[12px] font-bold text-[#1a1a1a] bg-[#f5f5f5] hover:bg-[#eee] px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    {depositResult === "expired" ? tr.newDeposit : tr.tryAgain}
-                  </button>
-                )}
-                {depositResult === "paid" && (
-                  <button
-                    onClick={resetGeideaDeposit}
-                    className="text-[12px] font-bold text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded-lg transition-colors"
-                  >
-                    {tr.ok}
-                  </button>
-                )}
-                <button
-                  onClick={resetGeideaDeposit}
-                  className="w-7 h-7 rounded-full bg-[#f5f5f5] hover:bg-[#eee] flex items-center justify-center text-[#888] transition-colors"
-                  aria-label="dismiss"
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
-              </div>
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-xl border border-[#f0f0f0] animate-in fade-in zoom-in-95 duration-200">
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 ${
+              depositResult === "paid" ? "bg-emerald-50 text-emerald-500" :
+              depositResult === "failed" || depositResult === "cancelled" ? "bg-red-50 text-red-500" :
+              "bg-amber-50 text-amber-500"
+            }`}>
+              {depositResult === "paid" && (
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              )}
+              {(depositResult === "failed" || depositResult === "cancelled") && (
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              )}
+              {(depositResult === "expired" || depositResult === "timeout") && (
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              )}
             </div>
+            
+            <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2" dir="rtl">
+              {depositResult === "paid" && tr.successTitle}
+              {depositResult === "failed" && tr.failedTitle}
+              {depositResult === "cancelled" && tr.cancelledTitle}
+              {depositResult === "expired" && tr.expiredTitle}
+              {depositResult === "timeout" && tr.timeoutTitle}
+            </h3>
+            
+            <p className="text-[14px] text-[#888] font-medium mb-8 leading-relaxed" dir="rtl">
+              {depositResult === "paid" && tr.successDesc}
+              {depositResult === "failed" && tr.failedDesc}
+              {depositResult === "cancelled" && tr.cancelledDesc}
+              {depositResult === "expired" && tr.expiredDesc}
+              {depositResult === "timeout" && tr.timeoutDesc}
+            </p>
+
+            <button onClick={resetGeideaDeposit} className={`w-full py-3.5 rounded-xl font-bold text-[14px] transition-all text-white ${
+              depositResult === "paid" ? "bg-emerald-500 hover:bg-emerald-600" :
+              depositResult === "failed" || depositResult === "cancelled" ? "bg-red-500 hover:bg-red-600" :
+              "bg-[#1a1a1a] hover:bg-[#333]"
+            }`}>
+              {depositResult === "paid" ? tr.ok :
+               depositResult === "expired" ? tr.newDeposit : 
+               depositResult === "timeout" ? tr.ok : tr.tryAgain}
+            </button>
           </div>
         </div>
       )}
@@ -412,9 +378,9 @@ export default function DepositPage() {
                 </div>
                 <div className={inputCls}>
                   <input type="number" value={amount} onChange={e => { const val = e.target.value; if (Number(val) > 100000) setAmount("100000"); else setAmount(val); }}
-                    placeholder={isRTL ? `أدخل المبلغ (من أول 50 ${currency === 'EGP' ? 'جنيه' : 'دولار'})` : `Enter amount (min 50 ${currency})`}
+                    placeholder={isRTL ? `أدخل المبلغ (من أول 10,000 ${currency === 'EGP' ? 'جنيه' : 'دولار'})` : `Enter amount (min 10,000 ${currency})`}
                     className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium"
-                    dir="ltr" min="50" max="100000" required />
+                    dir="ltr" min="10000" max="100000" required />
                   <span className="text-[13px] font-bold text-[#C9A84C]">{currency}</span>
                 </div>
                 <p className="text-[11px] text-[#888] font-medium mt-0.5">
@@ -423,7 +389,7 @@ export default function DepositPage() {
               </div>
 
               <div className="flex gap-2 flex-wrap">
-                {(currency === "EGP" ? [1000, 5000, 10000, 20000] : [100, 500, 1000, 5000, 10000]).map(v => (
+                {(currency === "EGP" ? [10000, 20000, 50000, 100000] : [100, 500, 1000, 5000, 10000]).map(v => (
                   <button key={v} type="button" onClick={() => setAmount(String(v))}
                     className={`px-4 py-2 rounded-xl text-[12px] font-semibold transition-all border ${amount === String(v) ? "bg-[#C9A84C]/10 text-[#C9A84C] border-[#C9A84C]/30" : "bg-[#f7f7f7] text-[#888] border-transparent hover:bg-[#f0f0f0]"}`}>
                     {v.toLocaleString("en-US")} {currency}
