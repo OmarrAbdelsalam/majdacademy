@@ -41,17 +41,23 @@ function CheckoutInner() {
         if (window.GeideaCheckout) {
           const checkout = new window.GeideaCheckout(
             (response: any) => {
-              window.stop();
+              // Notify the opener (deposit page) so its polling can react
+              if (window.opener) {
+                window.opener.postMessage({ type: "geidea_result", status: "success", response }, "*");
+              }
               window.close();
             },
             (error: any) => {
               if (error && Object.keys(error).length === 0) return; // Ignore empty false-positive errors
               console.error("Geidea payment error:", error);
+              if (window.opener) {
+                window.opener.postMessage({ type: "geidea_result", status: "failed", error }, "*");
+              }
+              window.close();
             },
             () => {
-              window.stop();
               if (window.opener) {
-                window.opener.postMessage("geidea_cancel", "*");
+                window.opener.postMessage({ type: "geidea_result", status: "cancelled" }, "*");
               }
               window.close();
             }

@@ -51,13 +51,11 @@ export default function DepositPage() {
   const [error, setError] = useState("");
 
   // Geidea specific
-  const [currency, setCurrency] = useState("EGP");
+  const [currency] = useState("EGP");
   const [activeDeposit, setActiveDeposit] = useState<{ id: number; trx: string } | null>(null);
   const [depositResult, setDepositResult] = useState<DepositStatus | "timeout" | null>(null);
-  const [polling, setPolling] = useState(false);
+  // polling runs silently — UI only reacts when a final result arrives
   const pollingRef = useRef<boolean>(false);
-  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // InstaPay specific
   const [name, setName] = useState("");
@@ -72,10 +70,9 @@ export default function DepositPage() {
     });
   }, [lang]);
 
-  // Polling with exponential backoff (Geidea)
+  // Polling with exponential backoff (Geidea) — runs silently in background
   const startPolling = useCallback((depositId: number) => {
     pollingRef.current = true;
-    setPolling(true);
     setDepositResult(null);
 
     const delays = [2000, 4000, 8000, 16000, 30000, 30000, 30000, 30000, 30000, 30000];
@@ -88,10 +85,8 @@ export default function DepositPage() {
         const status = res.data.status as DepositStatus;
         if (status !== "pending") {
           pollingRef.current = false;
-          setPolling(false);
           setDepositResult(status);
           if (status === "paid") {
-            // Refresh wallet balance
             const walletRes = await getWallet(lang);
             if (walletRes.success && walletRes.data) setCash(Number(walletRes.data.cash) || 0);
           }
@@ -101,7 +96,6 @@ export default function DepositPage() {
       index++;
       if (index >= delays.length) {
         pollingRef.current = false;
-        setPolling(false);
         setDepositResult("timeout");
         return;
       }
@@ -113,9 +107,15 @@ export default function DepositPage() {
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (event.data === "geidea_cancel") {
+      // Support both new structured message and legacy string
+      const data = event.data;
+      if (data === "geidea_cancel" || data?.status === "cancelled") {
         setDepositResult("cancelled");
-        setPolling(false);
+      } else if (data?.type === "geidea_result" && data?.status === "success") {
+        // SDK confirmed success — polling will verify and update result
+        // No need to set depositResult here; polling handles it
+      } else if (data?.type === "geidea_result" && data?.status === "failed") {
+        setDepositResult("failed");
       }
     };
     window.addEventListener("message", handleMessage);
@@ -193,17 +193,8 @@ export default function DepositPage() {
   const resetGeideaDeposit = () => {
     setActiveDeposit(null);
     setDepositResult(null);
-    setPolling(false);
-    setPaymentUrl(null);
     setAmount("");
     pollingRef.current = false;
-  };
-
-  const closePaymentIframe = () => {
-    setPaymentUrl(null);
-    if (activeDeposit) {
-      startPolling(activeDeposit.id);
-    }
   };
 
   const tr = {
@@ -297,69 +288,85 @@ export default function DepositPage() {
 
 
 
-      {/* Geidea Polling / Result Modal */}
-      {(polling || depositResult) && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-xl border border-[#f0f0f0] animate-in fade-in zoom-in-95 duration-200">
-            {polling && !depositResult && (
-              <>
-                <div className="w-16 h-16 rounded-full bg-amber-50 flex items-center justify-center mx-auto mb-5">
-                  <div className="w-8 h-8 border-3 border-[#C9A84C] border-t-transparent rounded-full animate-spin" />
-                </div>
-                <h3 className="text-[18px] font-extrabold text-[#1a1a1a] mb-2">{tr.waitingPayment}</h3>
-                <p className="text-[13px] text-[#888]">{activeDeposit?.trx}</p>
-              </>
-            )}
-            {depositResult === "paid" && (
-              <>
-                <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto mb-5">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.successTitle}</h3>
-                <p className="text-[14px] text-[#888] mb-6">{tr.successDesc}</p>
-                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.ok}</button>
-              </>
-            )}
-            {depositResult === "failed" && (
-              <>
-                <div className="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-5">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </div>
-                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.failedTitle}</h3>
-                <p className="text-[14px] text-[#888] mb-6">{tr.failedDesc}</p>
-                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.tryAgain}</button>
-              </>
-            )}
-            {depositResult === "cancelled" && (
-              <>
-                <div className="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mx-auto mb-5">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-                </div>
-                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.cancelledTitle}</h3>
-                <p className="text-[14px] text-[#888] mb-6">{tr.cancelledDesc}</p>
-                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.tryAgain}</button>
-              </>
-            )}
-            {depositResult === "expired" && (
-              <>
-                <div className="w-16 h-16 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center mx-auto mb-5">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.expiredTitle}</h3>
-                <p className="text-[14px] text-[#888] mb-6">{tr.expiredDesc}</p>
-                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.newDeposit}</button>
-              </>
-            )}
-            {depositResult === "timeout" && (
-              <>
-                <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center mx-auto mb-5">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                </div>
-                <h3 className="text-[20px] font-extrabold text-[#1a1a1a] mb-2">{tr.timeoutTitle}</h3>
-                <p className="text-[14px] text-[#888] mb-6">{tr.timeoutDesc}</p>
-                <button onClick={resetGeideaDeposit} className="w-full py-3.5 rounded-xl font-bold text-[14px] bg-[#1a1a1a] text-white hover:bg-[#333] transition-all">{tr.ok}</button>
-              </>
-            )}
+      {/* Geidea Payment Status — non-blocking bottom toast */}
+      {/* Geidea result toast — appears only when polling has a final result */}
+      {depositResult && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-sm px-4 animate-in slide-in-from-bottom-4 fade-in duration-300">
+          <div className={`bg-white rounded-2xl shadow-[0_8px_40px_rgba(0,0,0,0.14)] border overflow-hidden ${
+            depositResult === "paid" ? "border-emerald-200" :
+            depositResult === "failed" || depositResult === "cancelled" ? "border-red-200" :
+            "border-amber-200"
+          }`}>
+            {/* colour strip */}
+            <div className={`h-1 w-full ${
+              depositResult === "paid" ? "bg-emerald-400" :
+              depositResult === "failed" || depositResult === "cancelled" ? "bg-red-400" :
+              "bg-amber-400"
+            }`} />
+
+            <div className="p-4 flex items-start gap-3">
+              {/* icon */}
+              <div className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center ${
+                depositResult === "paid" ? "bg-emerald-50 text-emerald-500" :
+                depositResult === "failed" || depositResult === "cancelled" ? "bg-red-50 text-red-500" :
+                "bg-amber-50 text-amber-500"
+              }`}>
+                {depositResult === "paid" && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                )}
+                {(depositResult === "failed" || depositResult === "cancelled") && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                )}
+                {(depositResult === "expired" || depositResult === "timeout") && (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                )}
+              </div>
+
+              {/* text */}
+              <div className="flex-1 min-w-0" dir="rtl">
+                <p className="text-[14px] font-extrabold text-[#1a1a1a] leading-snug">
+                  {depositResult === "paid" && tr.successTitle}
+                  {depositResult === "failed" && tr.failedTitle}
+                  {depositResult === "cancelled" && tr.cancelledTitle}
+                  {depositResult === "expired" && tr.expiredTitle}
+                  {depositResult === "timeout" && tr.timeoutTitle}
+                </p>
+                <p className="text-[12px] text-[#888] mt-0.5 leading-snug truncate">
+                  {depositResult === "paid" && tr.successDesc}
+                  {depositResult === "failed" && tr.failedDesc}
+                  {depositResult === "cancelled" && tr.cancelledDesc}
+                  {depositResult === "expired" && tr.expiredDesc}
+                  {depositResult === "timeout" && tr.timeoutDesc}
+                </p>
+              </div>
+
+              {/* action / dismiss */}
+              <div className="shrink-0 flex items-center gap-2">
+                {depositResult !== "paid" && depositResult !== "timeout" && (
+                  <button
+                    onClick={resetGeideaDeposit}
+                    className="text-[12px] font-bold text-[#1a1a1a] bg-[#f5f5f5] hover:bg-[#eee] px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    {depositResult === "expired" ? tr.newDeposit : tr.tryAgain}
+                  </button>
+                )}
+                {depositResult === "paid" && (
+                  <button
+                    onClick={resetGeideaDeposit}
+                    className="text-[12px] font-bold text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded-lg transition-colors"
+                  >
+                    {tr.ok}
+                  </button>
+                )}
+                <button
+                  onClick={resetGeideaDeposit}
+                  className="w-7 h-7 rounded-full bg-[#f5f5f5] hover:bg-[#eee] flex items-center justify-center text-[#888] transition-colors"
+                  aria-label="dismiss"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
