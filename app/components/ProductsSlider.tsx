@@ -363,7 +363,7 @@ export default function ProductsSlider() {
         : "Gold is your ultimate safe haven during crises. Buy freely anytime with zero commission.",
       items: goldItems,
       isSilverCat: false,
-      showAll: true,
+      showAll: showAllGold,
       setShowAll: setShowAllGold,
     },
   ];
@@ -419,11 +419,13 @@ export default function ProductsSlider() {
                 ) : (
                   <>
                     <div className="w-full flex lg:flex-wrap lg:justify-center gap-4 md:gap-6 overflow-x-auto lg:overflow-x-visible pb-12 snap-x lg:snap-none snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                      {category.items.map((item) => (
+                      {category.items.map((item, index) => (
                         <div
                           key={item.id}
                           onClick={() => setSelectedProduct(item)}
-                          className="cursor-pointer text-start relative snap-always snap-start shrink-0 w-[220px] sm:w-[280px] bg-white border border-gray-100 rounded-[28px] p-4 md:p-5 flex flex-col hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300 group"
+                          className={`cursor-pointer text-start relative snap-always snap-start shrink-0 w-[220px] sm:w-[280px] bg-white border border-gray-100 rounded-[28px] p-4 md:p-5 flex-col hover:shadow-[0_12px_25px_rgba(0,0,0,0.04)] hover:-translate-y-1 transition-all duration-300 group
+                            ${!category.showAll && index >= category.items.length - 3 ? "flex lg:hidden" : "flex"}
+                          `}
                         >
                           <div className="w-full h-[120px] md:h-[140px] mb-4 relative flex items-center justify-center p-2 transition-transform duration-500 group-hover:scale-105">
                             <img
@@ -466,6 +468,16 @@ export default function ProductsSlider() {
                     </div>
 
 
+                    {!category.showAll && category.items.length > 3 && (
+                      <div className="hidden lg:flex w-full justify-center mt-2 mb-10">
+                        <button
+                          onClick={() => category.setShowAll(true)}
+                          className="px-10 py-3.5 rounded-full border-[1.5px] border-[#1a1a1a] text-[#1a1a1a] font-bold text-sm hover:bg-[#1a1a1a] hover:text-white transition-all duration-300 shadow-sm active:scale-95"
+                        >
+                          {isRTL ? "عرض المزيد" : "Show More"}
+                        </button>
+                      </div>
+                    )}
                   </>
                 )}
               </div>
