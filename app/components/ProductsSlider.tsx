@@ -363,18 +363,8 @@ export default function ProductsSlider() {
         : "Gold is your ultimate safe haven during crises. Buy freely anytime with zero commission.",
       items: goldItems,
       isSilverCat: false,
-      showAll: showAllGold,
+      showAll: true,
       setShowAll: setShowAllGold,
-    },
-    {
-      title: isRTL ? "سبائك الفضة" : "Silver Bars",
-      description: isRTL
-        ? "الفضة سعرها بيزيد مع الوقت.. اشتري دلوقتي وابني ثروتك للمستقبل بخطوات بسيطة."
-        : "Silver's value grows over time. Buy now and build your wealth for the future.",
-      items: silverItems,
-      isSilverCat: true,
-      showAll: showAllSilver,
-      setShowAll: setShowAllSilver,
     },
   ];
 
@@ -429,7 +419,7 @@ export default function ProductsSlider() {
                 ) : (
                   <>
                     <div className="w-full flex lg:flex-wrap lg:justify-center gap-4 md:gap-6 overflow-x-auto lg:overflow-x-visible pb-12 snap-x lg:snap-none snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                      {category.items.slice(0, (!category.showAll) ? 8 : category.items.length).map((item) => (
+                      {category.items.map((item) => (
                         <div
                           key={item.id}
                           onClick={() => setSelectedProduct(item)}
@@ -475,16 +465,7 @@ export default function ProductsSlider() {
                       ))}
                     </div>
 
-                    {!category.showAll && category.items.length > 8 && (
-                      <div className="hidden sm:flex w-full justify-center mt-2 mb-10">
-                        <button
-                          onClick={() => category.setShowAll(true)}
-                          className="px-10 py-3.5 rounded-full border-[1.5px] border-[#1a1a1a] text-[#1a1a1a] font-bold text-sm hover:bg-[#1a1a1a] hover:text-white transition-all duration-300 shadow-sm active:scale-95"
-                        >
-                          {isRTL ? "عرض المزيد" : "Show More"}
-                        </button>
-                      </div>
-                    )}
+
                   </>
                 )}
               </div>

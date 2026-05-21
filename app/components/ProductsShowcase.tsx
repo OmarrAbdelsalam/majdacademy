@@ -140,19 +140,12 @@ export default function ProductsShowcase() {
     };
   }, [lang]);
 
-  const allItems =
-    filter === "all"
-      ? [...goldItems, ...silverItems]
-      : filter === "gold"
-      ? goldItems
-      : silverItems;
+  const allItems = goldItems;
 
-  const displayItems = showAll ? allItems : allItems.slice(0, 8);
+  const displayItems = allItems;
 
   const filters: { id: Filter; labelAr: string; labelEn: string }[] = [
     { id: "all", labelAr: "الكل", labelEn: "All" },
-    { id: "gold", labelAr: "ذهب", labelEn: "Gold" },
-    { id: "silver", labelAr: "فضة", labelEn: "Silver" },
   ];
 
   return (
@@ -181,25 +174,7 @@ export default function ProductsShowcase() {
           </p>
         </motion.div>
 
-        {/* Filter Tabs */}
-        <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10">
-          {filters.map((f) => (
-            <button
-              key={f.id}
-              onClick={() => {
-                setFilter(f.id);
-                setShowAll(false);
-              }}
-              className={`px-5 sm:px-7 py-2.5 rounded-full text-[13px] sm:text-[14px] font-bold transition-all duration-300 ${
-                filter === f.id
-                  ? "bg-[#1a1a1a] text-white shadow-sm"
-                  : "text-[#777] hover:text-[#1a1a1a] hover:bg-[#f5f5f5]"
-              }`}
-            >
-              {isRTL ? f.labelAr : f.labelEn}
-            </button>
-          ))}
-        </div>
+        {/* Filter Tabs Hidden */}
 
         {/* Products Grid */}
         {loading ? (
@@ -295,17 +270,7 @@ export default function ProductsShowcase() {
               ))}
             </div>
 
-            {/* Show More */}
-            {!showAll && allItems.length > 8 && (
-              <div className="flex w-full justify-center mt-10">
-                <button
-                  onClick={() => setShowAll(true)}
-                  className="px-10 py-3.5 rounded-full border-[1.5px] border-[#1a1a1a] text-[#1a1a1a] font-bold text-sm hover:bg-[#1a1a1a] hover:text-white transition-all duration-300 shadow-sm active:scale-95"
-                >
-                  {isRTL ? "عرض المزيد" : "Show More"}
-                </button>
-              </div>
-            )}
+            {/* Show More Removed */}
           </>
         )}
       </div>
