@@ -128,7 +128,7 @@ export default function Hero() {
 
         {/* Main Headline */}
         <h1 
-          className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[72px] font-bold leading-[1.1] tracking-tight mb-6 sm:mb-6 text-[#1a1a1a] px-1 max-w-[1200px] animate-fadeInUp"
+          className="text-[36px] sm:text-[48px] md:text-[60px] lg:text-[72px] font-bold leading-[1.1] tracking-tight mb-6 sm:mb-6 text-[#1a1a1a] px-1 max-w-[1300px] animate-fadeInUp"
           style={{ animationDelay: '0.1s' }}
         >
           <span className="block mb-0.5 sm:mb-1">

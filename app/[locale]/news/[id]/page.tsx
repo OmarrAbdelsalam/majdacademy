@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { useLang } from "../../../../app/i18n/LangContext";
+import { useLang } from "../../../i18n/LangContext";
 import { apiRequest } from "../../../../lib/api-client";
-import Navbar from "../../../../app/components/Navbar";
-import Footer from "../../../../app/components/Footer";
+import Navbar from "../../../components/Navbar";
+import Footer from "../../../components/Footer";
 
 interface NewsItem {
   id: number;

@@ -46,11 +46,28 @@ interface ApiProduct {
 
 function mapApiProduct(p: ApiProduct): ProductItem {
   const isSilver = p.metal_type === "silver";
-  const image = isRealProductImage(p.image) ? p.image! : (isSilver ? SILVER_FALLBACK : GOLD_FALLBACK);
+  const title = p.name ?? p.title ?? "";
+  
+  // Check if the product is a gold bar (sabika)
+  const isSabika = title.includes("سبيكة") || title.includes("سبيكه") || title.toLowerCase().includes("bar");
+  const isOneGram = p.weight === 1 || p.weight === "1" || title.includes("1 جرام") || title.toLowerCase().includes("1 gram") || title.includes("1g");
+  
+  let image = "";
+  if (isSilver) {
+    image = isRealProductImage(p.image) ? p.image! : SILVER_FALLBACK;
+  } else {
+    if (isOneGram) {
+      image = "/gold1.png";
+    } else if (isSabika) {
+      image = "/gold.png";
+    } else {
+      image = isRealProductImage(p.image) ? p.image! : "/gold.png";
+    }
+  }
+
   const gain = isSilver ? "22" : "48";
   const weight = p.weight != null ? String(p.weight) : "";
   const price = p.price != null ? formatPrice(p.price) : "0";
-  const title = p.name ?? p.title ?? "";
 
   return { id: p.id, title, weight, price, image, isSilver, gain };
 }
@@ -160,12 +177,15 @@ function ProductPopup({ item, isRTL, onClose }: { item: ProductItem; isRTL: bool
         <div className="flex-1 overflow-y-auto">
           {/* Product image area */}
           <div className="w-full bg-[#FAFAF8] flex items-center justify-center py-10 md:py-10 px-8 md:rounded-t-[2rem]">
-            <img
-              src={item.image}
-              alt={item.title}
-              className="w-[120px] h-[120px] md:w-[150px] md:h-[150px] object-contain mix-blend-multiply drop-shadow-lg"
-              onError={(e) => { e.currentTarget.style.display = 'none' }}
-            />
+            <div className="relative flex items-center justify-center">
+              <div className="absolute -bottom-2 w-[70%] h-[12px] bg-black/15 blur-[6px] rounded-[100%]"></div>
+              <img
+                src={item.image}
+                alt={item.title}
+                className="w-[120px] h-[120px] md:w-[150px] md:h-[150px] object-contain mix-blend-multiply drop-shadow-[0_15px_25px_rgba(0,0,0,0.1)] relative z-10"
+                onError={(e) => { e.currentTarget.style.display = 'none' }}
+              />
+            </div>
           </div>
 
           {/* Content */}
@@ -427,11 +447,12 @@ export default function ProductsSlider() {
                             ${!category.showAll && index >= category.items.length - 3 ? "flex lg:hidden" : "flex"}
                           `}
                         >
-                          <div className="w-full h-[120px] md:h-[140px] mb-4 relative flex items-center justify-center p-2 transition-transform duration-500 group-hover:scale-105">
+                          <div className="w-full h-[120px] md:h-[140px] mb-4 relative flex items-center justify-center">
+                            <div className="absolute -bottom-1 w-[60%] h-[10px] bg-black/15 blur-[5px] rounded-[100%] transition-all duration-500 group-hover:scale-90 group-hover:opacity-60"></div>
                             <img
                               src={item.image}
                               alt={item.title}
-                              className="max-h-full max-w-full object-contain mix-blend-multiply drop-shadow-lg"
+                              className="w-full h-full object-contain mix-blend-multiply drop-shadow-[0_10px_15px_rgba(0,0,0,0.1)] relative z-10 transition-transform duration-500 group-hover:-translate-y-2"
                               onError={(e) => { e.currentTarget.style.display = 'none' }}
                             />
                           </div>

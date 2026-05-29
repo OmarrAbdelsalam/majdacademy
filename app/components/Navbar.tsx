@@ -117,14 +117,28 @@ export default function Navbar() {
           }`}>
             {/* Logo */}
             <Link href={`/${lang}`} className="flex items-center gap-1 shrink-0 group ml-1 transition-transform duration-300 group-hover:scale-[1.02]">
-              <Image
-                src="/logo.png"
-                alt="Golden Circle"
-                width={80}
-                height={80}
-                className="object-contain h-12 sm:h-14 lg:h-16 w-12 sm:w-14 lg:w-16 shrink-0"
-                priority
-              />
+              <div className="relative shrink-0">
+                <Image
+                  src="/majd.png"
+                  alt="Majd"
+                  width={100}
+                  height={100}
+                  className={`object-contain transition-all duration-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 ${
+                    isCompact ? "opacity-0 scale-75 h-0 w-0" : "opacity-100 scale-100 h-14 sm:h-16 lg:h-[72px] w-14 sm:w-16 lg:w-[72px]"
+                  }`}
+                  priority
+                />
+                <Image
+                  src="/logo.png"
+                  alt="Golden Circle"
+                  width={80}
+                  height={80}
+                  className={`object-contain transition-all duration-500 ${
+                    isCompact ? "opacity-100 scale-100 h-12 sm:h-14 lg:h-16 w-12 sm:w-14 lg:w-16" : "opacity-0 scale-75 h-0 w-0"
+                  }`}
+                  priority
+                />
+              </div>
               <span className={`${isCompact ? "text-[13.5px] sm:text-[14px]" : "text-[15px] sm:text-[18px]"} lg:text-[20px] transition-all duration-300 font-bold tracking-[0.1em] text-[#1a1a1a] uppercase leading-none mt-1 lg:-mt-1 relative translate-y-[2px] sm:translate-y-[2.5px] lg:translate-y-[3.5px] whitespace-nowrap shrink-0`}>
                 GCT FOR GOLD TRADE
               </span>

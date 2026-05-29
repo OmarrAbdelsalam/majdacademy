@@ -1,0 +1,906 @@
+// lib/academy/mock-data/index.ts
+// Educational Platform Dashboard - Realistic Mock Data
+// Validates: Requirement 20.4
+
+import type {
+  Teacher,
+  Student,
+  Parent,
+  Exam,
+  Question,
+  Submission,
+  Answer,
+  Homework,
+  HomeworkSubmission,
+  Report,
+  Notification,
+  AttendanceRecord,
+  ScheduleEntry,
+} from '../types';
+
+// === Teachers ===
+
+export const mockTeachers: Teacher[] = [
+  {
+    id: 'teacher-1',
+    name: 'أحمد محمد العلي',
+    email: 'ahmed.ali@majd-academy.com',
+    role: 'teacher',
+    phone: '966501234567',
+    subjects: ['اللغة العربية', 'التربية الإسلامية'],
+    grades: ['الصف السادس', 'الصف السابع'],
+  },
+  {
+    id: 'teacher-2',
+    name: 'فاطمة حسن الشمري',
+    email: 'fatima.shamri@majd-academy.com',
+    role: 'teacher',
+    phone: '966509876543',
+    subjects: ['الرياضيات', 'العلوم'],
+    grades: ['الصف السادس', 'الصف السابع', 'الصف الثامن'],
+  },
+  {
+    id: 'teacher-3',
+    name: 'Sarah Johnson',
+    email: 'sarah.johnson@majd-academy.com',
+    role: 'teacher',
+    phone: '966507654321',
+    subjects: ['English'],
+    grades: ['الصف السادس', 'الصف السابع', 'الصف الثامن'],
+  },
+];
+
+// === Students ===
+
+export const mockStudents: Student[] = [
+  {
+    id: 'student-1',
+    name: 'عبدالله أحمد الراشد',
+    email: 'abdullah.rashid@majd-academy.com',
+    role: 'student',
+    studentType: 'regular',
+    grade: 'الصف السادس',
+    parentId: 'parent-1',
+    subjects: ['اللغة العربية', 'الرياضيات', 'العلوم', 'English', 'التربية الإسلامية'],
+  },
+  {
+    id: 'student-2',
+    name: 'نورة خالد المطيري',
+    email: 'noura.mutairi@majd-academy.com',
+    role: 'student',
+    studentType: 'regular',
+    grade: 'الصف السادس',
+    parentId: 'parent-2',
+    subjects: ['اللغة العربية', 'الرياضيات', 'العلوم', 'English', 'التربية الإسلامية'],
+  },
+  {
+    id: 'student-3',
+    name: 'محمد سعد القحطاني',
+    email: 'mohammed.qahtani@majd-academy.com',
+    role: 'student',
+    studentType: 'regular',
+    grade: 'الصف السابع',
+    parentId: 'parent-1',
+    subjects: ['اللغة العربية', 'الرياضيات', 'العلوم', 'English', 'التربية الإسلامية'],
+  },
+  {
+    id: 'student-4',
+    name: 'Amir Patel',
+    email: 'amir.patel@majd-academy.com',
+    role: 'student',
+    studentType: 'non_native',
+    grade: 'الصف السادس',
+    subjects: ['اللغة العربية', 'الرياضيات', 'العلوم', 'English'],
+  },
+  {
+    id: 'student-5',
+    name: 'Yuki Tanaka',
+    email: 'yuki.tanaka@majd-academy.com',
+    role: 'student',
+    studentType: 'non_native',
+    grade: 'الصف السابع',
+    subjects: ['اللغة العربية', 'الرياضيات', 'English'],
+  },
+];
+
+
+// === Parents ===
+
+export const mockParents: Parent[] = [
+  {
+    id: 'parent-1',
+    name: 'أحمد سعود الراشد',
+    email: 'ahmed.rashid@gmail.com',
+    role: 'parent',
+    phone: '966551234567',
+    childrenIds: ['student-1', 'student-3'],
+  },
+  {
+    id: 'parent-2',
+    name: 'خالد عبدالرحمن المطيري',
+    email: 'khalid.mutairi@gmail.com',
+    role: 'parent',
+    phone: '966559876543',
+    childrenIds: ['student-2'],
+  },
+  {
+    id: 'parent-3',
+    name: 'سارة محمد الدوسري',
+    email: 'sara.dosari@gmail.com',
+    role: 'parent',
+    phone: '966557654321',
+    childrenIds: ['student-1'],
+  },
+];
+
+// === Questions ===
+
+const mockQuestions: Question[] = [
+  // MCQ questions
+  {
+    id: 'q-1',
+    type: 'multiple_choice',
+    text: 'ما هو إعراب كلمة "الطالبُ" في جملة: الطالبُ مجتهدٌ؟',
+    points: 2,
+    options: [
+      { id: 'q1-a', text: 'مبتدأ مرفوع بالضمة', isCorrect: true },
+      { id: 'q1-b', text: 'فاعل مرفوع بالضمة', isCorrect: false },
+      { id: 'q1-c', text: 'خبر مرفوع بالضمة', isCorrect: false },
+      { id: 'q1-d', text: 'نائب فاعل مرفوع بالضمة', isCorrect: false },
+    ],
+    correctAnswer: 'q1-a',
+    metadata: {
+      subject: 'اللغة العربية',
+      grade: 'الصف السادس',
+      difficulty: 'easy',
+      tags: ['نحو', 'إعراب'],
+    },
+  },
+  {
+    id: 'q-2',
+    type: 'multiple_choice',
+    text: 'What is the result of 15 × 8?',
+    points: 2,
+    options: [
+      { id: 'q2-a', text: '100', isCorrect: false },
+      { id: 'q2-b', text: '120', isCorrect: true },
+      { id: 'q2-c', text: '115', isCorrect: false },
+      { id: 'q2-d', text: '125', isCorrect: false },
+    ],
+    correctAnswer: 'q2-b',
+    metadata: {
+      subject: 'الرياضيات',
+      grade: 'الصف السادس',
+      difficulty: 'easy',
+      tags: ['ضرب', 'عمليات حسابية'],
+    },
+  },
+  {
+    id: 'q-3',
+    type: 'multiple_choice',
+    text: 'Which planet is closest to the Sun?',
+    points: 2,
+    options: [
+      { id: 'q3-a', text: 'Venus', isCorrect: false },
+      { id: 'q3-b', text: 'Earth', isCorrect: false },
+      { id: 'q3-c', text: 'Mercury', isCorrect: true },
+      { id: 'q3-d', text: 'Mars', isCorrect: false },
+    ],
+    correctAnswer: 'q3-c',
+    metadata: {
+      subject: 'العلوم',
+      grade: 'الصف السادس',
+      difficulty: 'medium',
+      tags: ['فلك', 'كواكب'],
+    },
+  },
+  // True/False questions
+  {
+    id: 'q-4',
+    type: 'true_false',
+    text: 'الفعل المضارع يُرفع بالضمة الظاهرة إذا كان صحيح الآخر.',
+    points: 1,
+    correctAnswer: 'true',
+    metadata: {
+      subject: 'اللغة العربية',
+      grade: 'الصف السادس',
+      difficulty: 'medium',
+      tags: ['نحو', 'أفعال'],
+    },
+  },
+  {
+    id: 'q-5',
+    type: 'true_false',
+    text: 'The sum of angles in a triangle is 360 degrees.',
+    points: 1,
+    correctAnswer: 'false',
+    metadata: {
+      subject: 'الرياضيات',
+      grade: 'الصف السادس',
+      difficulty: 'easy',
+      tags: ['هندسة', 'مثلثات'],
+    },
+  },
+  // Short answer questions
+  {
+    id: 'q-6',
+    type: 'short_answer',
+    text: 'اذكر ثلاثة من أركان الإسلام.',
+    points: 3,
+    correctAnswer: ['الشهادتان', 'الصلاة', 'الزكاة', 'الصوم', 'الحج'],
+    metadata: {
+      subject: 'التربية الإسلامية',
+      grade: 'الصف السادس',
+      difficulty: 'easy',
+      tags: ['أركان الإسلام'],
+    },
+  },
+  {
+    id: 'q-7',
+    type: 'short_answer',
+    text: 'What is the chemical symbol for water?',
+    points: 2,
+    correctAnswer: 'H2O',
+    metadata: {
+      subject: 'العلوم',
+      grade: 'الصف السابع',
+      difficulty: 'easy',
+      tags: ['كيمياء', 'عناصر'],
+    },
+  },
+  // Essay questions
+  {
+    id: 'q-8',
+    type: 'essay',
+    text: 'اكتب فقرة قصيرة عن أهمية القراءة في حياة الإنسان.',
+    points: 5,
+    metadata: {
+      subject: 'اللغة العربية',
+      grade: 'الصف السابع',
+      difficulty: 'hard',
+      tags: ['تعبير', 'كتابة'],
+    },
+  },
+  {
+    id: 'q-9',
+    type: 'essay',
+    text: 'Describe the water cycle in your own words.',
+    points: 5,
+    metadata: {
+      subject: 'العلوم',
+      grade: 'الصف السادس',
+      difficulty: 'medium',
+      tags: ['دورة الماء', 'بيئة'],
+    },
+  },
+  // Matching questions
+  {
+    id: 'q-10',
+    type: 'matching',
+    text: 'طابق بين الكلمة ومعناها:',
+    points: 4,
+    matchingPairs: [
+      { left: 'الشمس', right: 'نجم' },
+      { left: 'القمر', right: 'قمر طبيعي' },
+      { left: 'الأرض', right: 'كوكب' },
+      { left: 'المجرة', right: 'تجمع نجوم' },
+    ],
+    metadata: {
+      subject: 'العلوم',
+      grade: 'الصف السادس',
+      difficulty: 'medium',
+      tags: ['فلك', 'مصطلحات'],
+    },
+  },
+];
+
+
+// === Exams ===
+
+export const mockExams: Exam[] = [
+  {
+    id: 'exam-1',
+    title: 'اختبار النحو - الوحدة الأولى',
+    subject: 'اللغة العربية',
+    grade: 'الصف السادس',
+    teacherId: 'teacher-1',
+    duration: 45,
+    instructions: 'أجب عن جميع الأسئلة. لا يُسمح باستخدام الكتاب.',
+    questions: [mockQuestions[0], mockQuestions[3], mockQuestions[5], mockQuestions[7]],
+    startDate: '2025-01-15T08:00:00Z',
+    endDate: '2025-01-15T23:59:00Z',
+    status: 'published',
+    assignedTo: { type: 'grade', grade: 'الصف السادس' },
+    totalPoints: 11,
+    createdAt: '2025-01-10T10:00:00Z',
+  },
+  {
+    id: 'exam-2',
+    title: 'Math Quiz - Multiplication & Geometry',
+    subject: 'الرياضيات',
+    grade: 'الصف السادس',
+    teacherId: 'teacher-2',
+    duration: 30,
+    instructions: 'Answer all questions. Show your work where applicable.',
+    questions: [mockQuestions[1], mockQuestions[4], mockQuestions[9]],
+    startDate: '2025-01-20T08:00:00Z',
+    endDate: '2025-01-20T23:59:00Z',
+    status: 'published',
+    assignedTo: { type: 'all' },
+    totalPoints: 7,
+    createdAt: '2025-01-14T14:00:00Z',
+  },
+  {
+    id: 'exam-3',
+    title: 'Science Mid-Term - Solar System & Water Cycle',
+    subject: 'العلوم',
+    grade: 'الصف السادس',
+    teacherId: 'teacher-2',
+    duration: 60,
+    instructions: 'Read each question carefully. Essay questions require at least 3 sentences.',
+    questions: [mockQuestions[2], mockQuestions[6], mockQuestions[8], mockQuestions[9]],
+    startDate: '2025-02-01T08:00:00Z',
+    endDate: '2025-02-01T23:59:00Z',
+    status: 'draft',
+    assignedTo: { type: 'students', studentIds: ['student-1', 'student-2', 'student-4'] },
+    totalPoints: 13,
+    createdAt: '2025-01-25T09:00:00Z',
+  },
+];
+
+// === Submissions ===
+
+export const mockSubmissions: Submission[] = [
+  {
+    id: 'sub-1',
+    examId: 'exam-1',
+    studentId: 'student-1',
+    answers: [
+      { questionId: 'q-1', value: 'q1-a', isAutoGraded: true, score: 2 },
+      { questionId: 'q-4', value: 'true', isAutoGraded: true, score: 1 },
+      { questionId: 'q-6', value: 'الشهادتان والصلاة والزكاة' },
+      { questionId: 'q-8', value: 'القراءة هي غذاء العقل والروح. من خلال القراءة نتعلم ونكتسب المعرفة والخبرات. القراءة تفتح آفاقاً جديدة وتوسع مداركنا.' },
+    ],
+    status: 'graded',
+    startedAt: '2025-01-15T09:00:00Z',
+    submittedAt: '2025-01-15T09:35:00Z',
+    totalScore: 9,
+    percentage: 81.8,
+    autoGradedScore: 3,
+    manualGradedScore: 6,
+  },
+  {
+    id: 'sub-2',
+    examId: 'exam-1',
+    studentId: 'student-2',
+    answers: [
+      { questionId: 'q-1', value: 'q1-b', isAutoGraded: true, score: 0 },
+      { questionId: 'q-4', value: 'true', isAutoGraded: true, score: 1 },
+      { questionId: 'q-6', value: 'الصلاة والصوم والحج' },
+      { questionId: 'q-8', value: 'القراءة مهمة جداً في حياتنا اليومية.' },
+    ],
+    status: 'submitted',
+    startedAt: '2025-01-15T10:00:00Z',
+    submittedAt: '2025-01-15T10:40:00Z',
+    autoGradedScore: 1,
+  },
+  {
+    id: 'sub-3',
+    examId: 'exam-2',
+    studentId: 'student-1',
+    answers: [
+      { questionId: 'q-2', value: 'q2-b', isAutoGraded: true, score: 2 },
+      { questionId: 'q-5', value: 'false', isAutoGraded: true, score: 1 },
+    ],
+    status: 'in_progress',
+    startedAt: '2025-01-20T08:30:00Z',
+  },
+  {
+    id: 'sub-4',
+    examId: 'exam-2',
+    studentId: 'student-4',
+    answers: [
+      { questionId: 'q-2', value: 'q2-b', isAutoGraded: true, score: 2 },
+      { questionId: 'q-5', value: 'true', isAutoGraded: true, score: 0 },
+      { questionId: 'q-10', value: ['الشمس-نجم', 'القمر-قمر طبيعي', 'الأرض-كوكب', 'المجرة-تجمع نجوم'] },
+    ],
+    status: 'submitted',
+    startedAt: '2025-01-20T09:00:00Z',
+    submittedAt: '2025-01-20T09:25:00Z',
+    autoGradedScore: 2,
+  },
+  {
+    id: 'sub-5',
+    examId: 'exam-1',
+    studentId: 'student-4',
+    answers: [
+      { questionId: 'q-1', value: 'q1-a', isAutoGraded: true, score: 2 },
+      { questionId: 'q-4', value: 'false', isAutoGraded: true, score: 0 },
+      { questionId: 'q-6', value: 'الصلاة' },
+      { questionId: 'q-8', value: 'Reading is important for learning new things and understanding the world around us.' },
+    ],
+    status: 'partially_graded',
+    startedAt: '2025-01-15T11:00:00Z',
+    submittedAt: '2025-01-15T11:30:00Z',
+    autoGradedScore: 2,
+    manualGradedScore: 2,
+    totalScore: 4,
+    percentage: 36.4,
+  },
+];
+
+
+// === Homework ===
+
+export const mockHomework: Homework[] = [
+  {
+    id: 'hw-1',
+    title: 'تلخيص قصة قصيرة',
+    description: 'اقرأ القصة المرفقة ولخصها في صفحة واحدة مع ذكر الشخصيات الرئيسية والأحداث المهمة.',
+    teacherId: 'teacher-1',
+    grade: 'الصف السادس',
+    subject: 'اللغة العربية',
+    dueDate: '2025-01-25T23:59:00Z',
+    fileTypeRequirements: 'PDF أو Google Doc',
+    createdAt: '2025-01-18T08:00:00Z',
+  },
+  {
+    id: 'hw-2',
+    title: 'Math Problem Set - Chapter 5',
+    description: 'Solve problems 1-20 from Chapter 5. Show all work clearly.',
+    teacherId: 'teacher-2',
+    grade: 'الصف السادس',
+    subject: 'الرياضيات',
+    dueDate: '2025-01-22T23:59:00Z',
+    fileTypeRequirements: 'PDF or photo of handwritten work',
+    createdAt: '2025-01-15T10:00:00Z',
+  },
+  {
+    id: 'hw-3',
+    title: 'English Essay - My Favorite Book',
+    description: 'Write a 200-word essay about your favorite book. Include the title, author, and why you like it.',
+    teacherId: 'teacher-3',
+    grade: 'الصف السابع',
+    subject: 'English',
+    dueDate: '2025-01-28T23:59:00Z',
+    fileTypeRequirements: 'Google Doc',
+    createdAt: '2025-01-20T12:00:00Z',
+  },
+];
+
+// === Homework Submissions ===
+
+export const mockHomeworkSubmissions: HomeworkSubmission[] = [
+  {
+    id: 'hwsub-1',
+    homeworkId: 'hw-1',
+    studentId: 'student-1',
+    googleDriveLink: 'https://docs.google.com/document/d/1abc123/edit',
+    submittedAt: '2025-01-24T18:30:00Z',
+    isLate: false,
+    status: 'reviewed',
+    feedback: 'عمل ممتاز! التلخيص شامل ومنظم.',
+  },
+  {
+    id: 'hwsub-2',
+    homeworkId: 'hw-1',
+    studentId: 'student-2',
+    googleDriveLink: 'https://drive.google.com/file/d/2def456/view',
+    submittedAt: '2025-01-26T10:00:00Z',
+    isLate: true,
+    status: 'submitted',
+  },
+  {
+    id: 'hwsub-3',
+    homeworkId: 'hw-2',
+    studentId: 'student-1',
+    googleDriveLink: 'https://drive.google.com/file/d/3ghi789/view',
+    submittedAt: '2025-01-21T20:00:00Z',
+    isLate: false,
+    status: 'reviewed',
+    feedback: 'Good work! Minor errors in problems 15 and 18.',
+  },
+  {
+    id: 'hwsub-4',
+    homeworkId: 'hw-2',
+    studentId: 'student-4',
+    googleDriveLink: 'https://docs.google.com/document/d/4jkl012/edit',
+    submittedAt: '2025-01-22T22:30:00Z',
+    isLate: false,
+    status: 'submitted',
+  },
+  {
+    id: 'hwsub-5',
+    homeworkId: 'hw-3',
+    studentId: 'student-3',
+    googleDriveLink: 'https://docs.google.com/document/d/5mno345/edit',
+    submittedAt: '2025-01-27T15:00:00Z',
+    isLate: false,
+    status: 'submitted',
+  },
+];
+
+// === Reports ===
+
+export const mockReports: Report[] = [
+  {
+    id: 'report-1',
+    studentId: 'student-1',
+    teacherId: 'teacher-1',
+    subject: 'اللغة العربية',
+    period: 'monthly',
+    periodStart: '2025-01-01',
+    periodEnd: '2025-01-31',
+    averageScore: 85,
+    attendanceSummary: { totalSessions: 12, present: 11, absent: 0, late: 1 },
+    teacherComments: 'طالب مجتهد ومتميز. يحتاج إلى تحسين مهارات الكتابة الإبداعية.',
+    createdAt: '2025-02-01T08:00:00Z',
+  },
+  {
+    id: 'report-2',
+    studentId: 'student-1',
+    teacherId: 'teacher-2',
+    subject: 'الرياضيات',
+    period: 'monthly',
+    periodStart: '2025-01-01',
+    periodEnd: '2025-01-31',
+    averageScore: 92,
+    attendanceSummary: { totalSessions: 12, present: 12, absent: 0, late: 0 },
+    teacherComments: 'أداء ممتاز في الرياضيات. يُظهر فهماً عميقاً للمفاهيم.',
+    createdAt: '2025-02-01T09:00:00Z',
+  },
+  {
+    id: 'report-3',
+    studentId: 'student-2',
+    teacherId: 'teacher-1',
+    subject: 'اللغة العربية',
+    period: 'weekly',
+    periodStart: '2025-01-20',
+    periodEnd: '2025-01-26',
+    averageScore: 72,
+    attendanceSummary: { totalSessions: 3, present: 2, absent: 1, late: 0 },
+    teacherComments: 'تحتاج نورة إلى مزيد من التركيز في الحصة. الغياب يؤثر على مستواها.',
+    createdAt: '2025-01-27T08:00:00Z',
+  },
+  {
+    id: 'report-4',
+    studentId: 'student-4',
+    teacherId: 'teacher-2',
+    subject: 'الرياضيات',
+    period: 'term',
+    periodStart: '2024-09-01',
+    periodEnd: '2024-12-31',
+    averageScore: 78,
+    attendanceSummary: { totalSessions: 48, present: 44, absent: 2, late: 2 },
+    teacherComments: 'Amir shows good progress in mathematics. Needs to practice word problems more.',
+    createdAt: '2025-01-05T10:00:00Z',
+  },
+];
+
+
+// === Notifications ===
+
+export const mockNotifications: Notification[] = [
+  {
+    id: 'notif-1',
+    userId: 'student-1',
+    type: 'exam_published',
+    title: 'اختبار جديد متاح',
+    body: 'تم نشر اختبار النحو - الوحدة الأولى. الموعد: 15 يناير.',
+    link: '/academy/student/exams',
+    isRead: false,
+    createdAt: '2025-01-10T10:30:00Z',
+  },
+  {
+    id: 'notif-2',
+    userId: 'student-1',
+    type: 'exam_graded',
+    title: 'تم تصحيح اختبارك',
+    body: 'تم تصحيح اختبار النحو - الوحدة الأولى. درجتك: 9/11',
+    link: '/academy/student/exams/history',
+    isRead: true,
+    createdAt: '2025-01-16T14:00:00Z',
+  },
+  {
+    id: 'notif-3',
+    userId: 'student-2',
+    type: 'homework_reminder',
+    title: 'تذكير بالواجب',
+    body: 'موعد تسليم واجب "تلخيص قصة قصيرة" غداً.',
+    link: '/academy/student/homework',
+    isRead: false,
+    createdAt: '2025-01-24T08:00:00Z',
+  },
+  {
+    id: 'notif-4',
+    userId: 'parent-1',
+    type: 'report_generated',
+    title: 'تقرير شهري جديد',
+    body: 'تم إصدار التقرير الشهري لـ عبدالله في مادة اللغة العربية.',
+    link: '/academy/parent/reports',
+    isRead: false,
+    createdAt: '2025-02-01T08:30:00Z',
+  },
+  {
+    id: 'notif-5',
+    userId: 'parent-1',
+    type: 'attendance_alert',
+    title: 'تنبيه حضور',
+    body: 'تغيّب محمد عن حصة الرياضيات اليوم.',
+    link: '/academy/parent/reports',
+    isRead: false,
+    createdAt: '2025-01-22T12:00:00Z',
+  },
+  {
+    id: 'notif-6',
+    userId: 'teacher-1',
+    type: 'exam_published',
+    title: 'تم نشر الاختبار بنجاح',
+    body: 'تم نشر اختبار النحو - الوحدة الأولى لطلاب الصف السادس.',
+    link: '/academy/teacher/exams',
+    isRead: true,
+    createdAt: '2025-01-10T10:05:00Z',
+  },
+  {
+    id: 'notif-7',
+    userId: 'student-4',
+    type: 'exam_graded',
+    title: 'Exam Graded',
+    body: 'Your Arabic Grammar exam has been partially graded. Score so far: 4/11',
+    link: '/academy/student/exams/history',
+    isRead: false,
+    createdAt: '2025-01-17T09:00:00Z',
+  },
+];
+
+// === Attendance Records ===
+
+export const mockAttendanceRecords: AttendanceRecord[] = [
+  // Student 1 - mostly present
+  {
+    id: 'att-1',
+    studentId: 'student-1',
+    teacherId: 'teacher-1',
+    date: '2025-01-20',
+    session: 'اللغة العربية - الحصة الأولى',
+    status: 'present',
+  },
+  {
+    id: 'att-2',
+    studentId: 'student-1',
+    teacherId: 'teacher-2',
+    date: '2025-01-20',
+    session: 'الرياضيات - الحصة الثانية',
+    status: 'present',
+  },
+  {
+    id: 'att-3',
+    studentId: 'student-1',
+    teacherId: 'teacher-1',
+    date: '2025-01-21',
+    session: 'اللغة العربية - الحصة الأولى',
+    status: 'late',
+  },
+  // Student 2 - some absences
+  {
+    id: 'att-4',
+    studentId: 'student-2',
+    teacherId: 'teacher-1',
+    date: '2025-01-20',
+    session: 'اللغة العربية - الحصة الأولى',
+    status: 'present',
+  },
+  {
+    id: 'att-5',
+    studentId: 'student-2',
+    teacherId: 'teacher-2',
+    date: '2025-01-20',
+    session: 'الرياضيات - الحصة الثانية',
+    status: 'absent',
+  },
+  {
+    id: 'att-6',
+    studentId: 'student-2',
+    teacherId: 'teacher-1',
+    date: '2025-01-21',
+    session: 'اللغة العربية - الحصة الأولى',
+    status: 'present',
+  },
+  // Student 3
+  {
+    id: 'att-7',
+    studentId: 'student-3',
+    teacherId: 'teacher-1',
+    date: '2025-01-20',
+    session: 'اللغة العربية - الحصة الأولى',
+    status: 'present',
+  },
+  {
+    id: 'att-8',
+    studentId: 'student-3',
+    teacherId: 'teacher-2',
+    date: '2025-01-20',
+    session: 'الرياضيات - الحصة الثانية',
+    status: 'present',
+  },
+  // Student 4
+  {
+    id: 'att-9',
+    studentId: 'student-4',
+    teacherId: 'teacher-2',
+    date: '2025-01-20',
+    session: 'الرياضيات - الحصة الثانية',
+    status: 'present',
+  },
+  {
+    id: 'att-10',
+    studentId: 'student-4',
+    teacherId: 'teacher-3',
+    date: '2025-01-20',
+    session: 'English - Period 3',
+    status: 'late',
+  },
+  // Student 5
+  {
+    id: 'att-11',
+    studentId: 'student-5',
+    teacherId: 'teacher-1',
+    date: '2025-01-20',
+    session: 'اللغة العربية - الحصة الأولى',
+    status: 'present',
+  },
+  {
+    id: 'att-12',
+    studentId: 'student-5',
+    teacherId: 'teacher-2',
+    date: '2025-01-20',
+    session: 'الرياضيات - الحصة الثانية',
+    status: 'absent',
+  },
+];
+
+// === Schedule Entries ===
+
+export const mockScheduleEntries: ScheduleEntry[] = [
+  // Sunday (0)
+  {
+    id: 'sched-1',
+    dayOfWeek: 0,
+    startTime: '08:00',
+    endTime: '08:45',
+    subject: 'اللغة العربية',
+    teacherId: 'teacher-1',
+    teacherName: 'أحمد محمد العلي',
+    grade: 'الصف السادس',
+    meetingLink: 'https://meet.google.com/abc-defg-hij',
+  },
+  {
+    id: 'sched-2',
+    dayOfWeek: 0,
+    startTime: '09:00',
+    endTime: '09:45',
+    subject: 'الرياضيات',
+    teacherId: 'teacher-2',
+    teacherName: 'فاطمة حسن الشمري',
+    grade: 'الصف السادس',
+    meetingLink: 'https://meet.google.com/klm-nopq-rst',
+  },
+  {
+    id: 'sched-3',
+    dayOfWeek: 0,
+    startTime: '10:00',
+    endTime: '10:45',
+    subject: 'English',
+    teacherId: 'teacher-3',
+    teacherName: 'Sarah Johnson',
+    grade: 'الصف السادس',
+    meetingLink: 'https://meet.google.com/uvw-xyz-123',
+  },
+  // Monday (1)
+  {
+    id: 'sched-4',
+    dayOfWeek: 1,
+    startTime: '08:00',
+    endTime: '08:45',
+    subject: 'العلوم',
+    teacherId: 'teacher-2',
+    teacherName: 'فاطمة حسن الشمري',
+    grade: 'الصف السادس',
+    meetingLink: 'https://meet.google.com/456-789-abc',
+  },
+  {
+    id: 'sched-5',
+    dayOfWeek: 1,
+    startTime: '09:00',
+    endTime: '09:45',
+    subject: 'التربية الإسلامية',
+    teacherId: 'teacher-1',
+    teacherName: 'أحمد محمد العلي',
+    grade: 'الصف السادس',
+    notes: 'مراجعة سورة الملك',
+  },
+  {
+    id: 'sched-6',
+    dayOfWeek: 1,
+    startTime: '10:00',
+    endTime: '10:45',
+    subject: 'الرياضيات',
+    teacherId: 'teacher-2',
+    teacherName: 'فاطمة حسن الشمري',
+    grade: 'الصف السابع',
+    meetingLink: 'https://meet.google.com/def-ghi-jkl',
+  },
+  // Tuesday (2)
+  {
+    id: 'sched-7',
+    dayOfWeek: 2,
+    startTime: '08:00',
+    endTime: '08:45',
+    subject: 'اللغة العربية',
+    teacherId: 'teacher-1',
+    teacherName: 'أحمد محمد العلي',
+    grade: 'الصف السابع',
+    meetingLink: 'https://meet.google.com/mno-pqr-stu',
+  },
+  {
+    id: 'sched-8',
+    dayOfWeek: 2,
+    startTime: '09:00',
+    endTime: '09:45',
+    subject: 'English',
+    teacherId: 'teacher-3',
+    teacherName: 'Sarah Johnson',
+    grade: 'الصف السابع',
+    meetingLink: 'https://meet.google.com/vwx-yza-bcd',
+  },
+  // Wednesday (3)
+  {
+    id: 'sched-9',
+    dayOfWeek: 3,
+    startTime: '08:00',
+    endTime: '08:45',
+    subject: 'الرياضيات',
+    teacherId: 'teacher-2',
+    teacherName: 'فاطمة حسن الشمري',
+    grade: 'الصف السادس',
+    meetingLink: 'https://meet.google.com/efg-hij-klm',
+  },
+  {
+    id: 'sched-10',
+    dayOfWeek: 3,
+    startTime: '09:00',
+    endTime: '09:45',
+    subject: 'العلوم',
+    teacherId: 'teacher-2',
+    teacherName: 'فاطمة حسن الشمري',
+    grade: 'الصف السابع',
+    notes: 'تجربة عملية - دورة الماء',
+  },
+  // Thursday (4)
+  {
+    id: 'sched-11',
+    dayOfWeek: 4,
+    startTime: '08:00',
+    endTime: '08:45',
+    subject: 'اللغة العربية',
+    teacherId: 'teacher-1',
+    teacherName: 'أحمد محمد العلي',
+    grade: 'الصف السادس',
+    notes: 'اختبار قصير - إملاء',
+  },
+  {
+    id: 'sched-12',
+    dayOfWeek: 4,
+    startTime: '09:00',
+    endTime: '09:45',
+    subject: 'English',
+    teacherId: 'teacher-3',
+    teacherName: 'Sarah Johnson',
+    grade: 'الصف السادس',
+    meetingLink: 'https://meet.google.com/nop-qrs-tuv',
+  },
+];
+
+// === Exported Questions (for question bank) ===
+
+export const mockQuestionBank: Question[] = mockQuestions;
