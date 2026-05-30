@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useLang } from "../../i18n/LangContext";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft } from "lucide-react";
@@ -22,6 +23,14 @@ const gradesData = [
 ];
 
 export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#fcf9fe]" />}>
+      <ProductsContent />
+    </Suspense>
+  );
+}
+
+function ProductsContent() {
   const { lang, isRTL } = useLang();
   const searchParams = useSearchParams();
   const stage = searchParams?.get("stage");
@@ -40,7 +49,7 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-[#fcf9fe] text-[#22122c] font-sans pb-20">
       
       {/* Header */}
-      <AcademyNavbar inverted={false} />
+      <AcademyNavbar />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">

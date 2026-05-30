@@ -1,16 +1,21 @@
+"use client";
 import React from 'react';
+import dynamic from 'next/dynamic';
 import AcademyNavbar from "./AcademyNavbar";
 import KodlandHero from "./KodlandHero";
 import InterestsSection from "./InterestsSection";
+import WhyMajdFeatures from "./WhyMajdFeatures";
+import SubjectsSection from "./SubjectsSection";
 import StatsAndPathsSection from "./StatsAndPathsSection";
 import TrialStepsSection from "./TrialStepsSection";
-import PremiumPackagesHero from "./PremiumPackagesHero";
-import StudentTestimonials from "./StudentTestimonials";
-import KodlandFooter from "./KodlandFooter";
-import FloatingWhatsApp from "./FloatingWhatsApp";
-import FAQSection from "./FAQSection";
 import PackagesSection from "./PackagesSection";
-import GuaranteesSection from "./GuaranteesSection";
+import FAQSection from "./FAQSection";
+import KodlandFooter from "./KodlandFooter";
+
+// Below-fold and non-critical components loaded dynamically
+const GuaranteesSection = dynamic(() => import("./GuaranteesSection"), { ssr: false });
+const StudentTestimonials = dynamic(() => import("./StudentTestimonials"), { ssr: false });
+const FloatingWhatsApp = dynamic(() => import("./FloatingWhatsApp"), { ssr: false });
 
 type Locale = "ar" | "en";
 
@@ -21,19 +26,18 @@ export default function AcademyLanding2({ locale }: { locale: Locale }) {
     <div dir={isArabic ? "rtl" : "ltr"} className="min-h-screen bg-white text-[#262626] font-sans flex flex-col relative">
       <AcademyNavbar />
       
-      <main className="flex-1">
+      <main id="main-content" role="main" className="flex-1">
         <KodlandHero />
         <InterestsSection />
+        <WhyMajdFeatures />
+        <SubjectsSection />
         <StatsAndPathsSection />
         <TrialStepsSection />
         <PackagesSection />
-        <GuaranteesSection />
         <FAQSection />
+        <GuaranteesSection />
         <StudentTestimonials />
       </main>
-
-      {/* ═══ HIDDEN SECTIONS — To be re-enabled later ═══ */}
-      {/* <PremiumPackagesHero /> */}
 
       <KodlandFooter />
       <FloatingWhatsApp />

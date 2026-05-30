@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useLang } from "../../../i18n/LangContext";
 import { getTransactions, getTransactionDetails } from "../../../../lib/api";
 import { useSearchParams } from "next/navigation";
@@ -7,6 +7,14 @@ import { useSearchParams } from "next/navigation";
 const TYPES = ["deposit", "order"] as const;
 
 export default function TransactionsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <TransactionsContent />
+    </Suspense>
+  );
+}
+
+function TransactionsContent() {
   const { isRTL, lang } = useLang();
   const searchParams = useSearchParams();
   const initialFilter = searchParams?.get("filter") === "order" ? "order" : "deposit";

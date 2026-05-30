@@ -1,10 +1,46 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useLandingContent } from "./useLandingContent";
+
+const stageThemes = [
+  {
+    bgImage: "https://cdn.kodland.org/main-site-v2/bg-blue.png",
+    color: "#498bff",
+    tagColors: ["#ef5da8", "#ff763d", "#498bff"],
+    kidImage: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+  },
+  {
+    bgImage: "https://cdn.kodland.org/main-site-v2/bg-pink.png",
+    color: "#ec4899",
+    tagColors: ["#ec4899", "#f97316", "#8b5cf6"],
+    kidImage: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+  },
+  {
+    bgImage: "https://cdn.kodland.org/main-site-v2/bg-orange.png",
+    color: "#f97316",
+    tagColors: ["#f97316", "#ef5da8", "#498bff"],
+    kidImage: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+  },
+];
 
 export default function StatsAndPathsSection() {
   const content = useLandingContent();
   const [activeTab, setActiveTab] = useState(0);
+  const currentTheme = stageThemes[activeTab >= 0 ? activeTab : 0];
+  const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [heights, setHeights] = useState<number[]>([]);
+
+  const measureHeights = useCallback(() => {
+    const newHeights = contentRefs.current.map((ref) => {
+      if (!ref) return 0;
+      return ref.scrollHeight;
+    });
+    setHeights(newHeights);
+  }, []);
+
+  useEffect(() => {
+    measureHeights();
+  }, [measureHeights]);
 
   return (
     <section className="py-12 md:py-16 bg-white">
@@ -28,11 +64,11 @@ export default function StatsAndPathsSection() {
           </h2>
         </div>
 
-        {/* Paths Section — Blue card */}
+        {/* Paths Section — Dynamic color card */}
         <div
-          className="rounded-3xl overflow-hidden relative"
+          className="rounded-3xl overflow-hidden relative transition-all duration-500"
           style={{
-            backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-blue.png')",
+            backgroundImage: `url('${currentTheme.bgImage}')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -64,10 +100,10 @@ export default function StatsAndPathsSection() {
                         className="w-full flex items-center justify-between py-3 text-right"
                       >
                         <span
-                          className="font-extrabold"
+                          className="font-extrabold transition-colors duration-300"
                           style={{
                             fontSize: "22px",
-                            color: activeTab === i ? "#498bff" : "#262626",
+                            color: activeTab === i ? currentTheme.color : "#262626",
                           }}
                         >
                           {path.age}
@@ -75,7 +111,7 @@ export default function StatsAndPathsSection() {
                         <svg
                           className={`w-5 h-5 transition-transform duration-300 ${activeTab === i ? "rotate-180" : ""}`}
                           fill="none"
-                          stroke={activeTab === i ? "#498bff" : "#262626"}
+                          stroke={activeTab === i ? currentTheme.color : "#262626"}
                           viewBox="0 0 24 24"
                           strokeWidth={2}
                         >
@@ -85,9 +121,10 @@ export default function StatsAndPathsSection() {
 
                       {/* Content */}
                       <div
-                        className="overflow-hidden transition-all duration-300"
+                        ref={(el) => { contentRefs.current[i] = el; }}
+                        className="overflow-hidden transition-[max-height,opacity] duration-400 ease-[cubic-bezier(0,0,0.2,1)]"
                         style={{
-                          maxHeight: activeTab === i ? "200px" : "0px",
+                          maxHeight: activeTab === i ? `${heights[i] || 200}px` : "0px",
                           opacity: activeTab === i ? 1 : 0,
                         }}
                       >
@@ -104,7 +141,8 @@ export default function StatsAndPathsSection() {
                         </p>
                         <a
                           href="#packages"
-                          className="text-[14px] font-bold text-[#498bff] hover:underline"
+                          className="text-[14px] font-bold hover:underline pb-4 inline-block"
+                          style={{ color: currentTheme.color }}
                         >
                           {content.paths.link}
                         </a>
@@ -119,22 +157,55 @@ export default function StatsAndPathsSection() {
 
             {/* Right side — Kid image + floating tags */}
             <div className="w-full md:w-[55%] relative flex items-end justify-center min-h-[300px] md:min-h-0">
-              {/* Floating tags */}
-              <div className="absolute top-[15%] sm:top-[20%] right-[5%] sm:right-[10%] z-10 bg-[#ef5da8] text-white text-[11px] sm:text-[13px] font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md flex items-center gap-1.5">
-                <span>⏱</span> {content.paths.items[activeTab >= 0 ? activeTab : 0].tags[0]}
+              {/* Floating pills — glassmorphism style */}
+              <div
+                className="absolute top-[12%] sm:top-[16%] right-[3%] sm:right-[8%] z-10 text-white font-extrabold px-5 sm:px-6 py-3 sm:py-3.5 rounded-[36px] flex items-center gap-2.5 transition-all duration-500"
+                style={{
+                  background: `linear-gradient(135deg, ${currentTheme.tagColors[0]}cc, ${currentTheme.tagColors[0]})`,
+                  fontSize: "clamp(16px, 2vw, 20px)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: "0.95",
+                  boxShadow: `0 8px 32px ${currentTheme.tagColors[0]}40, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1)`,
+                  border: "1px solid rgba(255,255,255,0.25)",
+                }}
+              >
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="white" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>{content.paths.items[activeTab >= 0 ? activeTab : 0].tags[0]}</span>
               </div>
-              <div className="absolute top-[45%] sm:top-[50%] right-[2%] sm:right-[5%] z-10 bg-[#ff763d] text-white text-[11px] sm:text-[13px] font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md flex items-center gap-1.5">
-                <span>👥</span> {content.paths.items[activeTab >= 0 ? activeTab : 0].tags[1]}
+              <div
+                className="absolute top-[45%] sm:top-[50%] right-[0%] sm:right-[3%] z-10 text-white font-extrabold px-5 sm:px-6 py-3 sm:py-3.5 rounded-[36px] flex items-center gap-2.5 transition-all duration-500"
+                style={{
+                  background: `linear-gradient(135deg, ${currentTheme.tagColors[1]}cc, ${currentTheme.tagColors[1]})`,
+                  fontSize: "clamp(16px, 2vw, 20px)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: "0.95",
+                  boxShadow: `0 8px 32px ${currentTheme.tagColors[1]}40, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1)`,
+                  border: "1px solid rgba(255,255,255,0.25)",
+                }}
+              >
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="white" strokeWidth={2} viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>{content.paths.items[activeTab >= 0 ? activeTab : 0].tags[1]}</span>
               </div>
-              <div className="absolute bottom-[10%] sm:bottom-[15%] left-[10%] sm:left-[15%] z-10 bg-[#498bff] text-white text-[11px] sm:text-[13px] font-bold px-3 sm:px-4 py-1.5 sm:py-2 rounded-full shadow-md flex items-center gap-1.5">
-                <span>💡</span> {content.paths.items[activeTab >= 0 ? activeTab : 0].tags[2]}
+              <div
+                className="absolute bottom-[12%] sm:bottom-[18%] left-[5%] sm:left-[12%] z-10 text-white font-extrabold px-5 sm:px-6 py-3 sm:py-3.5 rounded-[36px] flex items-center gap-2.5 transition-all duration-500"
+                style={{
+                  background: `linear-gradient(135deg, ${currentTheme.tagColors[2]}cc, ${currentTheme.tagColors[2]})`,
+                  fontSize: "clamp(16px, 2vw, 20px)",
+                  letterSpacing: "-0.02em",
+                  lineHeight: "0.95",
+                  boxShadow: `0 8px 32px ${currentTheme.tagColors[2]}40, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1)`,
+                  border: "1px solid rgba(255,255,255,0.25)",
+                }}
+              >
+                <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="white" strokeWidth={2} viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 12 18.469a3.374 3.374 0 0 0-1.988-.832l-.548-.547z"/></svg>
+                <span>{content.paths.items[activeTab >= 0 ? activeTab : 0].tags[2]}</span>
               </div>
 
               {/* Kid image */}
               <img
-                src="https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp"
+                src={currentTheme.kidImage}
                 alt=""
-                className="relative z-0 h-[280px] sm:h-[350px] md:h-[480px] w-auto object-contain object-bottom"
+                className="relative z-0 h-[280px] sm:h-[350px] md:h-[480px] w-auto object-contain object-bottom transition-opacity duration-500"
               />
             </div>
           </div>

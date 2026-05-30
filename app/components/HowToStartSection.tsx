@@ -1,5 +1,7 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { UserPlus, BookMarked, CalendarCheck, Rocket, ArrowLeftCircle } from "lucide-react";
+import BookingModal from "./BookingModal";
 
 const stepsRight = [
   {
@@ -36,7 +38,10 @@ const stepsLeft = [
 ];
 
 export default function HowToStartSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
+    <>
     <section className="py-16 md:py-[100px] bg-white relative overflow-hidden" dir="rtl">
       {/* Subtle background grid */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "linear-gradient(#F0548B 1px, transparent 1px), linear-gradient(90deg, #F0548B 1px, transparent 1px)", backgroundSize: "50px 50px" }}></div>
@@ -141,7 +146,8 @@ export default function HowToStartSection() {
         {/* CTA */}
         <div className="flex justify-center mt-14">
           <button
-            className="flex items-center gap-2 text-white font-bold text-[15px] px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1"
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-2 text-white font-bold text-[15px] px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1 cursor-pointer"
             style={{ background: "#F0548B", boxShadow: "0 8px 25px rgba(240,84,139,0.3)" }}
           >
             <ArrowLeftCircle className="w-5 h-5" strokeWidth={2} />
@@ -151,5 +157,7 @@ export default function HowToStartSection() {
 
       </div>
     </section>
+    <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 }

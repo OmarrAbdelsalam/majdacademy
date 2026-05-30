@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useLang } from "../i18n/LangContext";
 import { Menu, X, ChevronDown, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import BookingModal from "./BookingModal";
 const content = {
   ar: {
     brand: "مَجْد",
@@ -14,18 +14,17 @@ const content = {
     langLabel: "AR",
     otherLangLabel: "EN",
     nav: [
-      { label: "المراحل الدراسية", href: "#grades" },
-      { label: "الباقات", href: "#packages" },
+      { label: "المراحل الدراسية", href: "/ar#grades" },
+      { label: "الباقات", href: "/ar#packages" },
       { label: "تعلّم العربية", href: "/ar/learn-arabic" },
     ],
     about: {
       label: "عن مَجْد",
       items: [
-        { label: "من نحن", href: "#about" },
-        { label: "المميزات", href: "#features" },
-        { label: "الأسئلة الشائعة", href: "#faq" },
-        { label: "آراء أولياء الأمور", href: "#testimonials" },
-        { label: "ضماناتنا", href: "#guarantees" },
+        { label: "من نحن", href: "/ar/about" },
+        { label: "الأسئلة الشائعة", href: "/ar#faq" },
+        { label: "آراء أولياء الأمور", href: "/ar#testimonials" },
+        { label: "ضماناتنا", href: "/ar#guarantees" },
       ],
     },
   },
@@ -36,18 +35,17 @@ const content = {
     langLabel: "EN",
     otherLangLabel: "AR",
     nav: [
-      { label: "Grade Levels", href: "#grades" },
-      { label: "Packages", href: "#packages" },
+      { label: "Grade Levels", href: "/en#grades" },
+      { label: "Packages", href: "/en#packages" },
       { label: "Learn Arabic", href: "/en/learn-arabic" },
     ],
     about: {
       label: "About Majd",
       items: [
-        { label: "Who We Are", href: "#about" },
-        { label: "Features", href: "#features" },
-        { label: "FAQ", href: "#faq" },
-        { label: "Parent Reviews", href: "#testimonials" },
-        { label: "Our Guarantees", href: "#guarantees" },
+        { label: "Who We Are", href: "/en/about" },
+        { label: "FAQ", href: "/en#faq" },
+        { label: "Parent Reviews", href: "/en#testimonials" },
+        { label: "Our Guarantees", href: "/en#guarantees" },
       ],
     },
   },
@@ -62,6 +60,7 @@ export default function AcademyNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const aboutRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -85,6 +84,7 @@ export default function AcademyNavbar() {
   return (
     <>
       <header
+        role="banner"
         className={`fixed z-[100] transition-all duration-500 ease-in-out overflow-visible ${
           isScrolled
             ? "top-2 left-2 right-2 sm:top-4 sm:left-4 sm:right-4 md:left-10 md:right-10 bg-white/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.08)] rounded-2xl sm:rounded-full"
@@ -122,12 +122,12 @@ export default function AcademyNavbar() {
             </Link>
 
             {/* Desktop Nav Links */}
-            <nav className="hidden md:flex items-center gap-1">
+            <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
               {c.nav.map((item, i) => (
                 <a
                   key={i}
                   href={item.href}
-                  className="inline-flex items-center rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium text-[#262626]/70 hover:bg-[#262626]/5 hover:text-[#262626] transition-all duration-200 whitespace-nowrap"
+                  className="inline-flex items-center rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626] transition-all duration-200 whitespace-nowrap"
                   style={{ letterSpacing: "-0.01em" }}
                 >
                   {item.label}
@@ -138,7 +138,9 @@ export default function AcademyNavbar() {
               <div ref={aboutRef} className="relative">
                 <button
                   onClick={() => setAboutOpen(!aboutOpen)}
-                  className="inline-flex items-center gap-1 rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium text-[#262626]/70 hover:bg-[#262626]/5 hover:text-[#262626] transition-all duration-200 whitespace-nowrap"
+                  aria-expanded={aboutOpen}
+                  aria-haspopup="true"
+                  className="inline-flex items-center gap-1 rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626] transition-all duration-200 whitespace-nowrap"
                   style={{ letterSpacing: "-0.01em" }}
                 >
                   {c.about.label}
@@ -152,6 +154,7 @@ export default function AcademyNavbar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
+                      role="menu"
                       className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[200px]"
                       style={{ [isArabic ? "right" : "left"]: 0 }}
                     >
@@ -159,8 +162,9 @@ export default function AcademyNavbar() {
                         <a
                           key={i}
                           href={item.href}
+                          role="menuitem"
                           onClick={() => setAboutOpen(false)}
-                          className="block px-5 py-3 text-[15px] font-medium text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626] transition-colors"
+                          className="block px-5 py-3 text-[15px] font-medium text-[#262626]/90 hover:bg-[#262626]/5 hover:text-[#262626] transition-colors"
                         >
                           {item.label}
                         </a>
@@ -202,9 +206,9 @@ export default function AcademyNavbar() {
               {c.login}
             </Link>
 
-            <Link
-              href="#packages"
-              className="hidden sm:inline-flex items-center justify-center rounded-full bg-[#262626] text-white hover:bg-[#3a3a3a] hover:scale-[1.02] transition-all duration-300"
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="hidden sm:inline-flex items-center justify-center rounded-full bg-[#262626] text-white hover:bg-[#3a3a3a] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
               style={{
                 height: "48px",
                 padding: "0 24px",
@@ -215,12 +219,14 @@ export default function AcademyNavbar() {
               }}
             >
               {c.freeLesson}
-            </Link>
+            </button>
 
             <button
               className="md:hidden relative z-50 p-2 rounded-lg text-[#262626]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle Menu"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu-panel"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -240,6 +246,9 @@ export default function AcademyNavbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
+            id="mobile-menu-panel"
+            role="navigation"
+            aria-label="Mobile navigation"
             className="fixed inset-0 z-[90] bg-white pt-[80px] px-6 md:hidden flex flex-col overflow-y-auto"
             dir={isArabic ? "rtl" : "ltr"}
           >
@@ -298,18 +307,19 @@ export default function AcademyNavbar() {
                 >
                   {c.login}
                 </Link>
-                <Link
-                  href="#packages"
-                  onClick={() => setMobileMenuOpen(false)}
+                <button
+                  onClick={() => { setMobileMenuOpen(false); setIsModalOpen(true); }}
                   className="flex items-center justify-center w-full py-3.5 rounded-full text-[16px] font-bold bg-[#262626] text-white active:scale-95 transition-transform"
                 >
                   {c.freeLesson}
-                </Link>
+                </button>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }

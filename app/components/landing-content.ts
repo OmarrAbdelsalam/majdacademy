@@ -109,7 +109,7 @@ export const landingContent = {
     footer: {
       cta: "حصة مجانية",
       col1Title: "الأكاديمية",
-      col1Links: ["عن مَجْد", "طريقتنا", "المعلمين", "الأسئلة الشائعة", "تواصل معنا"],
+      col1Links: ["عن مَجْد", "طريقتنا", "المعلمين", "انضم كمعلم", "الأسئلة الشائعة", "تواصل معنا"],
       col2Title: "المواد",
       col2Links: ["اللغة العربية", "التربية الإسلامية", "عربي لغير الناطقين"],
       col3Title: "تواصل معنا",
@@ -232,7 +232,7 @@ export const landingContent = {
     footer: {
       cta: "Free Lesson",
       col1Title: "Academy",
-      col1Links: ["About Majd", "Our Method", "Teachers", "FAQ", "Contact Us"],
+      col1Links: ["About Majd", "Our Method", "Teachers", "Teach with Us", "FAQ", "Contact Us"],
       col2Title: "Subjects",
       col2Links: ["Arabic Language", "Islamic Education", "Arabic for Non-Speakers"],
       col3Title: "Contact Us",

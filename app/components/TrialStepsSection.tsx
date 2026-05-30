@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLandingContent } from "./useLandingContent";
-
+import BookingModal from "./BookingModal";
 const stepImages = [
   "https://cdn.kodland.org/main-site-v2/en/main/step-2-en.png",
   "https://cdn.kodland.org/main-site-v2/en/main/step-2-en.png",
@@ -12,6 +12,7 @@ const stepImages = [
 export default function TrialStepsSection() {
   const content = useLandingContent();
   const [activeStep, setActiveStep] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <section className="py-12 md:py-16 bg-white">
@@ -99,13 +100,13 @@ export default function TrialStepsSection() {
               </motion.div>
             </AnimatePresence>
 
-            <a
-              href="#packages"
+            <button
+              onClick={() => setIsModalOpen(true)}
               className="inline-flex items-center justify-center rounded-[60px] bg-[#262626] text-white hover:bg-[#3a3a3a] transition-all duration-300 hover:-translate-y-0.5"
               style={{ padding: "20px 40px", fontSize: "18px", fontWeight: 500 }}
             >
               {content.trial.cta}
-            </a>
+            </button>
 
             {/* Step indicators */}
             <div className="flex items-center gap-3 mt-10">

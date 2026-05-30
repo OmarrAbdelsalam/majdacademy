@@ -10,9 +10,9 @@ export default function StudentTestimonials() {
   const sideItems = content.testimonials.items.filter((_, i) => i !== activeId);
 
   return (
-    <section className="py-12 md:py-16 bg-white overflow-hidden">
+    <section id="testimonials" className="py-12 md:py-16 bg-white overflow-hidden">
       {/* Header */}
-      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 text-center mb-8">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 text-center mb-16">
         <p className="text-[14px] font-medium mb-3" style={{ color: "rgba(38,38,38,0.5)" }}>
           {content.testimonials.subtitle}
         </p>
@@ -44,7 +44,7 @@ export default function StudentTestimonials() {
           <div
             key={i}
             onClick={() => setActiveId(content.testimonials.items.indexOf(item))}
-            className="hidden md:flex flex-1 min-w-0 rounded-2xl p-5 cursor-pointer transition-all duration-500 hover:shadow-lg flex-col border-2 border-transparent hover:border-[#d3ff5f]"
+            className="hidden md:flex flex-1 min-w-0 rounded-[32px] p-5 cursor-pointer transition-all duration-500 hover:shadow-lg flex-col border-2 border-transparent hover:border-[#d3ff5f]"
             style={{ background: "#f8f8f8", minHeight: "400px" }}
           >
             <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center mb-3 shadow-sm">
@@ -110,7 +110,7 @@ export default function StudentTestimonials() {
           <div
             key={i}
             onClick={() => setActiveId(content.testimonials.items.indexOf(item))}
-            className="hidden md:flex flex-1 min-w-0 rounded-2xl p-5 cursor-pointer transition-all duration-500 hover:shadow-lg flex-col border-2 border-transparent hover:border-[#d3ff5f]"
+            className="hidden md:flex flex-1 min-w-0 rounded-[32px] p-5 cursor-pointer transition-all duration-500 hover:shadow-lg flex-col border-2 border-transparent hover:border-[#d3ff5f]"
             style={{ background: "#f8f8f8", minHeight: "400px" }}
           >
             <div className="w-11 h-11 rounded-xl bg-white flex items-center justify-center mb-3 shadow-sm">

@@ -1,15 +1,18 @@
 "use client";
 import React from "react";
 import { useLandingContent } from "./useLandingContent";
+import { useLang } from "../i18n/LangContext";
 
 const cardColors = ["#fff8f0", "#fef0f8", "#eefbf3"];
 const cardImages = ["/icon1.webp", "/icon2.webp", "/icon3.webp"];
 
 export default function InterestsSection() {
   const content = useLandingContent();
+  const { lang } = useLang();
+  const stageLinks = [`/${lang}/stages/primary`, `/${lang}/stages/middle`, `/${lang}/stages/secondary`];
 
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section id="grades" className="py-12 md:py-16 bg-white">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
         {/* Heading */}
         <h2
@@ -72,7 +75,7 @@ export default function InterestsSection() {
                     {item.description}
                   </p>
                   <a
-                    href="#packages"
+                    href={stageLinks[i]}
                     className="inline-flex items-center gap-2 text-[14px] font-bold text-[#262626] bg-[#262626]/5 px-5 py-2.5 rounded-full hover:bg-[#262626] hover:text-white transition-all duration-300"
                   >
                     {item.link}

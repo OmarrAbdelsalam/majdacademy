@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { ArrowLeftCircle, Play } from "lucide-react";
+import BookingModal from "./BookingModal";
 
 export default function LiteratureReviewBanner() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   return (
+    <>
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden" dir="rtl">
       {/* Background Video — full bleed, edge to edge */}
       <div className="absolute inset-0 z-0">
@@ -40,6 +43,7 @@ export default function LiteratureReviewBanner() {
         {/* CTAs */}
         <div className="flex flex-wrap items-center justify-center gap-4">
           <button
+            onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 text-[#1B2D4F] font-bold text-[15px] px-8 py-4 rounded-full transition-all duration-300 hover:-translate-y-1"
             style={{ background: "#FFC843", boxShadow: "0 8px 30px rgba(255,200,67,0.3)" }}
           >
@@ -62,5 +66,7 @@ export default function LiteratureReviewBanner() {
         </svg>
       </div>
     </section>
+    <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 }

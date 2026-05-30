@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLandingContent } from "./useLandingContent";
 import BookingModal from "./BookingModal";
@@ -30,11 +31,14 @@ export default function KodlandHero() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="relative"
         >
-          <img
+          <Image
             src="/boy.png"
             alt=""
+            role="presentation"
+            width={308}
+            height={400}
             className="block"
-            style={{ width: "308px" }}
+            priority
           />
         </motion.div>
       </div>
@@ -47,11 +51,14 @@ export default function KodlandHero() {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="relative"
         >
-          <img
+          <Image
             src="/girl.png"
             alt=""
+            role="presentation"
+            width={220}
+            height={300}
             className="block"
-            style={{ width: "220px" }}
+            priority
           />
         </motion.div>
       </div>
@@ -64,11 +71,13 @@ export default function KodlandHero() {
           transition={{ duration: 0.7, delay: 0.5 }}
           className="relative"
         >
-          <img
+          <Image
             src="https://cdn.kodland.org/main-site-v2/en/main/kid-bottom.png"
             alt=""
+            role="presentation"
+            width={280}
+            height={360}
             className="block"
-            style={{ width: "280px" }}
           />
         </motion.div>
       </div>
@@ -168,15 +177,23 @@ export default function KodlandHero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-12 sm:mt-20 flex items-center justify-center gap-5 sm:gap-8"
         >
-          <img
+          <Image
             src="https://www.moe.gov.ae/Site%20assets/DLS2/images/moe-logo-ar.svg"
             alt=""
+            role="presentation"
+            width={120}
+            height={64}
             className="h-12 sm:h-16 w-auto"
+            unoptimized
           />
-          <img
+          <Image
             src="https://media.zoom.com/images/assets/logo-zoom%402x.png/Zz00MjQ0MDQzNmM2YWUxMWYwYjFmYzBlNzMxY2I1ZWM4YQ=="
             alt=""
+            role="presentation"
+            width={100}
+            height={32}
             className="h-6 sm:h-8 w-auto"
+            unoptimized
           />
         </motion.div>
       </div>

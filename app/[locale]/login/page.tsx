@@ -1,8 +1,9 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useLang } from "../../i18n/LangContext";
+import AcademyNavbar from "../../components/AcademyNavbar";
 import { login, verifyOtp, initCsrf } from "../../../lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -13,7 +14,7 @@ function setCookieToken(token: string) {
 }
 
 function getTokenCookie(): string | undefined {
-  if (typeof document === 'undefined') return undefined;
+  if (typeof document === "undefined") return undefined;
   const match = document.cookie
     .split(";")
     .map((c) => c.trim())
@@ -21,146 +22,24 @@ function getTokenCookie(): string | undefined {
   return match ? decodeURIComponent(match.slice("gct_token=".length)) : undefined;
 }
 
-/* ─── Animated Character ─── */
-function Character({
-  focusedField,
-  lookingAtLogo,
-  smoothPupil,
-}: {
-  focusedField: "none" | "email" | "password";
-  lookingAtLogo: boolean;
-  smoothPupil: { lx: number; ly: number; rx: number; ry: number };
-}) {
-  const hiding = focusedField === "password";
-
+export default function LoginPage() {
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-end pb-8 sm:pb-12">
-
-      {/* ── Left Leg ── */}
-      <svg className="absolute -bottom-[50px] left-[30%] sm:left-[35%] w-14 h-14 overflow-visible z-10" viewBox="0 0 60 60" fill="none">
-        <path d="M 42 0 Q 32 30 15 48" stroke="#22122c" strokeWidth="7" strokeLinecap="round" fill="none" />
-        <ellipse cx="12" cy="50" rx="10" ry="5" fill="#22122c" />
-      </svg>
-
-      {/* ── Right Leg ── */}
-      <svg className="absolute -bottom-[50px] right-[30%] sm:right-[35%] w-14 h-14 overflow-visible z-10" viewBox="0 0 60 60" fill="none">
-        <path d="M 18 0 Q 28 30 45 48" stroke="#22122c" strokeWidth="7" strokeLinecap="round" fill="none" />
-        <ellipse cx="48" cy="50" rx="10" ry="5" fill="#22122c" />
-      </svg>
-
-      {/* ── Face + Arms (same container so arms are relative to face) ── */}
-      <div className="relative flex flex-col items-center z-30">
-        
-        {/* ── Left Hand (positioned relative to face) ── */}
-        <motion.div
-          className="absolute z-40"
-          style={{ top: -10, left: -52 }}
-          animate={hiding
-            ? { y: 6, x: 20, rotate: 25 }
-            : { y: 0, x: 0, rotate: 0 }
-          }
-          transition={{ type: "spring", stiffness: 150, damping: 16 }}
-        >
-          <svg width="60" height="90" viewBox="0 0 60 90" fill="none" className="overflow-visible">
-            {/* Arm */}
-            <path d="M 55 85 Q 40 55 30 35 Q 22 18 18 6" stroke="#22122c" strokeWidth="6.5" strokeLinecap="round" fill="none" />
-            {/* Hand palm */}
-            <circle cx="18" cy="5" r="7" fill="#7B56C5" stroke="#22122c" strokeWidth="3" />
-            {/* Fingers */}
-            <line x1="11" y1="1" x2="6" y2="-6" stroke="#22122c" strokeWidth="3.5" strokeLinecap="round" />
-            <line x1="16" y1="-3" x2="13" y2="-12" stroke="#22122c" strokeWidth="3.5" strokeLinecap="round" />
-            <line x1="22" y1="-3" x2="23" y2="-12" stroke="#22122c" strokeWidth="3.5" strokeLinecap="round" />
-          </svg>
-        </motion.div>
-
-        {/* ── Right Hand (positioned relative to face) ── */}
-        <motion.div
-          className="absolute z-40"
-          style={{ top: -10, right: -52 }}
-          animate={hiding
-            ? { y: 6, x: -20, rotate: -25 }
-            : { y: 0, x: 0, rotate: 0 }
-          }
-          transition={{ type: "spring", stiffness: 150, damping: 16 }}
-        >
-          <svg width="60" height="90" viewBox="0 0 60 90" fill="none" className="overflow-visible">
-            {/* Arm */}
-            <path d="M 5 85 Q 20 55 30 35 Q 38 18 42 6" stroke="#22122c" strokeWidth="6.5" strokeLinecap="round" fill="none" />
-            {/* Hand palm */}
-            <circle cx="42" cy="5" r="7" fill="#7B56C5" stroke="#22122c" strokeWidth="3" />
-            {/* Fingers */}
-            <line x1="49" y1="1" x2="54" y2="-6" stroke="#22122c" strokeWidth="3.5" strokeLinecap="round" />
-            <line x1="44" y1="-3" x2="47" y2="-12" stroke="#22122c" strokeWidth="3.5" strokeLinecap="round" />
-            <line x1="38" y1="-3" x2="37" y2="-12" stroke="#22122c" strokeWidth="3.5" strokeLinecap="round" />
-          </svg>
-        </motion.div>
-
-        {/* Eyes Row */}
-        <div className="flex gap-2 sm:gap-3 mb-2.5">
-          {/* Left Eye */}
-          <motion.div
-            className="w-14 h-16 sm:w-16 sm:h-20 bg-white rounded-[50%] flex items-center justify-center relative overflow-hidden shadow-sm"
-            animate={hiding
-              ? { scaleY: 0.08, scaleX: 1.1 }
-              : { scaleY: 1, scaleX: 1 }
-            }
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <motion.div
-              className="w-6 h-6 sm:w-7 sm:h-7 bg-[#22122c] rounded-full"
-              animate={{
-                x: smoothPupil.lx,
-                y: smoothPupil.ly,
-                opacity: hiding ? 0 : 1,
-              }}
-              transition={{ opacity: { duration: 0.15 } }}
-            />
-          </motion.div>
-          {/* Right Eye */}
-          <motion.div
-            className="w-14 h-16 sm:w-16 sm:h-20 bg-white rounded-[50%] flex items-center justify-center relative overflow-hidden shadow-sm"
-            animate={hiding
-              ? { scaleY: 0.08, scaleX: 1.1 }
-              : { scaleY: 1, scaleX: 1 }
-            }
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
-            <motion.div
-              className="w-6 h-6 sm:w-7 sm:h-7 bg-[#22122c] rounded-full"
-              animate={{
-                x: smoothPupil.rx,
-                y: smoothPupil.ry,
-                opacity: hiding ? 0 : 1,
-              }}
-              transition={{ opacity: { duration: 0.15 } }}
-            />
-          </motion.div>
-        </div>
-
-        {/* Smile */}
-        <motion.svg
-          width="36" height="18" viewBox="0 0 40 20" fill="none" stroke="#22122c" strokeWidth="5" strokeLinecap="round"
-          animate={hiding ? { y: -2, scale: 0.9 } : { y: 0, scale: 1 }}
-          transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        >
-          <path d={hiding ? "M 8 5 Q 20 20 32 5" : "M 5 5 Q 20 22 35 5"} />
-        </motion.svg>
-      </div>
-    </div>
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <LoginContent />
+    </Suspense>
   );
 }
 
-/* ─── Main Page ─── */
-export default function LoginPage() {
+function LoginContent() {
   const { isRTL, lang } = useLang();
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) || lang;
   const searchParams = useSearchParams();
   const rawReturnTo = searchParams?.get("returnTo");
-  const cleanReturnTo = rawReturnTo ? (rawReturnTo.startsWith('/') ? rawReturnTo : `/${rawReturnTo}`) : null;
+  const cleanReturnTo = rawReturnTo ? (rawReturnTo.startsWith("/") ? rawReturnTo : `/${rawReturnTo}`) : null;
   const redirectPath = cleanReturnTo
-    ? (cleanReturnTo.startsWith(`/${locale}`) ? cleanReturnTo : `/${locale}${cleanReturnTo}`)
+    ? cleanReturnTo.startsWith(`/${locale}`) ? cleanReturnTo : `/${locale}${cleanReturnTo}`
     : `/${locale}/dashboard`;
 
   const [phone, setPhone] = useState("");
@@ -168,106 +47,34 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [shakeError, setShakeError] = useState(false);
 
-  // OTP flow state
+  // OTP flow
   const [otpScreen, setOtpScreen] = useState(false);
   const [userId, setUserId] = useState<number | null>(null);
   const [otp, setOtp] = useState("");
 
-  // Interactive Character States
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [focusedField, setFocusedField] = useState<"none" | "email" | "password">("none");
-  const [lookingAtLogo, setLookingAtLogo] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const tr = {
+    title: isRTL ? "تسجيل الدخول" : "Log in",
+    subtitle: isRTL ? "مرحباً بعودتك في أكاديمية مَجْد" : "Welcome back to Majd Academy",
+    emailLabel: isRTL ? "البريد الإلكتروني أو رقم الهاتف" : "Email or phone number",
+    passwordLabel: isRTL ? "كلمة المرور" : "Password",
+    forgot: isRTL ? "نسيت كلمة المرور؟" : "Forgot password?",
+    submit: isRTL ? "تسجيل الدخول" : "Log in",
+    loading: isRTL ? "جارٍ التحميل..." : "Loading...",
+    noAccount: isRTL ? "ما عندك حساب؟" : "Don't have an account?",
+    register: isRTL ? "سجّل الآن" : "Sign up",
+    otpTitle: isRTL ? "أدخل رمز التحقق" : "Enter verification code",
+    otpDesc: isRTL ? "أرسلنا رمز التحقق على بريدك أو هاتفك" : "We sent a verification code to your email or phone",
+    otpLabel: isRTL ? "رمز التحقق" : "Verification code",
+    verify: isRTL ? "تحقق" : "Verify",
+    back: isRTL ? "العودة" : "Back",
+  };
 
-  // Smoothed pupil position
-  const [smoothPupil, setSmoothPupil] = useState({ lx: 0, ly: 0, rx: 0, ry: 0 });
-  const animRef = useRef<number>(0);
-
-  // Redirect if already logged in
   useEffect(() => {
     if (getTokenCookie()) {
       router.push(redirectPath);
     }
   }, [redirectPath, router]);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
-  // Compute raw pupil offset for one eye
-  const getRawPupil = (eyeXOffset: number) => {
-    if (!containerRef.current) return { x: 0, y: 0 };
-    const rect = containerRef.current.getBoundingClientRect();
-
-    const eyeCenterY = rect.bottom - 40;
-    const eyeCenterX = rect.left + rect.width / 2 + eyeXOffset;
-
-    let targetX = mousePos.x;
-    let targetY = mousePos.y;
-
-    if (lookingAtLogo) {
-      targetX = rect.left + rect.width / 2;
-      targetY = rect.top + rect.height * 0.45;
-    } else if (focusedField === "email") {
-      targetX = eyeCenterX;
-      targetY = eyeCenterY + 300;
-    } else if (focusedField === "password") {
-      targetX = eyeCenterX;
-      targetY = eyeCenterY;
-    } else if (targetX === 0 && targetY === 0) {
-      targetX = eyeCenterX;
-      targetY = eyeCenterY;
-    }
-
-    const angle = Math.atan2(targetY - eyeCenterY, targetX - eyeCenterX);
-    const distance = Math.hypot(targetY - eyeCenterY, targetX - eyeCenterX);
-
-    const maxMove = 7;
-    const move = Math.min(maxMove, distance / 20);
-
-    return {
-      x: Math.cos(angle) * move,
-      y: Math.sin(angle) * move,
-    };
-  };
-
-  // Smooth animation loop for pupils
-  useEffect(() => {
-    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-    const smoothness = 0.07;
-
-    const animate = () => {
-      const left = getRawPupil(isRTL ? 32 : -32);
-      const right = getRawPupil(isRTL ? -32 : 32);
-
-      setSmoothPupil((prev) => ({
-        lx: lerp(prev.lx, left.x, smoothness),
-        ly: lerp(prev.ly, left.y, smoothness),
-        rx: lerp(prev.rx, right.x, smoothness),
-        ry: lerp(prev.ry, right.y, smoothness),
-      }));
-
-      animRef.current = requestAnimationFrame(animate);
-    };
-    animRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mousePos, focusedField, lookingAtLogo, isRTL]);
-
-  // Trigger shake on error
-  useEffect(() => {
-    if (error) {
-      setShakeError(true);
-      const t = setTimeout(() => setShakeError(false), 500);
-      return () => clearTimeout(t);
-    }
-  }, [error]);
 
   async function handleLoginSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -278,17 +85,10 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await initCsrf();
-      const body = { user: phone, password };
-      const res = await login(body, locale);
-      if ("success" in res && res.success === false) {
-        setError(res.message ?? null);
-        return;
-      }
+      const res = await login({ user: phone, password }, locale);
+      if ("success" in res && res.success === false) { setError(res.message ?? null); return; }
       const envelope = res as { code: number; data: Record<string, unknown>; message: string };
-      if (envelope.code === 422) {
-        setError(envelope.message);
-        return;
-      }
+      if (envelope.code === 422) { setError(envelope.message); return; }
       const data = envelope.data;
       if (data?.access_token) {
         setCookieToken(data.access_token as string);
@@ -312,15 +112,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const res = await verifyOtp({ id: userId, code: otp }, locale);
-      if ("success" in res && res.success === false) {
-        setError(res.message ?? null);
-        return;
-      }
+      if ("success" in res && res.success === false) { setError(res.message ?? null); return; }
       const envelope = res as { code: number; data: Record<string, unknown>; message: string };
-      if (envelope.code === 422) {
-        setError(envelope.message);
-        return;
-      }
+      if (envelope.code === 422) { setError(envelope.message); return; }
       const data = envelope.data;
       if (data?.access_token) {
         setCookieToken(data.access_token as string);
@@ -333,245 +127,225 @@ export default function LoginPage() {
     }
   }
 
+  const inputCls =
+    "w-full bg-[#f8f9fa] rounded-[32px] px-6 py-4 border border-transparent focus:border-[#ef5da8]/40 focus:bg-white focus:shadow-[0_0_0_3px_rgba(239,93,168,0.08)] transition-all duration-200 text-[15px] font-medium text-[#262626] outline-none placeholder:text-[rgba(38,38,38,0.4)]";
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0, 0, 0.2, 1] as const } },
+  };
+
   return (
-    <div className="min-h-[100dvh] bg-[#EBE5D9] flex flex-col items-center relative overflow-hidden font-sans select-none" dir={isRTL ? "rtl" : "ltr"}>
-
-      {/* Keyframes */}
-      <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          15% { transform: translateX(-6px); }
-          30% { transform: translateX(6px); }
-          45% { transform: translateX(-4px); }
-          60% { transform: translateX(4px); }
-          75% { transform: translateX(-2px); }
-          90% { transform: translateX(2px); }
-        }
-        .shake-anim { animation: shake 0.45s ease-in-out; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner { animation: spin 0.7s linear infinite; }
-      `}</style>
-
-      {/* ── The Giant Character Blob ── */}
+    <>
+      <AcademyNavbar />
       <div
-        ref={containerRef}
-        className="relative w-[180vw] sm:w-[700px] aspect-square bg-[#7B56C5] rounded-[50%] mt-[-95vw] sm:mt-[-350px] shrink-0 z-0"
+        className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 pt-28 pb-12"
+        dir={isRTL ? "rtl" : "ltr"}
+        style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}
       >
-        {/* Text Content inside the Blob */}
-        <div className="absolute bottom-[25%] sm:bottom-[34%] left-1/2 -translate-x-1/2 flex flex-col items-center text-center w-full z-40">
-          <Link href={`/${lang}`}>
-            <h1 className="text-white text-[42px] sm:text-6xl font-black tracking-tight mb-1 hover:scale-105 transition-transform cursor-pointer" style={{ fontFamily: 'var(--font-tajawal)' }}>
-              أكاديمية مَجْد
-            </h1>
-          </Link>
-          <p className="text-white/90 text-[14px] sm:text-[17px] font-semibold tracking-wide">تعلم بمتعة وسهولة</p>
-        </div>
+        <motion.div
+          className="w-full max-w-[440px]"
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+        >
+          {/* Logo */}
+          <div className="flex justify-center mb-8">
+            <Link href={`/${lang}`}>
+              <img src="/majdlogo.png" alt="مَجْد" className="h-12 w-auto" />
+            </Link>
+          </div>
 
-        {/* Character Component */}
-        <Character
-          focusedField={focusedField}
-          lookingAtLogo={lookingAtLogo}
-          smoothPupil={smoothPupil}
-        />
-      </div>
-
-      {/* Shadow */}
-      <div className="w-[160px] h-[20px] bg-[#D4CEDB] rounded-[50%] mt-12 opacity-70 z-0 mix-blend-multiply"></div>
-
-      {/* ── Form Section ── */}
-      <div className="w-full max-w-[340px] z-10 flex flex-col gap-4 mt-4 pb-12 px-2">
-        {!otpScreen ? (
-          <form className="flex flex-col gap-4" onSubmit={handleLoginSubmit}>
-            <h2 className="text-center text-[#524482] text-xl font-black mb-1">
-              {isRTL ? "مرحباً بعودتك!" : "Welcome back!"}
-            </h2>
-
-            {/* Email/Phone Input */}
-            <div className="flex flex-col gap-1">
-              <label className="text-[12px] font-medium text-[#777] px-2">
-                {isRTL ? "البريد الإلكتروني أو رقم الهاتف" : "E-mail"}
-              </label>
-              <div className="relative">
-                <div className="absolute top-1/2 -translate-y-1/2 left-3.5 text-[#bbb] pointer-events-none">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="3" />
-                    <polyline points="22,7 12,14 2,7" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  onFocus={() => setFocusedField("email")}
-                  onBlur={() => setFocusedField("none")}
-                  className="w-full bg-transparent border-[1.5px] border-[#CCC4D2] rounded-[18px] pl-11 pr-4 py-[14px] outline-none focus:border-[#7B56C5] focus:bg-white/40 transition-all text-[15px] font-medium text-[#22122c] placeholder:text-[#bbb]"
-                  placeholder="you@example.com"
-                  dir="ltr"
-                />
+          {!otpScreen ? (
+            <>
+              {/* Header */}
+              <div className="text-center mb-10">
+                <h1
+                  className="text-[#262626] font-extrabold leading-[120%] mb-3"
+                  style={{ fontSize: "clamp(28px, 4vw, 40px)" }}
+                >
+                  {tr.title}
+                </h1>
+                <p className="text-[15px] font-medium text-[rgba(38,38,38,0.6)] leading-[26px]">
+                  {tr.subtitle}
+                </p>
               </div>
-            </div>
 
-            {/* Password Input */}
-            <div className="flex flex-col gap-1">
-              <label className="text-[12px] font-medium text-[#777] px-2">
-                {isRTL ? "كلمة المرور" : "Password"}
-              </label>
-              <div className="relative">
-                <div className="absolute top-1/2 -translate-y-1/2 left-3.5 text-[#bbb] pointer-events-none">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="11" width="18" height="11" rx="3" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              {/* Form */}
+              <form className="flex flex-col gap-5" onSubmit={handleLoginSubmit}>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[13px] font-bold text-[rgba(38,38,38,0.6)] px-2">
+                    {tr.emailLabel}
+                  </label>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder={isRTL ? "example@email.com أو 01xxxxxxxxx" : "example@email.com or 01xxxxxxxxx"}
+                    className={inputCls}
+                    dir="ltr"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label className="text-[13px] font-bold text-[rgba(38,38,38,0.6)] px-2">
+                    {tr.passwordLabel}
+                  </label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className={inputCls + " pr-14"}
+                      dir="ltr"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute top-1/2 -translate-y-1/2 right-5 text-[rgba(38,38,38,0.4)] hover:text-[#262626] transition-colors"
+                    >
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        {showPassword ? (
+                          <>
+                            <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+                            <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24" />
+                            <line x1="1" y1="1" x2="23" y2="23" />
+                          </>
+                        ) : (
+                          <>
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                            <circle cx="12" cy="12" r="3" />
+                          </>
+                        )}
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="flex justify-end px-2 mt-1">
+                    <Link
+                      href={`/${lang}/forgot-password`}
+                      className="text-[13px] font-medium text-[#ef5da8] hover:text-[#262626] transition-colors"
+                    >
+                      {tr.forgot}
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Error */}
+                <AnimatePresence>
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="px-5 py-3.5 rounded-[32px] bg-red-50 border border-red-100 text-red-600 text-[13px] font-bold"
+                    >
+                      {error}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full rounded-[60px] bg-[#262626] text-white hover:bg-[#3a3a3a] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
+                  style={{ padding: "20px 40px", fontSize: "18px", fontWeight: 500 }}
+                >
+                  {loading ? tr.loading : tr.submit}
+                </button>
+              </form>
+
+              {/* Divider */}
+              <div className="flex items-center gap-4 my-8">
+                <div className="flex-1 h-[1px] bg-[rgba(38,38,38,0.05)]" />
+                <span className="text-[13px] font-bold text-[rgba(38,38,38,0.4)]">
+                  {isRTL ? "أو" : "or"}
+                </span>
+                <div className="flex-1 h-[1px] bg-[rgba(38,38,38,0.05)]" />
+              </div>
+
+              {/* Register link */}
+              <p className="text-center text-[15px] text-[rgba(38,38,38,0.6)] font-medium">
+                {tr.noAccount}{" "}
+                <Link
+                  href={rawReturnTo ? `/${lang}/register?returnTo=${encodeURIComponent(rawReturnTo)}` : `/${lang}/register`}
+                  className="text-[#ef5da8] font-bold hover:text-[#262626] transition-colors"
+                >
+                  {tr.register}
+                </Link>
+              </p>
+            </>
+          ) : (
+            /* OTP Screen */
+            <>
+              <div className="text-center mb-10">
+                <div className="w-16 h-16 rounded-[32px] bg-[#fef0f8] flex items-center justify-center mx-auto mb-6">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef5da8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
                   </svg>
                 </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  onFocus={() => setFocusedField("password")}
-                  onBlur={() => setFocusedField("none")}
-                  className="w-full bg-transparent border-[1.5px] border-[#CCC4D2] rounded-[18px] pl-11 pr-12 py-[14px] outline-none focus:border-[#7B56C5] focus:bg-white/40 transition-all text-[15px] font-medium tracking-widest text-[#22122c] placeholder:text-[#bbb]"
-                  placeholder="••••••••"
-                  dir="ltr"
-                />
-                {/* Show/Hide Password Toggle */}
+                <h1
+                  className="text-[#262626] font-extrabold leading-[120%] mb-3"
+                  style={{ fontSize: "clamp(24px, 4vw, 32px)" }}
+                >
+                  {tr.otpTitle}
+                </h1>
+                <p className="text-[15px] font-medium text-[rgba(38,38,38,0.6)] leading-[26px]">
+                  {tr.otpDesc}
+                </p>
+              </div>
+
+              <form className="flex flex-col gap-5" onSubmit={handleOtpSubmit}>
+                <div className="flex flex-col gap-2">
+                  <label className="text-[13px] font-bold text-[rgba(38,38,38,0.6)] px-2">
+                    {tr.otpLabel}
+                  </label>
+                  <input
+                    type="text"
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    placeholder="------"
+                    className={inputCls + " text-center tracking-[0.4em] font-bold text-lg"}
+                    dir="ltr"
+                    inputMode="numeric"
+                  />
+                </div>
+
+                <AnimatePresence>
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -8 }}
+                      className="px-5 py-3.5 rounded-[32px] bg-red-50 border border-red-100 text-red-600 text-[13px] font-bold"
+                    >
+                      {error}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full rounded-[60px] bg-[#262626] text-white hover:bg-[#3a3a3a] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
+                  style={{ padding: "20px 40px", fontSize: "18px", fontWeight: 500 }}
+                >
+                  {loading ? tr.loading : tr.verify}
+                </button>
+
                 <button
                   type="button"
-                  tabIndex={-1}
-                  onClick={() => setShowPassword((v) => !v)}
-                  className="absolute top-1/2 -translate-y-1/2 right-3.5 text-[#aaa] hover:text-[#524482] transition-colors p-1"
+                  onClick={() => { setOtpScreen(false); setError(null); setOtp(""); }}
+                  className="text-[14px] font-bold text-[#262626] bg-[#262626]/5 px-5 py-2.5 rounded-full hover:bg-[#262626] hover:text-white transition-all duration-200 mx-auto"
                 >
-                  {showPassword ? (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94" />
-                      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
-                      <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
-                      <line x1="1" y1="1" x2="23" y2="23" />
-                    </svg>
-                  ) : (
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  )}
+                  ← {tr.back}
                 </button>
-              </div>
-              <div className="flex justify-start px-2 mt-1">
-                <Link href={`/${lang}/forgot-password`} className="text-[12px] font-medium text-[#777] underline underline-offset-2 hover:text-[#524482] transition-colors">
-                  {isRTL ? "نسيت كلمة المرور؟" : "Forgot your password?"}
-                </Link>
-              </div>
-            </div>
-
-            {/* Error Message */}
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className={`flex items-center gap-2 bg-red-50 border border-red-200 rounded-2xl px-4 py-3 mt-1 ${shakeError ? "shake-anim" : ""}`}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                  </svg>
-                  <p className="text-[13px] text-red-600 font-bold">{error}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              onMouseDown={() => setLookingAtLogo(true)}
-              onMouseUp={() => setLookingAtLogo(false)}
-              onMouseLeave={() => setLookingAtLogo(false)}
-              onTouchStart={() => setLookingAtLogo(true)}
-              onTouchEnd={() => setLookingAtLogo(false)}
-              className="w-full bg-[#524482] text-white font-bold text-[17px] rounded-2xl py-3.5 mt-2 hover:bg-[#43366c] transition-all shadow-sm active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2.5"
-            >
-              {loading ? (
-                <>
-                  <div className="w-5 h-5 border-[2.5px] border-white/30 border-t-white rounded-full spinner" />
-                  <span>{isRTL ? "جارٍ التحميل..." : "Loading..."}</span>
-                </>
-              ) : (isRTL ? "تسجيل الدخول" : "Sign in")}
-            </button>
-
-            {/* Register Link */}
-            <div className="flex justify-center items-center gap-1.5 mt-4 text-[12px] font-medium text-[#777]">
-              <span>{isRTL ? "لا يوجد لديك حساب ؟" : "Don't have an account?"}</span>
-              <Link href={rawReturnTo ? `/${lang}/register?returnTo=${encodeURIComponent(rawReturnTo)}` : `/${lang}/register`} className="underline underline-offset-2 text-[#524482] font-bold hover:text-[#7B56C5] transition-colors">
-                {isRTL ? "سجل الآن" : "Sign up"}
-              </Link>
-            </div>
-          </form>
-        ) : (
-          <form className="flex flex-col gap-4" onSubmit={handleOtpSubmit}>
-            <h2 className="text-2xl font-black text-center text-[#22122c] mb-2">{isRTL ? "أدخل رمز التحقق" : "Enter Verification"}</h2>
-            <div className="flex flex-col gap-1.5">
-              <label className="text-[13px] font-bold text-[#555] px-1">{isRTL ? "رمز OTP" : "OTP Code"}</label>
-              <input
-                type="text"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                onFocus={() => setFocusedField("email")}
-                onBlur={() => setFocusedField("none")}
-                className="w-full bg-transparent border-2 border-[#D4CFC6] rounded-2xl px-4 py-3.5 outline-none focus:border-[#7B56C5] transition-colors text-center tracking-[0.5em] font-black text-lg text-[#22122c]"
-                placeholder="------"
-                dir="ltr"
-                inputMode="numeric"
-              />
-            </div>
-
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  className={`flex items-center gap-2 bg-red-50 border border-red-200 rounded-2xl px-4 py-3 mt-1 ${shakeError ? "shake-anim" : ""}`}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="12" y1="8" x2="12" y2="12" />
-                    <line x1="12" y1="16" x2="12.01" y2="16" />
-                  </svg>
-                  <p className="text-[13px] text-red-600 font-bold">{error}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <button
-              type="submit"
-              disabled={loading}
-              onMouseDown={() => setLookingAtLogo(true)}
-              onMouseUp={() => setLookingAtLogo(false)}
-              onMouseLeave={() => setLookingAtLogo(false)}
-              onTouchStart={() => setLookingAtLogo(true)}
-              onTouchEnd={() => setLookingAtLogo(false)}
-              className="w-full bg-[#524482] text-white font-bold text-[17px] rounded-2xl py-3.5 mt-2 hover:bg-[#43366c] transition-all shadow-sm active:scale-[0.98] disabled:opacity-70 flex items-center justify-center gap-2.5"
-            >
-              {loading ? (
-                <>
-                  <div className="w-5 h-5 border-[2.5px] border-white/30 border-t-white rounded-full spinner" />
-                  <span>{isRTL ? "جارٍ التحميل..." : "Loading..."}</span>
-                </>
-              ) : (isRTL ? "تحقق" : "Verify")}
-            </button>
-
-            <button
-              type="button"
-              onClick={() => { setOtpScreen(false); setError(null); setOtp(""); }}
-              className="text-[13px] text-[#888] hover:text-[#524482] transition-colors text-center mt-3 font-bold"
-            >
-              {isRTL ? "← العودة" : "← Back"}
-            </button>
-          </form>
-        )}
+              </form>
+            </>
+          )}
+        </motion.div>
       </div>
-    </div>
+    </>
   );
 }

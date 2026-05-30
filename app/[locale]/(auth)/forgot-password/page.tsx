@@ -3,8 +3,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { useLang } from "../../../i18n/LangContext";
-import Navbar from "../../../components/Navbar";
+import AcademyNavbar from "../../../components/AcademyNavbar";
 import { requestPasswordReset } from "../../../../lib/api";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ForgotPasswordPage() {
   const { isRTL, lang } = useLang();
@@ -19,8 +20,9 @@ export default function ForgotPasswordPage() {
     title: isRTL ? "استعادة كلمة المرور" : "Reset Password",
     subtitle: isRTL ? "الخطوة 1 من 3" : "Step 1 of 3",
     desc: isRTL ? "أدخل بريدك الإلكتروني أو رقم هاتفك لاستعادة كلمة المرور" : "Enter your email or phone to reset your password",
-    label: isRTL ? "البريد الإلكتروني أو رقم الهاتف" : "Email or Phone number",
+    label: isRTL ? "البريد الإلكتروني أو رقم الهاتف" : "Email or phone number",
     submit: isRTL ? "إرسال رمز التحقق" : "Send verification code",
+    loading: isRTL ? "جارٍ الإرسال..." : "Sending...",
     back: isRTL ? "العودة لتسجيل الدخول" : "Back to login",
   };
 
@@ -47,54 +49,109 @@ export default function ForgotPasswordPage() {
     }
   };
 
-  const inputCls = "flex items-center gap-3 bg-[#F7F7F8] rounded-2xl px-5 py-4 border border-transparent focus-within:border-[#E9C237]/60 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(233,194,55,0.08)] transition-all duration-200";
+  const inputCls =
+    "w-full bg-[#f8f9fa] rounded-[32px] px-6 py-4 border border-transparent focus:border-[#ef5da8]/40 focus:bg-white focus:shadow-[0_0_0_3px_rgba(239,93,168,0.08)] transition-all duration-200 text-[15px] font-medium text-[#262626] outline-none placeholder:text-[rgba(38,38,38,0.4)]";
+
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0, 0, 0.2, 1] as const } },
+  };
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen bg-white flex items-center justify-center pt-24 pb-12 px-6" dir={isRTL ? "rtl" : "ltr"}>
-        <div className="w-full max-w-[440px]">
+      <AcademyNavbar />
+      <div
+        className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 pt-28 pb-12"
+        dir={isRTL ? "rtl" : "ltr"}
+        style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}
+      >
+        <motion.div
+          className="w-full max-w-[440px]"
+          initial="hidden"
+          animate="visible"
+          variants={fadeUp}
+        >
           {/* Progress bar */}
           <div className="flex gap-2 mb-8">
-            <div className="flex-1 h-1 rounded-full bg-[#C9A84C]" />
-            <div className="flex-1 h-1 rounded-full bg-[#eee]" />
-            <div className="flex-1 h-1 rounded-full bg-[#eee]" />
+            <div className="flex-1 h-1.5 rounded-full bg-[#ef5da8]" />
+            <div className="flex-1 h-1.5 rounded-full bg-[rgba(38,38,38,0.05)]" />
+            <div className="flex-1 h-1.5 rounded-full bg-[rgba(38,38,38,0.05)]" />
           </div>
 
           {/* Icon */}
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#C9A84C]/10 to-[#E8C96A]/10 flex items-center justify-center mb-6">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+          <div className="w-16 h-16 rounded-[32px] bg-[#fef0f8] flex items-center justify-center mb-6">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ef5da8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0110 0v4" />
             </svg>
           </div>
 
-          <p className="text-[12px] font-bold text-[#C9A84C] uppercase tracking-[0.2em] mb-2">{tr.subtitle}</p>
-          <h1 className="text-[30px] sm:text-[36px] font-extrabold text-[#1a1a1a] tracking-tight leading-none mb-3">{tr.title}</h1>
-          <p className="text-[14px] text-[#999] mb-8 leading-relaxed">{tr.desc}</p>
+          {/* Header */}
+          <p className="text-[13px] font-bold text-[#ef5da8] mb-2">{tr.subtitle}</p>
+          <h1
+            className="text-[#262626] font-extrabold leading-[120%] mb-3"
+            style={{ fontSize: "clamp(28px, 4vw, 40px)" }}
+          >
+            {tr.title}
+          </h1>
+          <p className="text-[15px] font-medium text-[rgba(38,38,38,0.6)] leading-[26px] mb-8">
+            {tr.desc}
+          </p>
 
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          {/* Form */}
+          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-2">
-              <label className="text-[13px] font-semibold text-[#888]">{tr.label}</label>
-              <div className={inputCls}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#bbb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                <input type="text" value={user} onChange={e => setUser(e.target.value)} placeholder={isRTL ? "example@email.com أو 01xxxxxxxxx" : "example@email.com or 01xxxxxxxxx"} className="flex-1 bg-transparent text-[15px] text-[#1a1a1a] outline-none placeholder:text-[#ccc] font-medium" dir="ltr" required />
-              </div>
+              <label className="text-[13px] font-bold text-[rgba(38,38,38,0.6)] px-2">
+                {tr.label}
+              </label>
+              <input
+                type="text"
+                value={user}
+                onChange={(e) => setUser(e.target.value)}
+                placeholder={isRTL ? "example@email.com أو 01xxxxxxxxx" : "example@email.com or 01xxxxxxxxx"}
+                className={inputCls}
+                dir="ltr"
+                required
+              />
             </div>
 
-            {error && <div className="px-4 py-3 rounded-xl bg-red-50 border border-red-100 text-red-600 text-[13px] font-medium">{error}</div>}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="px-5 py-3.5 rounded-[32px] bg-red-50 border border-red-100 text-red-600 text-[13px] font-bold"
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            <button type="submit" disabled={loading} className="w-full py-4 font-bold text-[15px] rounded-2xl transition-all duration-200 shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_28px_rgba(0,0,0,0.15)] active:scale-[0.99] disabled:opacity-60" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #333 100%)', color: 'white' }}>
-              {loading ? (isRTL ? "جارٍ الإرسال..." : "Sending...") : tr.submit}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full rounded-[60px] bg-[#262626] text-white hover:bg-[#3a3a3a] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 flex items-center justify-center gap-2"
+              style={{ padding: "20px 40px", fontSize: "18px", fontWeight: 500 }}
+            >
+              {loading ? tr.loading : tr.submit}
             </button>
           </form>
 
+          {/* Back link */}
           <div className="mt-8 text-center">
-            <Link href={`/${lang}/login`} className="text-[14px] text-[#999] hover:text-[#C9A84C] transition-colors font-medium inline-flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isRTL ? "rotate-180" : ""}><path d="M19 12H5"/><polyline points="12 19 5 12 12 5"/></svg>
+            <Link
+              href={`/${lang}/login`}
+              className="text-[14px] font-bold text-[#262626] bg-[#262626]/5 px-5 py-2.5 rounded-full hover:bg-[#262626] hover:text-white transition-all duration-200 inline-flex items-center gap-2"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={isRTL ? "rotate-180" : ""}>
+                <path d="M19 12H5" />
+                <polyline points="12 19 5 12 12 5" />
+              </svg>
               {tr.back}
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   );
