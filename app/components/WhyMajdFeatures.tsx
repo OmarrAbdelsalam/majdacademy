@@ -153,12 +153,21 @@ export default function WhyMajdFeatures() {
           </div>
 
           {/* Image side */}
-          <div className="hidden md:flex justify-center items-center">
+          <div className="flex justify-center items-end relative h-[350px] md:h-[500px] mt-10 md:mt-0 md:-translate-y-8 lg:-translate-y-12">
+            {/* Arch background */}
+            <div 
+              className="absolute w-[280px] h-[280px] md:w-[420px] md:h-[420px] bottom-0 z-0" 
+              style={{ 
+                backgroundColor: '#fef0f8',
+                borderRadius: '200px 200px 24px 24px'
+              }} 
+            />
             <img
-              src="/hero-illustration.png"
+              src="/girll.png"
               alt=""
-              className="w-[350px] h-auto object-contain"
+              className="w-[310px] md:w-[460px] h-auto object-contain relative z-10 transition-transform duration-500 hover:scale-105 origin-bottom"
               loading="lazy"
+              style={{ marginBottom: '-2px' }}
             />
           </div>
         </div>

@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { useLandingContent } from "./useLandingContent";
 import BookingModal from "./BookingModal";
 
-const cardColors = ["#fff8f0", "#fef0f8"];
-const cardImages = ["/icon1.webp", "/icon2.webp"];
+const cardColors = ["#fff8f0", "#ebfbf0"];
+const cardImages = ["/arabic.webp", "/islam.webp"];
 
 export default function SubjectsSection() {
   const content = useLandingContent();
@@ -76,7 +76,7 @@ export default function SubjectsSection() {
                     <img
                       src={cardImages[i]}
                       alt={subject.name}
-                      className="w-[240px] h-[240px] object-contain -my-[40px] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                      className="w-[260px] h-[260px] object-contain -mt-[50px] -mb-[50px] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                     />
                   </div>
                 </div>

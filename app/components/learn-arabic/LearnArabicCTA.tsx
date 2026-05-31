@@ -8,12 +8,12 @@ export default function LearnArabicCTA() {
 
   const content = {
     ar: {
-      title: "ابدأ رحلة ولدك مع العربية",
+      title: "ابدأ رحلتك مع العربية",
       desc: "حصة تجريبية مجانية — نقيّم مستواه ونوصيك بأفضل خطة.",
       cta: "احجز الحصة المجانية",
     },
     en: {
-      title: "Start your child's Arabic journey",
+      title: "Start your Arabic journey",
       desc: "Free trial class — we assess their level and recommend the best plan.",
       cta: "Book the free class",
     },

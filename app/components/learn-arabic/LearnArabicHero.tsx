@@ -50,7 +50,7 @@ export default function LearnArabicHero() {
             className="mb-6"
             style={{
               fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif",
-              fontSize: "clamp(36px, 8vw, 90px)",
+              fontSize: "clamp(48px, 11vw, 90px)",
               fontWeight: 800,
               letterSpacing: "-0.02em",
               lineHeight: "130%",
@@ -61,7 +61,7 @@ export default function LearnArabicHero() {
             {c.line1}
             <br />
             <span className="flex justify-center mt-2">
-              <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(26px, 6vw, 72px)", letterSpacing: "0.04em" }}>
+              <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(34px, 9vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
                 <span
                   className="absolute z-0"
                   style={{

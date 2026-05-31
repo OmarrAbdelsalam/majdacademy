@@ -63,7 +63,7 @@ export default function WhatTheyLearn() {
         </h2>
 
         {/* Content */}
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-5 items-center">
+        <div className="max-w-[800px] mx-auto">
           {/* Features list */}
           <div className="flex flex-col gap-3">
             {c.features.map((feature, i) => {
@@ -126,15 +126,7 @@ export default function WhatTheyLearn() {
             })}
           </div>
 
-          {/* Image */}
-          <div className="hidden md:flex justify-center items-center">
-            <img
-              src="/hero-illustration.png"
-              alt=""
-              className="w-[350px] h-auto object-contain"
-              loading="lazy"
-            />
-          </div>
+
         </div>
       </div>
     </section>

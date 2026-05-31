@@ -403,21 +403,21 @@ function AgeGroupsSection({ isRTL }: { isRTL: boolean }) {
           title: "Learning through play",
           desc: "Kids learn through play and hands-on experiments. With our mentor by their side, they try new things in a safe space where they feel comfortable asking questions.",
           features: ["Short sessions", "Learning together", "Developing curiosity"],
-          img: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+          img: "/boyy.png",
         },
         {
           age: "11-14",
           title: "Building real projects",
           desc: "Teens start building real projects and learn teamwork. They develop problem-solving skills and logical thinking through collaborative coding.",
           features: ["Real projects", "Teamwork", "Logical thinking"],
-          img: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+          img: "/boyy.png",
         },
         {
           age: "15-17",
           title: "Professional skills",
           desc: "Young adults learn professional skills that prepare them for the job market. They work on advanced projects using industry-standard tools.",
           features: ["Professional tools", "Portfolio building", "Career prep"],
-          img: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+          img: "/boyy.png",
         },
       ];
 

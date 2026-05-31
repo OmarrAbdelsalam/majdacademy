@@ -7,19 +7,19 @@ const stageThemes = [
     bgImage: "https://cdn.kodland.org/main-site-v2/bg-blue.png",
     color: "#498bff",
     tagColors: ["#ef5da8", "#ff763d", "#498bff"],
-    kidImage: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+    kidImage: "/boyy.png",
   },
   {
     bgImage: "https://cdn.kodland.org/main-site-v2/bg-pink.png",
     color: "#ec4899",
     tagColors: ["#ec4899", "#f97316", "#8b5cf6"],
-    kidImage: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+    kidImage: "/boyy.png",
   },
   {
     bgImage: "https://cdn.kodland.org/main-site-v2/bg-orange.png",
     color: "#f97316",
     tagColors: ["#f97316", "#ef5da8", "#498bff"],
-    kidImage: "https://cdn.kodland.org/main-site-v2/en/main/kid_4.webp",
+    kidImage: "/boyy.png",
   },
 ];
 

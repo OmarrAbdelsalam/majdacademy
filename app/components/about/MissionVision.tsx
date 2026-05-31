@@ -3,7 +3,7 @@ import React from "react";
 import { useLang } from "../../i18n/LangContext";
 
 const cardColors = ["#fff8f0", "#fef0f8"];
-const cardImages = ["/icon1.webp", "/icon2.webp"];
+const cardImages = ["/wi.webp", "/mi.webp"];
 
 export default function MissionVision() {
   const { isRTL } = useLang();
@@ -50,11 +50,11 @@ export default function MissionVision() {
               className="rounded-[32px] p-8 flex flex-col justify-between min-h-[380px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group"
               style={{ background: cardColors[i] }}
             >
-              <div className="flex justify-center mb-6 overflow-hidden h-[140px]">
+              <div className="flex justify-center items-center mb-6 overflow-visible h-[160px]">
                 <img
                   src={cardImages[i]}
                   alt=""
-                  className="w-[200px] h-[200px] object-contain -my-[30px] transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                  className={`w-[230px] h-[230px] object-contain transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${i === 1 ? 'translate-x-4 translate-y-3 -rotate-[8deg]' : ''}`}
                   loading="lazy"
                 />
               </div>

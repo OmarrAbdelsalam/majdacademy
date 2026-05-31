@@ -139,7 +139,7 @@ function LoginContent() {
     <>
       <AcademyNavbar />
       <div
-        className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 pt-28 pb-12"
+        className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 pt-16 pb-32 md:pt-28 md:pb-12"
         dir={isRTL ? "rtl" : "ltr"}
         style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}
       >

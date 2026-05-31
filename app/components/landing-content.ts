@@ -124,8 +124,8 @@ export const landingContent = {
   },
   en: {
     hero: {
-      line1: "We Build a Strong Foundation",
-      line2: "For a Confident Generation",
+      line1: "Your kids' future",
+      line2: "starts with a solid step with Majd",
       subtitle1: "Online classes following the UAE curriculum with specialized teachers who nurture your children and guide them to excel.",
       subtitle2: "",
       cta: "Book a Free Class",

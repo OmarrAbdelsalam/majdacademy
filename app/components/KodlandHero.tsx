@@ -4,9 +4,11 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLandingContent } from "./useLandingContent";
 import BookingModal from "./BookingModal";
+import { useLang } from "../i18n/LangContext";
 
 export default function KodlandHero() {
   const content = useLandingContent();
+  const { isRTL } = useLang();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -14,9 +16,12 @@ export default function KodlandHero() {
       {/* ═══ Background: White + Ellipse Image ═══ */}
       <div className="absolute inset-0 z-0 bg-white" />
       <div
-        className="absolute inset-0 z-[1] bg-cover bg-no-repeat bg-top lg:bg-[center_-10vh]"
+        className="absolute inset-0 z-[1]"
         style={{
           backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')",
+          backgroundSize: "cover",
+          backgroundPosition: "center -10vh",
+          backgroundRepeat: "no-repeat",
         }}
       />
 
@@ -41,7 +46,7 @@ export default function KodlandHero() {
       </div>
 
       {/* ═══ Floating Kid Images — Right Top ═══ */}
-      <div className="hidden sm:block absolute bottom-[-12px] xl:bottom-auto xl:top-[20%] right-[-10px] xl:right-0 z-0 xl:z-10 w-[130px] sm:w-[170px] xl:w-[220px] opacity-70 xl:opacity-100 pointer-events-none">
+      <div className="hidden sm:block absolute bottom-[-12px] xl:bottom-auto xl:top-[20%] z-0 xl:z-10 w-[130px] sm:w-[170px] xl:w-[220px] opacity-70 xl:opacity-100 pointer-events-none" style={{ right: "-10px", left: "auto" }}>
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -91,7 +96,7 @@ export default function KodlandHero() {
           className="mb-6"
           style={{
             fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif",
-            fontSize: "clamp(42px, 9.5vw, 90px)",
+            fontSize: isRTL ? "clamp(48px, 11vw, 90px)" : "clamp(42px, 9vw, 80px)",
             fontWeight: 800,
             letterSpacing: "-0.02em",
             lineHeight: "130%",
@@ -101,31 +106,51 @@ export default function KodlandHero() {
         >
           {content.hero.line1}
           <br />
-          <span className="flex justify-center mt-4 px-2 w-full max-w-[100vw] overflow-visible">
-            <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(24px, 7.5vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
-              <span
-                className="absolute z-0"
-                style={{
-                  background: "#ef5da8",
-                  borderRadius: "14px 20px 18px 22px",
-                  top: "-4px",
-                  bottom: "-4px",
-                  left: "-12px",
-                  right: "-12px",
-                  boxShadow: "0 4px 20px rgba(239,93,168,0.3)",
-                }}
-              />
-              <span className="relative z-10 text-white">
-                {content.hero.line2 === "يبدأ بخطوة ثابتة مع مَجْد" ? (
-                  <>
-                    يبدأ بخطوة <span className="hidden md:inline">ثابتة </span>مع مَجْد
-                  </>
-                ) : (
-                  content.hero.line2
-                )}
+          {isRTL ? (
+            <span className="flex justify-center mt-4 px-2 w-full max-w-[100vw] overflow-visible">
+              <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(34px, 9vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
+                <span
+                  className="absolute z-0"
+                  style={{
+                    background: "#ef5da8",
+                    borderRadius: "14px 20px 18px 22px",
+                    top: "-4px",
+                    bottom: "-4px",
+                    left: "-12px",
+                    right: "-12px",
+                    boxShadow: "0 4px 20px rgba(239,93,168,0.3)",
+                  }}
+                />
+                <span className="relative z-10 text-white">
+                  {content.hero.line2 === "يبدأ بخطوة ثابتة مع مَجْد" ? (
+                    <>
+                      يبدأ بخطوة <span className="hidden md:inline">ثابتة </span>مع مَجْد
+                    </>
+                  ) : (
+                    content.hero.line2
+                  )}
+                </span>
               </span>
             </span>
-          </span>
+          ) : (
+            <span className="flex justify-center mt-2 px-2 w-full max-w-[100vw] overflow-visible flex-wrap gap-x-3">
+              <span className="relative inline-block whitespace-nowrap ml-1 mt-1" style={{ fontSize: "clamp(32px, 7.5vw, 72px)", letterSpacing: "0.02em", lineHeight: "1.4" }}>
+                <span
+                  className="absolute z-0"
+                  style={{
+                    background: "#ef5da8",
+                    borderRadius: "14px 20px 18px 22px",
+                    top: "-2px",
+                    bottom: "-2px",
+                    left: "-10px",
+                    right: "-10px",
+                    boxShadow: "0 4px 20px rgba(239,93,168,0.3)",
+                  }}
+                />
+                <span className="relative z-10 text-white font-extrabold">with Majd</span>
+              </span>
+            </span>
+          )}
         </motion.h1>
 
         {/* Subtitle */}
@@ -168,20 +193,11 @@ export default function KodlandHero() {
             }}
           >
             {content.hero.cta}
-            <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-[-4px] rtl:group-hover:translate-x-[4px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            <svg className={`w-5 h-5 transition-transform duration-300 ${isRTL ? 'group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d={isRTL ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
             </svg>
           </button>
         </motion.div>
-
-        {/* Mobile Kid Images (Flowing directly under content) */}
-        <div 
-          className="flex sm:hidden justify-between items-end mt-10 -mb-12 pointer-events-none relative z-10"
-          style={{ width: '100vw', marginRight: 'calc(50% - 50vw)' }}
-        >
-          <Image src="/girl.png" alt="" role="presentation" width={160} height={200} className="w-[140px] h-auto opacity-90" />
-          <Image src="/boy.png" alt="" role="presentation" width={220} height={280} className="w-[230px] h-auto opacity-100" style={{ marginLeft: '-24px', marginBottom: '-20px' }} />
-        </div>
 
         {/* Trust Badges — logos only */}
         <motion.div
@@ -209,6 +225,15 @@ export default function KodlandHero() {
             unoptimized
           />
         </motion.div>
+
+        {/* Mobile Kid Images (Flowing directly under content) */}
+        <div 
+          className={`flex sm:hidden justify-between items-end mt-10 -mb-12 pointer-events-none relative z-10 ${isRTL ? '' : 'flex-row-reverse'}`}
+          style={{ width: '100vw', marginRight: 'calc(50% - 50vw)' }}
+        >
+          <Image src="/girl.png" alt="" role="presentation" width={160} height={200} className="w-[140px] h-auto opacity-90" />
+          <Image src="/boy.png" alt="" role="presentation" width={220} height={280} className="w-[230px] h-auto opacity-100" style={{ marginLeft: '-24px', marginBottom: '-20px' }} />
+        </div>
       </div>
 
       {/* Booking Modal */}
