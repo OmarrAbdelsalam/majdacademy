@@ -10,7 +10,7 @@ export default function KodlandHero() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-start overflow-hidden pt-[160px] lg:pt-[60px] pb-16">
+    <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center lg:justify-start overflow-hidden pt-[80px] lg:pt-[60px] pb-16">
       {/* ═══ Background: White + Ellipse Image ═══ */}
       <div className="absolute inset-0 z-0 bg-white" />
       <div
@@ -24,7 +24,7 @@ export default function KodlandHero() {
       />
 
       {/* ═══ Floating Kid Images — Left Side (bottom-left like Kodland) ═══ */}
-      <div className="absolute bottom-0 lg:bottom-auto lg:top-[35%] z-0 lg:z-10 w-[140px] sm:w-[160px] lg:w-[220px] xl:w-auto opacity-70 lg:opacity-100 pointer-events-none" style={{ left: "0", right: "auto" }}>
+      <div className="hidden sm:block absolute bottom-0 xl:bottom-auto xl:top-[35%] z-0 xl:z-10 w-[140px] sm:w-[160px] xl:w-auto opacity-70 xl:opacity-100 pointer-events-none" style={{ left: "0", right: "auto" }}>
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -44,7 +44,7 @@ export default function KodlandHero() {
       </div>
 
       {/* ═══ Floating Kid Images — Right Top ═══ */}
-      <div className="absolute bottom-[-12px] lg:bottom-auto lg:top-[20%] right-[-10px] lg:right-0 z-0 lg:z-10 w-[130px] sm:w-[170px] lg:w-[180px] xl:w-[220px] opacity-70 lg:opacity-100 pointer-events-none">
+      <div className="hidden sm:block absolute bottom-[-12px] xl:bottom-auto xl:top-[20%] right-[-10px] xl:right-0 z-0 xl:z-10 w-[130px] sm:w-[170px] xl:w-[220px] opacity-70 xl:opacity-100 pointer-events-none">
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -105,7 +105,7 @@ export default function KodlandHero() {
           {content.hero.line1}
           <br />
           <span className="flex justify-center mt-4 px-2">
-            <span className="relative inline-block whitespace-normal sm:whitespace-nowrap" style={{ fontSize: "clamp(30px, 7vw, 72px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
+            <span className="relative inline-block whitespace-normal sm:whitespace-nowrap" style={{ fontSize: "clamp(26px, 6vw, 64px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
               <span
                 className="absolute z-0"
                 style={{

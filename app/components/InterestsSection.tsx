@@ -12,7 +12,7 @@ export default function InterestsSection() {
   const stageLinks = [`/${lang}/stages/primary`, `/${lang}/stages/middle`, `/${lang}/stages/secondary`];
 
   return (
-    <section id="grades" className="pt-24 pb-12 md:py-16 bg-white">
+    <section id="grades" className="py-12 md:py-16 bg-white">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
         {/* Heading */}
         <h2
