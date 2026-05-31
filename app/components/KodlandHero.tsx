@@ -104,8 +104,8 @@ export default function KodlandHero() {
         >
           {content.hero.line1}
           <br />
-          <span className="flex justify-center mt-4 px-2">
-            <span className="relative inline-block whitespace-normal sm:whitespace-nowrap" style={{ fontSize: "clamp(26px, 6vw, 64px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
+          <span className="flex justify-center mt-4 px-2 w-full max-w-[100vw] overflow-visible">
+            <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(20px, 6.8vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
               <span
                 className="absolute z-0"
                 style={{
