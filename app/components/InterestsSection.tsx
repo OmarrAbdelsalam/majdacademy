@@ -108,16 +108,7 @@ export default function InterestsSection() {
           />
 
           {/* Content grid */}
-          <div className="relative z-10 flex flex-col md:flex-row-reverse items-center h-full">
-            {/* Icon — left side */}
-            <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 pointer-events-none">
-              <img
-                src="/icon4.webp"
-                alt=""
-                className="w-[500px] h-auto object-contain"
-              />
-            </div>
-
+          <div className="relative z-10 flex flex-col md:flex-row items-center h-full w-full">
             {/* Text content — right side */}
             <div className="flex-1 p-8 md:p-12 md:pr-16">
               <span
@@ -160,6 +151,15 @@ export default function InterestsSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
               </a>
+            </div>
+
+            {/* Icon — left side */}
+            <div className="hidden md:flex flex-1 justify-center items-center pointer-events-none p-8">
+              <img
+                src="/icon4.webp"
+                alt=""
+                className="w-full max-w-[380px] h-auto object-contain"
+              />
             </div>
           </div>
         </div>

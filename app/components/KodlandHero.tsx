@@ -14,12 +14,9 @@ export default function KodlandHero() {
       {/* ═══ Background: White + Ellipse Image ═══ */}
       <div className="absolute inset-0 z-0 bg-white" />
       <div
-        className="absolute inset-0 z-[1]"
+        className="absolute inset-0 z-[1] bg-cover bg-no-repeat bg-top lg:bg-[center_-10vh]"
         style={{
           backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')",
-          backgroundSize: "cover",
-          backgroundPosition: "center -10vh",
-          backgroundRepeat: "no-repeat",
         }}
       />
 
@@ -85,7 +82,7 @@ export default function KodlandHero() {
 
 
       {/* ═══ Main Content — Center ═══ */}
-      <div className="relative z-20 max-w-[90vw] mx-auto px-2 sm:px-6 text-center mt-0 lg:mt-32 flex flex-col items-center justify-center">
+      <div className="relative z-20 max-w-[90vw] mx-auto px-2 sm:px-6 text-center mt-12 lg:mt-32 flex flex-col items-center justify-center">
         {/* Main Heading */}
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -94,7 +91,7 @@ export default function KodlandHero() {
           className="mb-6"
           style={{
             fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif",
-            fontSize: "clamp(36px, 8vw, 90px)",
+            fontSize: "clamp(42px, 9.5vw, 90px)",
             fontWeight: 800,
             letterSpacing: "-0.02em",
             lineHeight: "130%",
@@ -105,7 +102,7 @@ export default function KodlandHero() {
           {content.hero.line1}
           <br />
           <span className="flex justify-center mt-4 px-2 w-full max-w-[100vw] overflow-visible">
-            <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(20px, 6.8vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
+            <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(24px, 7.5vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
               <span
                 className="absolute z-0"
                 style={{
@@ -119,7 +116,13 @@ export default function KodlandHero() {
                 }}
               />
               <span className="relative z-10 text-white">
-                {content.hero.line2}
+                {content.hero.line2 === "يبدأ بخطوة ثابتة مع مَجْد" ? (
+                  <>
+                    يبدأ بخطوة <span className="hidden md:inline">ثابتة </span>مع مَجْد
+                  </>
+                ) : (
+                  content.hero.line2
+                )}
               </span>
             </span>
           </span>
@@ -130,13 +133,12 @@ export default function KodlandHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="mx-auto px-2"
+          className="mx-auto px-2 mt-0 sm:mt-8 lg:mt-10"
           style={{
             fontSize: "clamp(15px, 3.5vw, 20px)",
             fontWeight: 500,
             letterSpacing: "-0.01em",
             lineHeight: "1.7",
-            marginTop: "clamp(20px, 5vw, 40px)",
             marginBottom: "0",
             maxWidth: "700px",
             color: "#262626",
@@ -152,7 +154,7 @@ export default function KodlandHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-8 sm:mt-10"
+          className="mt-4 sm:mt-10"
         >
           <button
             onClick={() => setIsModalOpen(true)}
@@ -172,12 +174,21 @@ export default function KodlandHero() {
           </button>
         </motion.div>
 
+        {/* Mobile Kid Images (Flowing directly under content) */}
+        <div 
+          className="flex sm:hidden justify-between items-end mt-10 -mb-12 pointer-events-none relative z-10"
+          style={{ width: '100vw', marginRight: 'calc(50% - 50vw)' }}
+        >
+          <Image src="/girl.png" alt="" role="presentation" width={160} height={200} className="w-[140px] h-auto opacity-90" />
+          <Image src="/boy.png" alt="" role="presentation" width={220} height={280} className="w-[230px] h-auto opacity-100" style={{ marginLeft: '-24px', marginBottom: '-20px' }} />
+        </div>
+
         {/* Trust Badges — logos only */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-12 sm:mt-20 flex items-center justify-center gap-5 sm:gap-8"
+          className="mt-6 sm:mt-20 flex items-center justify-center gap-5 sm:gap-8"
         >
           <Image
             src="https://www.moe.gov.ae/Site%20assets/DLS2/images/moe-logo-ar.svg"
@@ -185,7 +196,7 @@ export default function KodlandHero() {
             role="presentation"
             width={120}
             height={64}
-            className="h-12 sm:h-16 w-auto"
+            className="h-10 sm:h-16 w-auto"
             unoptimized
           />
           <Image
@@ -194,7 +205,7 @@ export default function KodlandHero() {
             role="presentation"
             width={100}
             height={32}
-            className="h-6 sm:h-8 w-auto"
+            className="h-5 sm:h-8 w-auto"
             unoptimized
           />
         </motion.div>
