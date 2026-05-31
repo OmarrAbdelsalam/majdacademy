@@ -8,7 +8,7 @@ export default function AboutHero() {
 
   const content = {
     ar: {
-      title: "من نحن",
+      title: "من",
       highlight: "مَجد",
       subtitle: "تعرّف على مَجد أكاديمي وليش آلاف العائلات يثقون فينا",
       intro: "مَجد أكاديمي هي منصة تعليمية إماراتية متخصصة في تقديم دروس أونلاين عالية الجودة لطلاب المراحل من الصف الأول حتى الثاني عشر، وفقاً للمنهج الإماراتي المعتمد من وزارة التربية والتعليم.",
@@ -52,11 +52,7 @@ export default function AboutHero() {
             color: "#262626",
           }}
         >
-          {c.title}{" "}
-          <span className="relative inline-block">
-            <span className="absolute z-0" style={{ background: "#d3ff5f", borderRadius: "14px 20px 18px 22px", top: "-4px", bottom: "-4px", left: "-12px", right: "-12px" }} />
-            <span className="relative z-10">{c.highlight}</span>
-          </span>
+          {c.title} {c.highlight}
         </motion.h1>
 
         <motion.p

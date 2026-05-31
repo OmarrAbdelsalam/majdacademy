@@ -102,19 +102,19 @@ export default function AcademyNavbar() {
               className="flex items-center relative z-50 overflow-visible"
             >
               <div className={`relative flex items-center justify-center shrink-0 transition-all duration-500 ${
-                isScrolled ? "h-[56px] sm:h-[64px] md:h-[72px] w-10 sm:w-12" : "h-[64px] sm:h-[76px] md:h-[88px] w-20 sm:w-28 md:w-32"
+                isScrolled ? "h-[60px] sm:h-[64px] md:h-[72px] w-12 sm:w-12" : "h-[72px] sm:h-[76px] md:h-[88px] w-24 sm:w-28 md:w-32"
               }`}>
                 <img
                   src="/majd.png"
                   alt="مَجْد"
                   className={`absolute object-contain transition-all duration-500 ease-in-out w-auto ${
-                    isScrolled ? "opacity-0 scale-75 h-0" : "opacity-100 scale-100 h-[54px] sm:h-[78px] md:h-[94px]"
+                    isScrolled ? "opacity-0 scale-75 h-0" : "opacity-100 scale-100 h-[64px] sm:h-[78px] md:h-[94px]"
                   }`}
                 />
                 <img
                   src="/majdlogo.png"
                   alt="مَجْد"
-                  className={`absolute object-contain transition-all duration-500 ease-in-out h-8 sm:h-10 w-auto ${
+                  className={`absolute object-contain transition-all duration-500 ease-in-out h-[38px] sm:h-10 w-auto ${
                     isScrolled ? "opacity-100 scale-100" : "opacity-0 scale-75"
                   }`}
                 />
@@ -122,7 +122,7 @@ export default function AcademyNavbar() {
             </Link>
 
             {/* Desktop Nav Links */}
-            <nav aria-label="Main navigation" className="hidden md:flex items-center gap-1">
+            <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-1">
               {c.nav.map((item, i) => (
                 <a
                   key={i}
@@ -222,7 +222,7 @@ export default function AcademyNavbar() {
             </button>
 
             <button
-              className="md:hidden relative z-50 p-2 rounded-lg text-[#262626]"
+              className="lg:hidden relative z-50 p-2 rounded-lg text-[#262626]"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
@@ -249,7 +249,7 @@ export default function AcademyNavbar() {
             id="mobile-menu-panel"
             role="navigation"
             aria-label="Mobile navigation"
-            className="fixed inset-0 z-[90] bg-white pt-[80px] px-6 md:hidden flex flex-col overflow-y-auto"
+            className="fixed inset-0 z-[90] bg-white pt-[80px] px-6 lg:hidden flex flex-col overflow-y-auto"
             dir={isArabic ? "rtl" : "ltr"}
           >
             <div className="flex flex-col gap-2 mt-4">

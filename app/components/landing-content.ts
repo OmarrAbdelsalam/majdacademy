@@ -1,8 +1,8 @@
 export const landingContent = {
   ar: {
     hero: {
-      line1: "نؤسس عيالك",
-      line2: "جيل يصنع المجد بثقة",
+      line1: "مستقبل عيالك",
+      line2: "يبدأ بخطوة ثابتة مع مَجْد",
       subtitle1: "دروس أونلاين بالمنهج الإماراتي مع معلمين متخصصين يحتوون عيالكم ويوصلونهم للتفوق.",
       subtitle2: "",
       cta: "احجز حصة مجانية",
@@ -124,8 +124,8 @@ export const landingContent = {
   },
   en: {
     hero: {
-      line1: "We Build Your Kids",
-      line2: "A Generation of Confidence",
+      line1: "We Build a Strong Foundation",
+      line2: "For a Confident Generation",
       subtitle1: "Online classes following the UAE curriculum with specialized teachers who nurture your children and guide them to excel.",
       subtitle2: "",
       cta: "Book a Free Class",

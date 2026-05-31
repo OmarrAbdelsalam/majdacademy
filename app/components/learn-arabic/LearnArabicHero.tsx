@@ -27,7 +27,7 @@ export default function LearnArabicHero() {
 
   return (
     <>
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-start overflow-hidden pt-[60px] pb-16">
+      <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center sm:justify-start overflow-hidden pt-[60px] pb-16">
         {/* Background */}
         <div className="absolute inset-0 z-0 bg-white" />
         <div
@@ -41,7 +41,7 @@ export default function LearnArabicHero() {
         />
 
         {/* Content */}
-        <div className="relative z-20 max-w-[800px] mx-auto px-4 sm:px-6 text-center mt-16 sm:mt-24 md:mt-32">
+        <div className="relative z-20 max-w-[800px] mx-auto px-4 sm:px-6 text-center mt-0 sm:mt-24 md:mt-32">
           {/* Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}

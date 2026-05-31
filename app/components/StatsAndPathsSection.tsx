@@ -58,7 +58,13 @@ export default function StatsAndPathsSection() {
               color: "#262626",
             }}
           >
-            {content.stats.line1pre} <span className="inline-block px-2 py-0.5 rounded-lg text-white" style={{ background: "#498bff" }}>{content.stats.line1num}</span> {content.stats.line1post}
+            {content.stats.line1pre} <span className="inline-block px-2 py-0.5 rounded-lg text-white" style={{ background: "#498bff" }}>{content.stats.line1num}</span>{" "}
+            {content.stats.line1post.split(" ").map((word, i) => (
+              <React.Fragment key={i}>
+                <span className={word === "ناجح" || word === "successful" ? "hidden sm:inline" : ""}>{word}</span>
+                {i < content.stats.line1post.split(" ").length - 1 && " "}
+              </React.Fragment>
+            ))}
             <br />
             <span className="inline-block px-2 py-0.5 rounded-lg text-white" style={{ background: "#ef5da8" }}>{content.stats.line2num}</span> {content.stats.line2post} <span className="hidden sm:inline-block w-px h-8 bg-gray-300 mx-3 align-middle" /> <span className="block sm:inline-block mt-2 sm:mt-0"><span className="inline-block px-2 py-0.5 rounded-lg text-white" style={{ background: "#ff763d" }}>{content.stats.line3num}</span> {content.stats.line3post}</span>
           </h2>

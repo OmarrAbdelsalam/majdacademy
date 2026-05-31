@@ -28,20 +28,7 @@ export default function GradeHero({ grade }: { grade: number }) {
         />
 
         <div className="relative z-10 max-w-[800px] mx-auto px-4 sm:px-6 text-center mt-16 sm:mt-24">
-          {/* Breadcrumb link to parent stage */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0, 0, 0.2, 1] as const }}
-          >
-            <Link
-              href={`/${lang}/stages/${c.stage}`}
-              className="inline-block text-[14px] mb-4 transition-colors duration-200"
-              style={{ color: "rgba(38,38,38,0.6)", fontFamily: "'Cairo', sans-serif" }}
-            >
-              ← {c.stageName}
-            </Link>
-          </motion.div>
+
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}

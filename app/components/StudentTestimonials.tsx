@@ -83,11 +83,23 @@ export default function StudentTestimonials() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeId}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="absolute inset-0 p-9 md:p-12 flex flex-col justify-center z-10"
+              className="absolute inset-0 p-9 md:p-12 flex flex-col justify-center z-10 touch-pan-y cursor-grab active:cursor-grabbing"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, { offset }) => {
+                const total = content.testimonials.items.length;
+                const isRTL = document.documentElement.dir === 'rtl';
+                if ((offset.x < -50 && !isRTL) || (offset.x > 50 && isRTL)) {
+                  setActiveId((prev) => (prev < total - 1 ? prev + 1 : 0));
+                } else if ((offset.x > 50 && !isRTL) || (offset.x < -50 && isRTL)) {
+                  setActiveId((prev) => (prev > 0 ? prev - 1 : total - 1));
+                }
+              }}
             >
               <span className="inline-block self-start text-[13px] font-bold px-4 py-1.5 rounded-full bg-[#d3ff5f] text-[#262626] mb-5">
                 {activeItem.subject}
@@ -129,6 +141,23 @@ export default function StudentTestimonials() {
               &ldquo;{item.text}&rdquo;
             </p>
           </div>
+        ))}
+      </div>
+
+      {/* Mobile dots indicator */}
+      <div className="flex md:hidden justify-center items-center gap-2 mt-8">
+        {content.testimonials.items.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveId(i)}
+            className="transition-all duration-300"
+            style={{
+              width: activeId === i ? "24px" : "8px",
+              height: "8px",
+              borderRadius: "4px",
+              background: activeId === i ? "#262626" : "#e0e0e0",
+            }}
+          />
         ))}
       </div>
 

@@ -13,11 +13,21 @@ export default function KodlandFooter() {
   return (
     <footer
       role="contentinfo"
-      className="relative w-full min-h-screen flex flex-col justify-end pt-28 pb-0"
+      className="relative w-full min-h-screen flex flex-col justify-end pt-32 sm:pt-28 pb-0"
     >
-      {/* Background image — positioned at bottom, not stretched */}
+      {/* Background image — Mobile */}
       <div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 sm:hidden"
+        style={{
+          backgroundImage: "url('https://cdn.kodland.org/main-site-v2/footer-bg.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center bottom",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      {/* Background image — Desktop */}
+      <div
+        className="absolute inset-0 z-0 hidden sm:block"
         style={{
           backgroundImage: "url('https://cdn.kodland.org/main-site-v2/footer-bg.png')",
           backgroundSize: "100% auto",
