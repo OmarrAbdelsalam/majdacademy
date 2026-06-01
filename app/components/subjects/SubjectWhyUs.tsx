@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { subjectsPageContent, SubjectKey } from "./subjectsContent";
-import BookingModal from "../BookingModal";
+import BookingModal from "../shared/BookingModal";
 
 export default function SubjectWhyUs({ subject }: { subject: SubjectKey }) {
   const { lang } = useLang();

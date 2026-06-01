@@ -2,9 +2,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useLang } from "../../i18n/LangContext";
-import AcademyNavbar from "../../components/AcademyNavbar";
-import KodlandFooter from "../../components/KodlandFooter";
-import FloatingWhatsApp from "../../components/FloatingWhatsApp";
+import AcademyNavbar from "../../components/layout/AcademyNavbar";
+import KodlandFooter from "../../components/layout/KodlandFooter";
+import FloatingWhatsApp from "../../components/layout/FloatingWhatsApp";
 
 export default function PrivacyPage() {
   const { isRTL, lang } = useLang();

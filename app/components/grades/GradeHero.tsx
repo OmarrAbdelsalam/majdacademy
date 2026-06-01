@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useLang } from "../../i18n/LangContext";
 import { gradesContent } from "./gradesContent";
-import BookingModal from "../BookingModal";
+import BookingModal from "../shared/BookingModal";
 
 export default function GradeHero({ grade }: { grade: number }) {
   const { isRTL, lang } = useLang();

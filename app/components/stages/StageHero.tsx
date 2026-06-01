@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useLang } from "../../i18n/LangContext";
 import { stagesContent, StageKey } from "./stagesContent";
-import BookingModal from "../BookingModal";
+import BookingModal from "../shared/BookingModal";
 
 export default function StageHero({ stage }: { stage: StageKey }) {
   const { isRTL, lang } = useLang();

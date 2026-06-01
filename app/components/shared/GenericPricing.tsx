@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Check } from "lucide-react";
-import BookingModal from "../BookingModal";
+import BookingModal from "./BookingModal";
 
 export interface PricingPackage {
   title: string;
@@ -19,6 +19,7 @@ interface GenericPricingProps {
   packages: PricingPackage[];
   ctaText: string;
   modalVariant?: "default" | "learn-arabic";
+  breakHighlight?: boolean;
 }
 
 export default function GenericPricing({
@@ -28,6 +29,7 @@ export default function GenericPricing({
   packages: pkgs,
   ctaText,
   modalVariant = "default",
+  breakHighlight = false,
 }: GenericPricingProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -44,7 +46,8 @@ export default function GenericPricing({
               style={{ fontFamily: "'Cairo', sans-serif", fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#262626" }}
             >
               {title}{" "}
-              <span className="relative inline-block">
+              {breakHighlight && <br />}
+              <span className="relative inline-block mt-2">
                 <span className="absolute z-0 rounded-md" style={{ background: "#ef5da8", inset: "-2px -8px", borderRadius: "8px" }} />
                 <span className="relative z-10 text-white">{titleHighlight}</span>
               </span>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useLang } from "../i18n/LangContext";
 import { getProfile } from "../../lib/api";
-import { useCart } from "../cart/CartContext";
+// import { useCart } from "../cart/CartContext";
 
 const getCookie = (name: string) => {
   if (typeof document === "undefined") return null;
@@ -370,7 +370,8 @@ export default function Navbar() {
 }
 
 function CartIcon({ lang }: { lang: string }) {
-  const { totalItems } = useCart();
+  // const { totalItems } = useCart();
+  const totalItems = 0;
   const [bump, setBump] = useState(false);
 
   useEffect(() => {

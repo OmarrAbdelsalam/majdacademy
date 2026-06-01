@@ -3,7 +3,7 @@ import { useState, Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useParams, useSearchParams } from "next/navigation";
 import { useLang } from "../../../i18n/LangContext";
-import AcademyNavbar from "../../../components/AcademyNavbar";
+import AcademyNavbar from "../../../components/layout/AcademyNavbar";
 import { register } from "../../../../lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 

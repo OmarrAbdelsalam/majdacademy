@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useLang } from "../../i18n/LangContext";
-import AcademyNavbar from "../../components/AcademyNavbar";
-import KodlandFooter from "../../components/KodlandFooter";
-import FloatingWhatsApp from "../../components/FloatingWhatsApp";
+import AcademyNavbar from "../../components/layout/AcademyNavbar";
+import KodlandFooter from "../../components/layout/KodlandFooter";
+import FloatingWhatsApp from "../../components/layout/FloatingWhatsApp";
 import { motion } from "framer-motion";
 
 const content = {

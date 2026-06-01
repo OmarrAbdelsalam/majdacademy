@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useLang } from "../../i18n/LangContext";
-import InteractiveSteps from "../InteractiveSteps";
+import InteractiveSteps from "../landing/InteractiveSteps";
 
 const stepImages = [
   "https://cdn.kodland.org/main-site-v2/en/main/step-2-en.png",

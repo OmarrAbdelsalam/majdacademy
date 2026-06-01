@@ -1,9 +1,8 @@
 import { Playfair_Display, Tajawal, Cairo, Baloo_Bhaijaan_2 } from "next/font/google";
 import "../globals.css";
-import RootWrapper from "../components/RootWrapper";
 import { LangProvider } from "../i18n/LangContext";
 import SkipLink from "../components/accessibility/SkipLink";
-import SmoothScrollHandler from "../components/SmoothScrollHandler";
+import SmoothScrollHandler from "../components/layout/SmoothScrollHandler";
 
 const tajawal = Tajawal({
   subsets: ["arabic", "latin"],
@@ -61,7 +60,7 @@ export default async function LocaleLayout({
         <SkipLink locale={lang} />
         <SmoothScrollHandler />
         <LangProvider initialLang={lang}>
-          <RootWrapper>{children}</RootWrapper>
+          {children}
         </LangProvider>
       </body>
     </html>

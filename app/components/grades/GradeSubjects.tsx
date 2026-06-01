@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useLang } from "../../i18n/LangContext";
 import { gradesContent } from "./gradesContent";
-import BookingModal from "../BookingModal";
+import BookingModal from "../shared/BookingModal";
 
 const cardColors = ["#fff8f0", "#fef0f8"];
 const cardImages = ["/icon1.webp", "/icon2.webp"];

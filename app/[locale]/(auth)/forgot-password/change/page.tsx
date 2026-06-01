@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useParams } from "next/navigation";
 import { useLang } from "../../../../i18n/LangContext";
-import AcademyNavbar from "../../../../components/AcademyNavbar";
+import AcademyNavbar from "../../../../components/layout/AcademyNavbar";
 import { changePassword } from "../../../../../lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 

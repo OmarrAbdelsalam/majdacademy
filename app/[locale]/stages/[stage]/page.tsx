@@ -2,12 +2,12 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import { useLang } from "../../../i18n/LangContext";
-import AcademyNavbar from "../../../components/AcademyNavbar";
-import KodlandFooter from "../../../components/KodlandFooter";
-import FloatingWhatsApp from "../../../components/FloatingWhatsApp";
+import AcademyNavbar from "../../../components/layout/AcademyNavbar";
+import KodlandFooter from "../../../components/layout/KodlandFooter";
+import FloatingWhatsApp from "../../../components/layout/FloatingWhatsApp";
 import StageHero from "../../../components/stages/StageHero";
 import GradesGrid from "../../../components/stages/GradesGrid";
-import SubjectsSection from "../../../components/SubjectsSection";
+import SubjectsSection from "../../../components/landing/SubjectsSection";
 import StageFeatures from "../../../components/stages/StageFeatures";
 import StageCTA from "../../../components/stages/StageCTA";
 import { StageKey } from "../../../components/stages/stagesContent";

@@ -2,9 +2,9 @@
 import React from "react";
 import { useParams } from "next/navigation";
 import { useLang } from "../../../i18n/LangContext";
-import AcademyNavbar from "../../../components/AcademyNavbar";
-import KodlandFooter from "../../../components/KodlandFooter";
-import FloatingWhatsApp from "../../../components/FloatingWhatsApp";
+import AcademyNavbar from "../../../components/layout/AcademyNavbar";
+import KodlandFooter from "../../../components/layout/KodlandFooter";
+import FloatingWhatsApp from "../../../components/layout/FloatingWhatsApp";
 import SubjectHero from "../../../components/subjects/SubjectHero";
 import SubjectFeatures from "../../../components/subjects/SubjectFeatures";
 import SubjectWhyUs from "../../../components/subjects/SubjectWhyUs";

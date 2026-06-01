@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { createPageMetadata, PUBLIC_PAGES } from "../../lib/metadata";
-import { generateEducationalOrgSchema, generateFAQSchema } from "../../lib/structured-data";
-import JsonLd from "../components/seo/JsonLd";
-import AcademyLanding2 from "../components/landing/AcademyLanding2";
+import { createPageMetadata, PUBLIC_PAGES } from "../../../lib/metadata";
+import { generateEducationalOrgSchema, generateFAQSchema } from "../../../lib/structured-data";
+import JsonLd from "../../components/seo/JsonLd";
+import AcademyLanding2 from "../../components/landing/AcademyLanding2";
 
 export async function generateMetadata({
   params,
@@ -13,7 +13,9 @@ export async function generateMetadata({
   return createPageMetadata(PUBLIC_PAGES["/"], locale);
 }
 
-export default async function Home({
+import { LandingVariantProvider } from "../../components/landing/useLandingContent";
+
+export default async function Home2({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -46,7 +48,9 @@ export default async function Home({
   return (
     <>
       <JsonLd data={[orgSchema, faqSchema]} />
-      <AcademyLanding2 locale={normalizedLocale} />
+      <LandingVariantProvider variant="fusha">
+        <AcademyLanding2 locale={normalizedLocale} />
+      </LandingVariantProvider>
     </>
   );
 }

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useLang } from "../../i18n/LangContext";
-import BookingModal from "../BookingModal";
+import BookingModal from "../shared/BookingModal";
 
 export default function LearnArabicHero() {
   const { isRTL } = useLang();

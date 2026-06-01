@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { createPageMetadata, PUBLIC_PAGES } from "../../../lib/metadata";
 import { generateCourseSchema, generateFAQSchema } from "../../../lib/structured-data";
 import JsonLd from "../../components/seo/JsonLd";
-import AcademyNavbar from "../../components/AcademyNavbar";
-import KodlandFooter from "../../components/KodlandFooter";
+import AcademyNavbar from "../../components/layout/AcademyNavbar";
+import KodlandFooter from "../../components/layout/KodlandFooter";
 import LearnArabicHero from "../../components/learn-arabic/LearnArabicHero";
 import WhoIsThisFor from "../../components/learn-arabic/WhoIsThisFor";
 import WhatTheyLearn from "../../components/learn-arabic/WhatTheyLearn";
@@ -11,7 +11,7 @@ import HowItWorks from "../../components/learn-arabic/HowItWorks";
 import LearnArabicPricing from "../../components/learn-arabic/LearnArabicPricing";
 import LearnArabicFAQ from "../../components/learn-arabic/LearnArabicFAQ";
 import LearnArabicCTA from "../../components/learn-arabic/LearnArabicCTA";
-import FloatingWhatsAppClient from "../../components/FloatingWhatsAppClient";
+import FloatingWhatsAppClient from "../../components/layout/FloatingWhatsAppClient";
 
 export async function generateMetadata({
   params,

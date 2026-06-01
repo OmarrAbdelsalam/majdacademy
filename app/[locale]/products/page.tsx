@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import { useLang } from "../../i18n/LangContext";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import AcademyNavbar from "../../components/AcademyNavbar";
+import AcademyNavbar from "../../components/layout/AcademyNavbar";
 import { useSearchParams } from "next/navigation";
 
 const gradesData = [
