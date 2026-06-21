@@ -28,10 +28,10 @@ export default function InteractiveSteps({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section className="py-8 md:py-12 bg-white">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
         {/* Heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-12">
           {heading}
         </div>
 
@@ -63,7 +63,7 @@ export default function InteractiveSteps({
                     {stepLabel} {activeStep + 1} / {steps.length}
                   </div>
                   
-                  <h3 className="text-3xl md:text-4xl font-extrabold text-[#262626] mb-5 text-start" style={{ fontFamily: "'Cairo', sans-serif" }}>
+                  <h3 className="text-3xl md:text-4xl font-extrabold text-[#262626] mb-5 text-start" >
                     {steps[activeStep].title}
                     {titleIcon && <span className="inline-block mr-2">{titleIcon}</span>}
                   </h3>

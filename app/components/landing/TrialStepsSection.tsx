@@ -20,22 +20,13 @@ export default function TrialStepsSection() {
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       style={{
-        fontFamily: "'Cairo', sans-serif",
-        fontSize: "clamp(32px, 5vw, 56px)",
+        fontSize: "clamp(28px, 4vw, 40px)",
         fontWeight: 800,
         letterSpacing: "-0.02em",
         lineHeight: "130%",
-        color: "#262626",
-      }}
+        color: "#262626" }}
     >
-      {content.trial.heading1}{" "}
-      <span className="relative inline-block">
-        <span
-          className="absolute z-0 rounded-md"
-          style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }}
-        />
-        <span className="relative z-10">{content.trial.headingHighlight}</span>
-      </span>
+      {content.trial.heading1}{" "}{content.trial.headingHighlight}
       <br />
       {content.trial.heading2}
     </motion.h2>

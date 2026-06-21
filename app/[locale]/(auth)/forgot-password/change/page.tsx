@@ -86,7 +86,7 @@ export default function ChangePasswordPage() {
       <div
         className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6 pt-28 pb-12"
         dir={isRTL ? "rtl" : "ltr"}
-        style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}
+        
       >
         <motion.div
           className="w-full max-w-[440px]"

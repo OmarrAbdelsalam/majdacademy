@@ -60,19 +60,15 @@ export default function TermsPage() {
         {/* Hero */}
         <section className="relative w-full min-h-[50vh] flex flex-col items-center justify-center overflow-hidden pt-[60px] pb-8">
           <div className="absolute inset-0 z-0 bg-white" />
-          <div className="absolute inset-0 z-[1]" style={{ backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')", backgroundSize: "cover", backgroundPosition: "center -10vh", backgroundRepeat: "no-repeat" }} />
+          <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(140% 95% at 50% 0%, #fce7f3 0%, #f9a8d4 50%, #ffffff 100%)" }} />
           <div className="relative z-10 text-center mt-16 sm:mt-24 px-4">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              style={{ fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif", fontSize: "clamp(36px, 8vw, 72px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "130%", color: "#262626" }}
+              style={{ fontSize: "clamp(36px, 8vw, 72px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "130%", color: "#262626" }}
             >
-              {c.title}{" "}
-              <span className="relative inline-block">
-                <span className="absolute z-0" style={{ background: "#d3ff5f", borderRadius: "14px 20px 18px 22px", top: "-4px", bottom: "-4px", left: "-12px", right: "-12px" }} />
-                <span className="relative z-10">{c.highlight}</span>
-              </span>
+              {c.title}{" "}{c.highlight}
             </motion.h1>
             <p className="mt-4" style={{ fontSize: "14px", fontWeight: 600, color: "#ef5da8" }}>{c.lastUpdated}</p>
           </div>
@@ -87,7 +83,7 @@ export default function TermsPage() {
                   <span className="text-[14px] font-bold flex-shrink-0 w-8 text-center" style={{ color: "#ef5da8" }}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h2 style={{ fontFamily: "'Cairo', sans-serif", fontSize: "clamp(18px, 3vw, 22px)", fontWeight: 700, color: "#262626", lineHeight: "130%" }}>
+                  <h2 style={{ fontSize: "clamp(18px, 3vw, 22px)", fontWeight: 700, color: "#262626", lineHeight: "130%" }}>
                     {section.title}
                   </h2>
                 </div>

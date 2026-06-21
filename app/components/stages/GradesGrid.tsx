@@ -11,42 +11,46 @@ export default function GradesGrid({ stage }: { stage: StageKey }) {
   const c = stagesContent[lang as "ar" | "en"][stage];
   const isArabic = lang === "ar";
 
+  const getGradeSlug = (id: string | number) => {
+    if (typeof id === 'number') return `grade-${id}`;
+    if (typeof id === 'string' && id.startsWith('KG')) return `kg-${id.replace('KG', '')}`;
+    return String(id).toLowerCase();
+  };
+
   return (
     <section className="py-12 md:py-16 bg-white">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
         <h2
           className="text-center mb-16"
           style={{
-            fontFamily: "'Cairo', sans-serif",
             fontSize: "clamp(32px, 5vw, 56px)",
             fontWeight: 800,
             letterSpacing: "-0.02em",
             lineHeight: "120%",
-            color: "#262626",
-          }}
+            color: "#262626" }}
         >
-          {isArabic ? "الصفوف " : "Grades "}
-          <span className="relative inline-block">
-            <span className="absolute z-0 rounded-md" style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }} />
-            <span className="relative z-10">{isArabic ? "الدراسية" : "included"}</span>
-          </span>
+          {isArabic ? "الصفوف الدراسية" : "Grades included"}
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 max-w-[900px] mx-auto">
+        <div className="flex flex-wrap justify-center gap-5 max-w-[1100px] mx-auto">
           {c.grades.map((grade, i) => (
-            <Link key={grade.id} href={`/${lang}/grades/${grade.id}`}>
+            <Link 
+              key={grade.id} 
+              href={`/${lang}/grade/${getGradeSlug(grade.id)}`}
+              className="w-[calc(50%-10px)] sm:w-[180px] md:w-[200px] flex-none"
+            >
               <div
-                className="rounded-[32px] p-8 flex flex-col items-center justify-center min-h-[180px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"
+                className="rounded-[32px] p-8 flex flex-col items-center justify-center min-h-[220px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"
                 style={{ background: cardColors[i % cardColors.length] }}
               >
                 <span
-                  className="text-[36px] font-black mb-2 transition-transform duration-300 group-hover:scale-110"
+                  className="text-[48px] font-black mb-3 transition-transform duration-300 group-hover:scale-110"
                   style={{ color: "#262626" }}
                 >
                   {grade.id}
                 </span>
                 <span
-                  style={{ fontSize: "15px", fontWeight: 600, color: "rgba(38,38,38,0.6)" }}
+                  style={{ fontSize: "17px", fontWeight: 700, color: "rgba(38,38,38,0.7)" }}
                 >
                   {grade.label}
                 </span>

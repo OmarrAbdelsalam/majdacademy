@@ -20,7 +20,7 @@ export default function AboutValues() {
 
   return (
     <section className="py-12 md:py-16 bg-white">
-      <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <div className="relative">
           {/* Character */}
           <div className="flex justify-center mb-[-60px] relative z-20">
@@ -29,17 +29,13 @@ export default function AboutValues() {
 
           {/* Banner */}
           <div
-            className="rounded-[32px] overflow-hidden relative"
-            style={{ background: "linear-gradient(135deg, #f0fce8 0%, #d3ff5f 40%, #c8f550 100%)" }}
+            className="rounded-[32px] overflow-hidden relative bg-cover bg-center"
+            style={{ backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-pink.png')" }}
           >
-            <div
-              className="absolute inset-0 z-0 opacity-60"
-              style={{ backgroundImage: "url('https://cdn.kodland.org/main-site-v2/banner.png')", backgroundSize: "cover", backgroundPosition: "center" }}
-            />
             <div className="relative z-10 px-6 py-12 md:px-16 md:py-20">
-              <div className="text-center mb-12">
+              <div className="text-center mb-8 md:mb-12">
                 <h2
-                  style={{ fontFamily: "'Cairo', sans-serif", fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#262626" }}
+                  style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#fff" }}
                 >
                   {c.title}
                 </h2>

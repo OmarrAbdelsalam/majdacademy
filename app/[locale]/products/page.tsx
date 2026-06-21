@@ -75,7 +75,6 @@ function ProductsContent() {
                   className="text-[80px] sm:text-[90px] font-black leading-none mb-2"
                   style={{
                     color: '#ffffff',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
                     textShadow: `
                       -1px 1px 0px #cca044,
                       -2px 2px 0px #cca044,

@@ -31,16 +31,12 @@ export default function MissionVision() {
 
   return (
     <section className="py-12 md:py-16 bg-white">
-      <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
         <h2
-          className="text-center mb-16"
-          style={{ fontFamily: "'Cairo', sans-serif", fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#262626" }}
+          className="text-center mb-8 md:mb-12"
+          style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#262626" }}
         >
-          {c.heading}{" "}
-          <span className="relative inline-block">
-            <span className="absolute z-0 rounded-md" style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }} />
-            <span className="relative z-10">{c.highlight}</span>
-          </span>
+          {c.heading}{" "}{c.highlight}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-[900px] mx-auto">
@@ -59,7 +55,7 @@ export default function MissionVision() {
                 />
               </div>
               <div>
-                <h3 className="mb-3" style={{ fontFamily: "'Cairo', sans-serif", fontSize: "24px", fontWeight: 800, color: "#262626" }}>
+                <h3 className="mb-3" style={{ fontSize: "24px", fontWeight: 800, color: "#262626" }}>
                   {card.title}
                 </h3>
                 <p style={{ fontSize: "15px", fontWeight: 500, lineHeight: "26px", color: "rgba(38,38,38,0.6)" }}>

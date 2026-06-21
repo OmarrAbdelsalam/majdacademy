@@ -20,10 +20,7 @@ export default function GradeHero({ grade }: { grade: number }) {
         <div
           className="absolute inset-0 z-[1]"
           style={{
-            backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')",
-            backgroundSize: "cover",
-            backgroundPosition: "center -10vh",
-            backgroundRepeat: "no-repeat",
+            background: "radial-gradient(140% 95% at 50% 0%, #fce7f3 0%, #f9a8d4 50%, #ffffff 100%)"
           }}
         />
 
@@ -37,19 +34,17 @@ export default function GradeHero({ grade }: { grade: number }) {
           >
             <span
               className="inline-block text-[13px] font-bold px-4 py-2 rounded-full mb-6"
-              style={{ background: "#d3ff5f", color: "#262626" }}
+              style={{ background: "var(--color-highlight)", color: "#ffffff" }}
             >
               {c.stageName}
             </span>
             <h1
               style={{
-                fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif",
                 fontSize: "clamp(36px, 8vw, 80px)",
                 fontWeight: 800,
                 letterSpacing: "-0.02em",
                 lineHeight: "130%",
-                color: "#262626",
-              }}
+                color: "#262626" }}
             >
               {c.name}
             </h1>

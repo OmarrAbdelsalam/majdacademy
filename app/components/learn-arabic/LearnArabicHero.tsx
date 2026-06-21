@@ -12,7 +12,7 @@ export default function LearnArabicHero() {
     ar: {
       line1: "تعلم العربية كأهلها",
       line2: "من الصفر",
-      subtitle: "كورس تفاعلي لغير الناطقين بالعربية — قراءة وكتابة ومحادثة، لأي عمر وبدون ارتباط بمنهج محدد.",
+      subtitle: "دورة تفاعلية لغير الناطقين بالعربية — قراءة وكتابة ومحادثة، لجميع الأعمار ومن دون الارتباط بمنهج محدد.",
       cta: "احجز حصة تجريبية",
     },
     en: {
@@ -27,102 +27,92 @@ export default function LearnArabicHero() {
 
   return (
     <>
-      <section className="relative w-full min-h-[100svh] flex flex-col items-center justify-center sm:justify-start overflow-hidden pt-[60px] pb-16">
-        {/* Background */}
-        <div className="absolute inset-0 z-0 bg-white" />
-        <div
-          className="absolute inset-0 z-[1]"
-          style={{
-            backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')",
-            backgroundSize: "cover",
-            backgroundPosition: "center -10vh",
-            backgroundRepeat: "no-repeat",
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative z-20 max-w-[800px] mx-auto px-4 sm:px-6 text-center mt-0 sm:mt-24 md:mt-32">
-          {/* Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6"
+      <section 
+        className="relative w-full min-h-[85vh] sm:min-h-[90vh] bg-gradient-to-b from-[#e8347d] via-[#f7599a] to-white pt-28 sm:pt-32 pb-16 flex items-center" 
+        dir={isRTL ? "rtl" : "ltr"}
+      >
+        {/* Background Wrapper */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          {/* Subtle Arabic Typography Watermark Image (Left) */}
+          <div 
+            className="absolute top-0 left-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09]"
             style={{
-              fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif",
-              fontSize: "clamp(48px, 11vw, 90px)",
-              fontWeight: 800,
-              letterSpacing: "-0.02em",
-              lineHeight: "130%",
-              color: "#262626",
-              textAlign: "center",
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",
+              maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)"
             }}
           >
-            {c.line1}
-            <br />
-            <span className="flex justify-center mt-2">
-              <span className="relative inline-block whitespace-nowrap" style={{ fontSize: "clamp(34px, 9vw, 90px)", letterSpacing: "0.04em", lineHeight: "1.4" }}>
-                <span
-                  className="absolute z-0"
-                  style={{
-                    background: "#ef5da8",
-                    borderRadius: "14px 20px 18px 22px",
-                    top: "-4px",
-                    bottom: "-4px",
-                    left: "-12px",
-                    right: "-12px",
-                    boxShadow: "0 4px 20px rgba(239,93,168,0.3)",
-                  }}
-                />
-                <span className="relative z-10 text-white">{c.line2}</span>
-              </span>
-            </span>
-          </motion.h1>
+            <img 
+              src="/hroof.png" 
+              alt="Typography background" 
+              className="w-full h-full object-contain object-left-top"
+            />
+          </div>
 
-          {/* Subtitle */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="mx-auto px-2"
+          {/* Subtle Arabic Typography Watermark Image (Right) */}
+          <div 
+            className="absolute top-0 right-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09]"
             style={{
-              fontSize: "clamp(15px, 3.5vw, 20px)",
-              fontWeight: 500,
-              letterSpacing: "-0.01em",
-              lineHeight: "1.7",
-              marginTop: "clamp(20px, 5vw, 40px)",
-              marginBottom: "0",
-              maxWidth: "700px",
-              color: "rgba(38,38,38,0.7)",
-              textAlign: "center",
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",
+              maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)"
             }}
           >
-            {c.subtitle}
-          </motion.p>
+            <img 
+              src="/hroof.png" 
+              alt="Typography background" 
+              className="w-full h-full object-contain object-right-top"
+            />
+          </div>
 
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-8 sm:mt-10"
-          >
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center justify-center gap-3 rounded-[60px] bg-[#262626] text-white hover:bg-[#3a3a3a] transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer"
-              style={{
-                padding: "clamp(16px, 3vw, 24px) clamp(28px, 5vw, 44px)",
-                fontSize: "clamp(16px, 3vw, 20px)",
-                fontWeight: 500,
-              }}
-            >
-              {c.cta}
-              <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-[-4px] rtl:group-hover:translate-x-[4px]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-          </motion.div>
+          {/* Vibrant Glow effects */}
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/4 left-1/4 w-[30rem] h-[30rem] bg-[#ff85b8]/20 rounded-full blur-[120px]" />
         </div>
+
+        <div className="container mx-auto px-4 md:px-8 lg:px-12 relative z-40 flex justify-center">
+          <div className="flex flex-col items-center justify-center text-center w-full max-w-7xl">
+            {/* Text Content */}
+            <motion.div 
+              className="flex-1 flex flex-col items-center text-center space-y-8 w-full"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
+              {/* Premium Badge - Mobile Only */}
+              <div className="inline-flex sm:hidden items-center gap-1.5 px-3 py-1 bg-white/15 text-white/95 rounded-full text-[11px] font-bold backdrop-blur-md shadow-sm border border-white/10">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#f6428c] animate-pulse"></span>
+                أكاديمية مجد لتعليم العربية
+              </div>
+
+              {/* Headlines */}
+              <h1 className="text-[34px] sm:text-6xl md:text-7xl lg:text-[80px] font-black text-white leading-[1.1] tracking-tight w-full drop-shadow-md">
+                {c.line1}
+                <br className="hidden sm:block" />
+                <span className="text-white block sm:inline-block mt-2 sm:mt-3 font-extrabold text-[20px] sm:text-5xl md:text-6xl lg:text-[70px] opacity-90">{c.line2}</span>
+              </h1>
+
+              {/* Description */}
+              <p className="text-[13px] sm:text-xl lg:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto font-medium drop-shadow-sm px-4 sm:px-0">
+                {c.subtitle}
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 pt-4 w-full px-2 sm:px-0">
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className="inline-flex items-center justify-center gap-1 sm:gap-3 px-3 sm:px-10 py-3.5 sm:py-5 bg-white text-[#f6428c] rounded-full text-[14px] sm:text-xl font-bold shadow-[0_10px_30px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_35px_rgba(255,255,255,0.3)] hover:-translate-y-1 transition-all duration-300 w-1/2 sm:w-auto"
+                >
+                  <span className="hidden sm:inline">{c.cta}</span>
+                  <span className="sm:hidden">{c.cta}</span>
+                </button>
+              </div>
+
+            </motion.div>
+
+          </div>
+        </div>
+        
+        {/* Bottom section fade to melt into the next section */}
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-30" />
       </section>
       <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant="learn-arabic" />
     </>

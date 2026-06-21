@@ -14,14 +14,14 @@ export default function SubjectHero({ subject }: { subject: SubjectKey }) {
     <>
       <section className="relative w-full min-h-[70vh] flex flex-col items-center justify-center overflow-hidden pt-[60px] pb-16">
         <div className="absolute inset-0 z-0 bg-white" />
-        <div className="absolute inset-0 z-[1]" style={{ backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')", backgroundSize: "cover", backgroundPosition: "center -10vh", backgroundRepeat: "no-repeat" }} />
+        <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(140% 95% at 50% 0%, #fce7f3 0%, #f9a8d4 50%, #ffffff 100%)" }} />
 
         <div className="relative z-10 max-w-[800px] mx-auto px-4 sm:px-6 text-center mt-16 sm:mt-24">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <span className="inline-block text-[13px] font-bold px-4 py-2 rounded-full mb-6" style={{ background: "#d3ff5f", color: "#262626" }}>
+            <span className="inline-block text-[13px] font-bold px-4 py-2 rounded-full mb-6" style={{ background: "var(--color-highlight)", color: "#ffffff" }}>
               {c.badge}
             </span>
-            <h1 style={{ fontFamily: "'Baloo Bhaijaan 2', var(--font-baloo), sans-serif", fontSize: "clamp(36px, 8vw, 80px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "130%", color: "#262626" }}>
+            <h1 style={{ fontSize: "clamp(36px, 8vw, 80px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "130%", color: "#262626" }}>
               {c.title}
             </h1>
           </motion.div>

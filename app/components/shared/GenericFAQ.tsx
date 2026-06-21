@@ -27,19 +27,17 @@ export default function GenericFAQ({
   const [openId, setOpenId] = useState<number | null>(0);
 
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section id="faq" className="py-10 md:py-16 bg-white overflow-hidden relative">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-8 md:mb-12">
           <h2
             style={{
-              fontFamily: "'Cairo', sans-serif",
-              fontSize: "clamp(32px, 5vw, 56px)",
+              fontSize: "clamp(28px, 4vw, 40px)",
               fontWeight: 800,
               letterSpacing: "-0.02em",
               lineHeight: "120%",
-              color: "#262626",
-            }}
+              color: "#262626" }}
           >
             {title}
           </h2>
@@ -75,11 +73,11 @@ export default function GenericFAQ({
                   </span>
                   <div
                     className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
-                    style={{ background: isOpen ? "#d3ff5f" : "transparent" }}
+                    style={{ background: isOpen ? "var(--color-highlight)" : "transparent" }}
                   >
                     <svg
                       className="w-4 h-4 transition-transform duration-300"
-                      style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", color: "#262626" }}
+                      style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", color: isOpen ? "#ffffff" : "#262626" }}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

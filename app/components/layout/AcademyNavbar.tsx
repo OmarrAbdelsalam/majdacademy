@@ -3,9 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useLang } from "../../i18n/LangContext";
-import { Menu, X, ChevronDown, LogIn } from "lucide-react";
+import { useCountry, COUNTRIES } from "../../i18n/CountryContext";
+import { usePathname, useRouter } from "next/navigation";
+import { Menu, X, ChevronDown, LogIn, User, LogOut, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import BookingModal from "../shared/BookingModal";
+import CountryWelcomeModal from "../shared/CountryWelcomeModal";
+import { createClient } from "@/utils/supabase/client";
 const content = {
   ar: {
     brand: "مَجْد",
@@ -14,10 +18,18 @@ const content = {
     langLabel: "AR",
     otherLangLabel: "EN",
     nav: [
-      { label: "المراحل الدراسية", href: "/ar#grades" },
-      { label: "الباقات", href: "/ar#packages" },
       { label: "تعلّم العربية", href: "/ar/learn-arabic" },
     ],
+    stages: {
+      label: "المراحل الدراسية",
+      items: [
+        { label: "مرحلة الروضة", href: "/ar/grade/kg-1" },
+        { label: "المرحلة الابتدائية", href: "/ar/grade/grade-1" },
+        { label: "المرحلة الإعدادية", href: "/ar/grade/grade-6" },
+        { label: "المرحلة الثانوية", href: "/ar/grade/grade-10" },
+      ],
+    },
+    packagesLabel: "الباقات",
     about: {
       label: "عن مَجْد",
       items: [
@@ -35,10 +47,18 @@ const content = {
     langLabel: "EN",
     otherLangLabel: "AR",
     nav: [
-      { label: "Grade Levels", href: "/en#grades" },
-      { label: "Packages", href: "/en#packages" },
       { label: "Learn Arabic", href: "/en/learn-arabic" },
     ],
+    stages: {
+      label: "Grade Levels",
+      items: [
+        { label: "Kindergarten", href: "/en/grade/kg-1" },
+        { label: "Primary", href: "/en/grade/grade-1" },
+        { label: "Middle School", href: "/en/grade/grade-6" },
+        { label: "High School", href: "/en/grade/grade-10" },
+      ],
+    },
+    packagesLabel: "Packages",
     about: {
       label: "About Majd",
       items: [
@@ -51,17 +71,85 @@ const content = {
   },
 };
 
-export default function AcademyNavbar() {
+export default function AcademyNavbar({ 
+  transparentLogo,
+  navTheme = "dark"
+}: { 
+  transparentLogo?: string;
+  navTheme?: "dark" | "light" | "gray";
+} = {}) {
   const { lang, setLang } = useLang();
   const c = content[lang as keyof typeof content] || content.ar;
   const isArabic = lang === "ar";
+  const pathname = usePathname();
+  const router = useRouter();
+  const isHome = pathname === "/" || pathname === "/ar" || pathname === "/en";
+  const isCurriculums = pathname.includes("/curriculums");
+  const isGradePage = pathname.includes("/grade/");
+  const isLearnArabic = pathname.includes("/learn-arabic");
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [stagesOpen, setStagesOpen] = useState(false);
   const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+  const [mobileStagesOpen, setMobileStagesOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  
+  const { country, setCountry, activeCountry } = useCountry();
+  const [isCountryModalOpen, setIsCountryModalOpen] = useState(false);
+  const [countryModalStep, setCountryModalStep] = useState<1 | 2>(2);
   const aboutRef = useRef<HTMLDivElement>(null);
+  const stagesRef = useRef<HTMLDivElement>(null);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        setUser(user);
+      } finally {
+        setIsAuthLoading(false);
+      }
+    };
+    checkUser();
+  }, []);
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setUser(null);
+    setUserDropdownOpen(false);
+    router.push(`/${lang}/login`);
+    router.refresh();
+  };
+  
+  const useWhiteText = false;
+
+  const getNavTextColor = () => {
+    if (isScrolled) return "text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626]";
+    if (navTheme === "gray") return "text-gray-100 hover:bg-white/10 hover:text-white";
+    if (navTheme === "light" || useWhiteText) return "text-white/90 hover:bg-white/10 hover:text-white";
+    return "text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626]";
+  };
+
+  const getNavBtnColor = () => {
+    if (isScrolled) return "text-[#262626] hover:bg-[#262626]/5";
+    if (navTheme === "gray" || navTheme === "light" || useWhiteText) return "text-white hover:bg-white/10";
+    return "text-[#262626] hover:bg-[#262626]/5";
+  };
+
+  useEffect(() => {
+    const hasCountryInUrl = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("country");
+    if ((isHome || isCurriculums || isGradePage) && !hasCountryInUrl) {
+      setCountryModalStep(isHome ? 1 : 2);
+      setIsCountryModalOpen(true);
+    }
+  }, [isHome, isCurriculums, isGradePage]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,9 +160,28 @@ export default function AcademyNavbar() {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get("booking") === "true") {
+        setIsModalOpen(true);
+        // Clean up URL
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete("booking");
+        window.history.replaceState({}, "", newUrl.toString());
+      }
+    }
+  }, [pathname]);
+
+  useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (aboutRef.current && !aboutRef.current.contains(e.target as Node)) {
         setAboutOpen(false);
+      }
+      if (stagesRef.current && !stagesRef.current.contains(e.target as Node)) {
+        setStagesOpen(false);
+      }
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target as Node)) {
+        setUserDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -105,11 +212,11 @@ export default function AcademyNavbar() {
                 isScrolled ? "h-[60px] sm:h-[64px] md:h-[72px] w-12 sm:w-12" : "h-[72px] sm:h-[76px] md:h-[88px] w-24 sm:w-28 md:w-32"
               }`}>
                 <img
-                  src="/majd.png"
+                  src={transparentLogo || "/majd.png"}
                   alt="مَجْد"
                   className={`absolute object-contain transition-all duration-500 ease-in-out w-auto ${
                     isScrolled ? "opacity-0 scale-75 h-0" : "opacity-100 scale-100 h-[64px] sm:h-[78px] md:h-[94px]"
-                  }`}
+                  } ${useWhiteText && !transparentLogo ? "brightness-0 invert" : ""}`}
                 />
                 <img
                   src="/majdlogo.png"
@@ -123,11 +230,70 @@ export default function AcademyNavbar() {
 
             {/* Desktop Nav Links */}
             <nav aria-label="Main navigation" className="hidden lg:flex items-center gap-1">
+              {/* Stages Dropdown */}
+              <div ref={stagesRef} className="relative">
+                <button
+                  onClick={() => setStagesOpen(!stagesOpen)}
+                  aria-expanded={stagesOpen}
+                  aria-haspopup="true"
+                  className={`inline-flex items-center gap-1 rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium transition-all duration-200 whitespace-nowrap ${getNavTextColor()}`}
+                  style={{ letterSpacing: "-0.01em" }}
+                >
+                  {c.stages.label}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${stagesOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                <AnimatePresence>
+                  {stagesOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2 }}
+                      role="menu"
+                      className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[200px]"
+                      style={{ [isArabic ? "right" : "left"]: 0 }}
+                    >
+                      {c.stages.items.map((item, i) => (
+                        <a
+                          key={i}
+                          href={item.href}
+                          role="menuitem"
+                          onClick={() => setStagesOpen(false)}
+                          className="block px-5 py-3 text-[15px] font-medium text-[#262626]/90 hover:bg-[#262626]/5 hover:text-[#262626] transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Packages Button */}
+              <button
+                onClick={() => {
+                  if (isCurriculums || isLearnArabic) {
+                    document.getElementById("packages")?.scrollIntoView({ behavior: "smooth" });
+                  } else if (isHome) {
+                    setCountryModalStep(1);
+                    setIsCountryModalOpen(true);
+                  } else {
+                    setIsModalOpen(true);
+                  }
+                }}
+                className={`inline-flex items-center rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium transition-all duration-200 whitespace-nowrap ${getNavTextColor()}`}
+                style={{ letterSpacing: "-0.01em" }}
+              >
+                {c.packagesLabel}
+              </button>
+
+              {/* Other Nav Links */}
               {c.nav.map((item, i) => (
                 <a
                   key={i}
                   href={item.href}
-                  className="inline-flex items-center rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626] transition-all duration-200 whitespace-nowrap"
+                  className={`inline-flex items-center rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium transition-all duration-200 whitespace-nowrap ${getNavTextColor()}`}
                   style={{ letterSpacing: "-0.01em" }}
                 >
                   {item.label}
@@ -140,7 +306,7 @@ export default function AcademyNavbar() {
                   onClick={() => setAboutOpen(!aboutOpen)}
                   aria-expanded={aboutOpen}
                   aria-haspopup="true"
-                  className="inline-flex items-center gap-1 rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium text-[#262626]/80 hover:bg-[#262626]/5 hover:text-[#262626] transition-all duration-200 whitespace-nowrap"
+                  className={`inline-flex items-center gap-1 rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium transition-all duration-200 whitespace-nowrap ${getNavTextColor()}`}
                   style={{ letterSpacing: "-0.01em" }}
                 >
                   {c.about.label}
@@ -177,52 +343,108 @@ export default function AcademyNavbar() {
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               onClick={() => setLang(lang === "ar" ? "en" : "ar")}
-              className="inline-flex items-center justify-center rounded-full text-[15px] font-medium text-[#262626] hover:bg-[#262626]/5 transition-all duration-200"
+              className={`inline-flex items-center justify-center rounded-full text-[15px] font-medium transition-all duration-200 ${getNavBtnColor()}`}
               style={{ height: "40px", padding: "0 14px" }}
             >
               {c.otherLangLabel}
             </button>
 
-            <Link
-              href={`/${lang}/login`}
-              className={`hidden sm:inline-flex items-center justify-center gap-1.5 rounded-full text-[#262626] transition-all duration-300 ${
-                isScrolled
-                  ? "bg-transparent border border-transparent hover:bg-[#262626]/5"
-                  : "bg-white border border-[#262626]/15 hover:bg-[#262626] hover:text-white hover:border-[#262626]"
-              }`}
-              style={{
-                height: "48px",
-                padding: "0 24px",
-                fontSize: "16px",
-                fontWeight: 500,
-                letterSpacing: "-0.01em",
-                lineHeight: "20px",
-              }}
-            >
-              <LogIn className="w-4 h-4" />
-              {c.login}
-            </Link>
+            {/* Country Selector */}
+            {!isLearnArabic && (
+              <div className="relative hidden sm:block">
+                <button
+                  onClick={() => {
+                    setCountryModalStep(isHome ? 1 : 2);
+                    setIsCountryModalOpen(true);
+                  }}
+                  className="inline-flex items-center justify-center rounded-full transition-all duration-300 gap-2.5 bg-white text-[#262626] border border-[#262626]/20 hover:bg-[#262626] hover:text-white shadow-sm"
+                  style={{
+                    height: "48px",
+                    padding: "0 20px",
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    letterSpacing: "-0.01em",
+                    lineHeight: "20px" }}
+                >
+                  <span className="hidden lg:inline-block">
+                    {lang === "ar" ? "اختر الدولة" : "Country"}
+                  </span>
+                  {activeCountry.flag === "un" ? "🌍" : (
+                    <img src={`https://flagcdn.com/w40/${activeCountry.flag}.png`} alt="" className="w-7 h-5 object-cover rounded shadow-[0_0_2px_rgba(0,0,0,0.2)]" />
+                  )}
+                </button>
+              </div>
+            )}
+
+            {/* User Dropdown / Login */}
+            {isAuthLoading ? (
+              <div className="hidden sm:block w-[110px] h-[40px] bg-black/5 rounded-full animate-pulse border border-transparent"></div>
+            ) : user ? (
+              <div ref={userDropdownRef} className="relative hidden sm:block">
+                <button
+                  onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 lg:px-4 py-2.5 text-[15px] lg:text-[18px] font-medium transition-all duration-200 whitespace-nowrap ${getNavTextColor()}`}
+                  style={{ letterSpacing: "-0.01em" }}
+                >
+                  <div className="w-6 h-6 rounded-full bg-black/5 flex items-center justify-center shrink-0">
+                    <User className="w-4 h-4" />
+                  </div>
+                  <span>{lang === "ar" ? "مَجْد" : "Majd"}</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${userDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+
+                <AnimatePresence>
+                  {userDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full mt-2 w-56 bg-white rounded-[24px] shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-[rgba(38,38,38,0.05)] py-2"
+                      style={{ [isArabic ? "left" : "right"]: 0 }}
+                    >
+                      <Link
+                        href={`/${lang}/dashboard`}
+                        onClick={() => setUserDropdownOpen(false)}
+                        className="flex items-center gap-3 px-5 py-3.5 text-[15px] font-bold text-[#262626] hover:bg-[#f8f9fa] transition-colors"
+                      >
+                        <LayoutDashboard className="w-5 h-5 text-[rgba(38,38,38,0.5)]" />
+                        {lang === "ar" ? "لوحة التحكم" : "Dashboard"}
+                      </Link>
+                      <div className="h-[1px] bg-[rgba(38,38,38,0.05)] my-1 mx-4"></div>
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-3 px-5 py-3.5 text-[15px] font-bold text-red-500 hover:bg-red-50 transition-colors text-start"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        {lang === "ar" ? "تسجيل الخروج" : "Logout"}
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <Link
+                href={`/${lang}/login`}
+                className="hidden sm:inline-flex items-center justify-center gap-1.5 rounded-full bg-[#262626] text-white hover:bg-[#3a3a3a] transition-all duration-300 shadow-sm"
+                style={{
+                  height: "48px",
+                  padding: "0 24px",
+                  fontSize: "16px",
+                  fontWeight: 500,
+                  letterSpacing: "-0.01em",
+                  lineHeight: "20px" }}
+              >
+                {c.login}
+                <LogIn className="w-4 h-4 rtl:-scale-x-100 ml-1" />
+              </Link>
+            )}
 
             <button
-              onClick={() => setIsModalOpen(true)}
-              className="hidden sm:inline-flex items-center justify-center rounded-full bg-[#262626] text-white hover:bg-[#3a3a3a] hover:scale-[1.02] transition-all duration-300 cursor-pointer"
-              style={{
-                height: "48px",
-                padding: "0 24px",
-                fontSize: "16px",
-                fontWeight: 500,
-                letterSpacing: "-0.01em",
-                lineHeight: "20px",
-              }}
-            >
-              {c.freeLesson}
-            </button>
-
-            <button
-              className="lg:hidden relative z-50 p-2 rounded-lg text-[#262626]"
+              className={`lg:hidden relative z-50 p-2 rounded-lg ${useWhiteText ? "text-white" : "text-[#262626]"}`}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileMenuOpen}
@@ -253,6 +475,60 @@ export default function AcademyNavbar() {
             dir={isArabic ? "rtl" : "ltr"}
           >
             <div className="flex flex-col gap-2 mt-4">
+              {/* Mobile Stages Dropdown */}
+              <div className="border-b border-gray-100">
+                <button
+                  onClick={() => setMobileStagesOpen(!mobileStagesOpen)}
+                  className="w-full flex items-center justify-between text-[17px] font-medium text-[#262626] py-3"
+                >
+                  {c.stages.label}
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileStagesOpen ? "rotate-180" : ""}`} />
+                </button>
+                <AnimatePresence>
+                  {mobileStagesOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="pb-3 flex flex-col gap-1">
+                        {c.stages.items.map((item, i) => (
+                          <a
+                            key={i}
+                            href={item.href}
+                            onClick={() => { setMobileMenuOpen(false); setMobileStagesOpen(false); }}
+                            className="text-[15px] font-medium text-[#262626]/70 py-2 pr-4 pl-4"
+                          >
+                            {item.label}
+                          </a>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Mobile Packages Button */}
+              <button
+                onClick={() => { 
+                  setMobileMenuOpen(false); 
+                  if (isCurriculums || isLearnArabic) {
+                    document.getElementById("packages")?.scrollIntoView({ behavior: "smooth" });
+                  } else if (isHome) {
+                    setCountryModalStep(1);
+                    setIsCountryModalOpen(true); 
+                  } else {
+                    setIsModalOpen(true);
+                  }
+                }}
+                className="text-[17px] font-medium text-[#262626] py-3 border-b border-gray-100 text-start"
+              >
+                {c.packagesLabel}
+              </button>
+
+              {/* Other Nav Links */}
               {c.nav.map((item, i) => (
                 <a
                   key={i}
@@ -263,6 +539,27 @@ export default function AcademyNavbar() {
                   {item.label}
                 </a>
               ))}
+
+              {/* Mobile Country Selector (moved up) */}
+              {!isLearnArabic && (
+                <div className="border-b border-gray-100">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setCountryModalStep(isHome ? 1 : 2);
+                      setIsCountryModalOpen(true);
+                    }}
+                    className="w-full flex items-center justify-between text-[17px] font-medium text-[#262626] py-3"
+                  >
+                    <div className="flex items-center gap-2">
+                      {activeCountry.flag === "un" ? <span className="leading-none">🌍</span> : (
+                        <img src={`https://flagcdn.com/w20/${activeCountry.flag}.png`} alt="" className="w-5 h-3.5 object-cover rounded-sm" />
+                      )}
+                      {lang === "ar" ? "تغيير الدولة" : "Change Country"}
+                    </div>
+                  </button>
+                </div>
+              )}
 
               {/* About — expandable on mobile */}
               <div className="border-b border-gray-100">
@@ -300,26 +597,50 @@ export default function AcademyNavbar() {
               </div>
 
               <div className="mt-4 flex flex-col gap-3">
-                <Link
-                  href={`/${lang}/login`}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center w-full py-3.5 rounded-full text-[16px] font-bold border border-[#262626]/20 text-[#262626] active:scale-95 transition-transform"
-                >
-                  {c.login}
-                </Link>
-                <button
-                  onClick={() => { setMobileMenuOpen(false); setIsModalOpen(true); }}
-                  className="flex items-center justify-center w-full py-3.5 rounded-full text-[16px] font-bold bg-[#262626] text-white active:scale-95 transition-transform"
-                >
-                  {c.freeLesson}
-                </button>
+                {isAuthLoading ? (
+                  <div className="w-full h-[52px] bg-black/5 rounded-[20px] animate-pulse"></div>
+                ) : user ? (
+                  <>
+                    <Link
+                      href={`/${lang}/dashboard`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center justify-center gap-2 w-full py-3.5 rounded-[20px] text-[16px] font-bold bg-[#fdf2f8] text-[#ef5da8] active:scale-95 transition-transform"
+                    >
+                      <LayoutDashboard className="w-5 h-5" />
+                      {lang === "ar" ? "لوحة التحكم" : "Dashboard"}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="flex items-center justify-center gap-2 w-full py-3.5 rounded-[20px] text-[16px] font-bold text-red-500 border border-red-100 bg-red-50 active:scale-95 transition-transform"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      {lang === "ar" ? "تسجيل الخروج" : "Logout"}
+                    </button>
+                  </>
+                ) : (
+                  <Link
+                    href={`/${lang}/login`}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center w-full py-3.5 rounded-full text-[16px] font-bold border border-[#262626]/20 text-[#262626] active:scale-95 transition-transform"
+                  >
+                    {c.login}
+                  </Link>
+                )}
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant={isLearnArabic ? "learn-arabic" : "default"} />
+      <CountryWelcomeModal 
+        isOpen={isCountryModalOpen} 
+        onClose={() => setIsCountryModalOpen(false)} 
+        initialStep={countryModalStep}
+      />
     </>
   );
 }

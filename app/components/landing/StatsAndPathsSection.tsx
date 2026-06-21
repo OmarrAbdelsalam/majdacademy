@@ -43,20 +43,18 @@ export default function StatsAndPathsSection() {
   }, [measureHeights]);
 
   return (
-    <section className="py-12 md:py-16 bg-white">
+    <section className="py-8 md:py-12 bg-white">
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
 
         {/* Stats Row */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-8 md:mb-12">
           <h2
             style={{
-              fontFamily: "'Cairo', sans-serif",
-              fontSize: "clamp(32px, 5vw, 56px)",
+              fontSize: "clamp(28px, 4vw, 40px)",
               fontWeight: 800,
               letterSpacing: "-0.02em",
               lineHeight: "140%",
-              color: "#262626",
-            }}
+              color: "#262626" }}
           >
             {content.stats.line1pre} <span className="inline-block px-2 py-0.5 rounded-lg text-white" style={{ background: "#498bff" }}>{content.stats.line1num}</span>{" "}
             {content.stats.line1post.split(" ").map((word, i) => (
@@ -76,8 +74,7 @@ export default function StatsAndPathsSection() {
           style={{
             backgroundImage: `url('${currentTheme.bgImage}')`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+            backgroundPosition: "center" }}
         >
           <div className="flex flex-col md:flex-row min-h-[500px]">
             {/* Left side — Accordion */}
@@ -85,14 +82,12 @@ export default function StatsAndPathsSection() {
               <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg">
                 <h3
                   style={{
-                    fontFamily: "'Cairo', sans-serif",
                     fontSize: "clamp(22px, 3vw, 28px)",
                     fontWeight: 700,
                     color: "#262626",
                     lineHeight: "130%",
                     marginBottom: "20px",
-                    whiteSpace: "pre-line",
-                  }}
+                    whiteSpace: "pre-line" }}
                 >
                   {content.paths.title}
                 </h3>
@@ -109,8 +104,7 @@ export default function StatsAndPathsSection() {
                           className="font-extrabold transition-colors duration-300"
                           style={{
                             fontSize: "22px",
-                            color: activeTab === i ? currentTheme.color : "#262626",
-                          }}
+                            color: activeTab === i ? currentTheme.color : "#262626" }}
                         >
                           {path.age}
                         </span>
@@ -131,8 +125,7 @@ export default function StatsAndPathsSection() {
                         className="overflow-hidden transition-[max-height,opacity] duration-400 ease-[cubic-bezier(0,0,0.2,1)]"
                         style={{
                           maxHeight: activeTab === i ? `${heights[i] || 200}px` : "0px",
-                          opacity: activeTab === i ? 1 : 0,
-                        }}
+                          opacity: activeTab === i ? 1 : 0 }}
                       >
                         <p
                           className="pb-3"
@@ -140,8 +133,7 @@ export default function StatsAndPathsSection() {
                             fontSize: "15px",
                             fontWeight: 500,
                             lineHeight: "24px",
-                            color: "rgba(38,38,38,0.7)",
-                          }}
+                            color: "rgba(38,38,38,0.7)" }}
                         >
                           {path.description}
                         </p>
@@ -172,8 +164,7 @@ export default function StatsAndPathsSection() {
                   letterSpacing: "-0.02em",
                   lineHeight: "0.95",
                   boxShadow: `0 8px 32px ${currentTheme.tagColors[0]}40, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1)`,
-                  border: "1px solid rgba(255,255,255,0.25)",
-                }}
+                  border: "1px solid rgba(255,255,255,0.25)" }}
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="white" strokeWidth={2} viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 <span>{content.paths.items[activeTab >= 0 ? activeTab : 0].tags[0]}</span>
@@ -186,8 +177,7 @@ export default function StatsAndPathsSection() {
                   letterSpacing: "-0.02em",
                   lineHeight: "0.95",
                   boxShadow: `0 8px 32px ${currentTheme.tagColors[1]}40, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1)`,
-                  border: "1px solid rgba(255,255,255,0.25)",
-                }}
+                  border: "1px solid rgba(255,255,255,0.25)" }}
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="white" strokeWidth={2} viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                 <span>{content.paths.items[activeTab >= 0 ? activeTab : 0].tags[1]}</span>
@@ -200,8 +190,7 @@ export default function StatsAndPathsSection() {
                   letterSpacing: "-0.02em",
                   lineHeight: "0.95",
                   boxShadow: `0 8px 32px ${currentTheme.tagColors[2]}40, inset 0 1px 1px rgba(255,255,255,0.3), inset 0 -2px 4px rgba(0,0,0,0.1)`,
-                  border: "1px solid rgba(255,255,255,0.25)",
-                }}
+                  border: "1px solid rgba(255,255,255,0.25)" }}
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" fill="none" stroke="white" strokeWidth={2} viewBox="0 0 24 24"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 12 18.469a3.374 3.374 0 0 0-1.988-.832l-.548-.547z"/></svg>
                 <span>{content.paths.items[activeTab >= 0 ? activeTab : 0].tags[2]}</span>

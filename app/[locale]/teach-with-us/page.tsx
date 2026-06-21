@@ -126,7 +126,7 @@ export default function TeachWithUsPage() {
     <div
       dir={isRTL ? "rtl" : "ltr"}
       className="min-h-screen bg-white text-[#262626] flex flex-col relative"
-      style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}
+      
     >
       <AcademyNavbar />
 
@@ -135,31 +135,17 @@ export default function TeachWithUsPage() {
         <div
           className="absolute inset-0 z-0"
           style={{
-            background: "linear-gradient(135deg, #f0fce8 0%, #d3ff5f 40%, #c8f550 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 z-0 opacity-60"
-          style={{
-            backgroundImage: "url('https://cdn.kodland.org/main-site-v2/banner.png')",
+            backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-pink.png')",
             backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+            backgroundPosition: "center" }}
         />
         <div className="relative z-10 max-w-[1300px] mx-auto px-4 sm:px-6 text-center">
           <motion.div initial="hidden" animate="visible" variants={fadeUp}>
             <h1
-              className="text-[#262626] font-extrabold leading-[120%] mb-6"
+              className="text-white font-extrabold leading-[120%] mb-6"
               style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
             >
-              {c.heroTitle}{" "}
-              <span className="relative inline-block">
-                <span
-                  className="absolute z-0 rounded-md"
-                  style={{ background: "#ef5da8", inset: "-2px -8px", borderRadius: "8px" }}
-                />
-                <span className="relative z-10 text-white">{c.heroHighlight}</span>
-              </span>
+              {c.heroTitle}{" "}<span>{c.heroHighlight}</span>
             </h1>
             <p
               className="mx-auto mb-8"
@@ -167,16 +153,15 @@ export default function TeachWithUsPage() {
                 fontSize: "18px",
                 fontWeight: 500,
                 lineHeight: "28px",
-                color: "rgba(38,38,38,0.7)",
-                maxWidth: "650px",
-              }}
+                color: "rgba(255,255,255,0.9)",
+                maxWidth: "650px" }}
             >
               {c.heroDesc}
             </p>
             <a
               href="#apply-form"
-              className="inline-flex items-center justify-center rounded-[60px] bg-[#262626] text-white hover:bg-[#3a3a3a] hover:-translate-y-0.5 transition-all duration-200"
-              style={{ padding: "20px 40px", fontSize: "18px", fontWeight: 500 }}
+              className="inline-flex items-center justify-center rounded-[60px] bg-white text-[#ef5da8] hover:bg-gray-100 hover:-translate-y-0.5 transition-all duration-200 shadow-lg"
+              style={{ padding: "20px 40px", fontSize: "18px", fontWeight: 600 }}
             >
               {c.heroCta}
             </a>
@@ -198,14 +183,7 @@ export default function TeachWithUsPage() {
               className="text-[#262626] font-extrabold leading-[120%]"
               style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
             >
-              {c.whyTitle}{" "}
-              <span className="relative inline-block">
-                <span
-                  className="absolute z-0 rounded-md"
-                  style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }}
-                />
-                <span className="relative z-10">{c.whyHighlight}</span>
-              </span>
+              {c.whyTitle}{" "}{c.whyHighlight}
             </h2>
           </motion.div>
 
@@ -219,8 +197,7 @@ export default function TeachWithUsPage() {
                 viewport={{ once: true }}
                 variants={{
                   hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1, ease: [0, 0, 0.2, 1] as const } },
-                }}
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1, ease: [0, 0, 0.2, 1] as const } } }}
               >
                 <div className="w-12 h-12 rounded-full bg-[#ef5da8]/10 flex items-center justify-center mb-6">
                   <svg className="w-5 h-5 text-[#ef5da8]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">

@@ -5,8 +5,20 @@
 @custom-variant dark (&:is(.dark *));
 @source "./**/*.{tsx,ts,jsx,js}";
 
+@font-face {
+  font-family: "JF Flat";
+  src: url("https://db.onlinewebfonts.com/t/7d411bb0357d6fd29347455b7d207995.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: var(--font-tajawal), ui-sans-serif, system-ui, sans-serif;
+  --font-tajawal: "Tajawal", sans-serif;
+  --font-amiri: "Amiri", serif;
+  --font-playfair: "Playfair Display", serif;
+  --font-baloo: "Baloo Bhaijaan 2", sans-serif;
+  --font-sans: "JF Flat", "Tajawal", "Amiri", ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
@@ -55,6 +67,20 @@ html {
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
+
+  /* Highlight variables (Pink Primary, Purple Secondary) */
+  --color-highlight: #ef5da8;
+  --color-highlight-gradient: linear-gradient(135deg, #fdf2f8 0%, #ef5da8 40%, #d83b8a 100%);
+  --color-highlight-hover: rgba(239, 93, 168, 0.4);
+  
+  --color-secondary-highlight: #a855f7;
+  --color-secondary-gradient: linear-gradient(135deg, #f3e8ff 0%, #a855f7 40%, #7e22ce 100%);
+}
+
+.fusha-theme {
+  --color-highlight: #E9D5FF;
+  --color-highlight-gradient: linear-gradient(135deg, #f5e8ff 0%, #E9D5FF 40%, #d8b4e2 100%);
+  --color-highlight-hover: rgba(233, 213, 255, 0.4);
 }
 
 * {
@@ -64,7 +90,7 @@ html {
 body {
   background-color: #0A0A0A;
   color: #ffffff;
-  font-family: var(--font-tajawal), -apple-system, sans-serif;
+  font-family: "JF Flat", var(--font-tajawal), var(--font-amiri), -apple-system, sans-serif;
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: #262626 transparent;
@@ -91,7 +117,7 @@ body {
 
 [dir="rtl"],
 [dir="rtl"] * {
-  font-family: var(--font-baloo), var(--font-cairo), 'Segoe UI', sans-serif !important;
+  font-family: "JF Flat", var(--font-tajawal), var(--font-amiri), sans-serif !important;
 }
 
 .gold-gradient {
@@ -354,13 +380,12 @@ body {
 [dir="rtl"] h4 * {
   text-transform: none !important;
   letter-spacing: normal !important;
-  font-family: var(--font-tajawal), sans-serif !important;
+  font-family: var(--font-amiri), sans-serif !important;
 }
 
 @theme inline {
   --font-heading: var(--font-playfair), Georgia, serif;
-  --font-sans: var(--font-tajawal), system-ui, -apple-system, sans-serif;
-  --font-tajawal: var(--font-tajawal);
+  --font-noto-sans-arabic: var(--font-tajawal), var(--font-amiri);
   --font-playfair: var(--font-playfair);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);

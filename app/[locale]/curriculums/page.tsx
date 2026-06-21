@@ -3,6 +3,7 @@ import { createPageMetadata, PUBLIC_PAGES } from "../../../lib/metadata";
 import { generateEducationalOrgSchema, generateFAQSchema } from "../../../lib/structured-data";
 import JsonLd from "../../components/seo/JsonLd";
 import AcademyLanding2 from "../../components/landing/AcademyLanding2";
+import CurriculumAutoPopup from "../../components/shared/CurriculumAutoPopup";
 
 export async function generateMetadata({
   params,
@@ -13,9 +14,7 @@ export async function generateMetadata({
   return createPageMetadata(PUBLIC_PAGES["/"], locale);
 }
 
-import { LandingVariantProvider } from "../../components/landing/useLandingContent";
-
-export default async function Home2({
+export default async function CurriculumsPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -48,9 +47,7 @@ export default async function Home2({
   return (
     <>
       <JsonLd data={[orgSchema, faqSchema]} />
-      <LandingVariantProvider variant="fusha">
-        <AcademyLanding2 locale={normalizedLocale} />
-      </LandingVariantProvider>
+      <AcademyLanding2 locale={normalizedLocale} isCurriculums={true} />
     </>
   );
 }

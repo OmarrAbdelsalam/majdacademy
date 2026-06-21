@@ -7,7 +7,6 @@ import KodlandFooter from "../../components/layout/KodlandFooter";
 import LearnArabicHero from "../../components/learn-arabic/LearnArabicHero";
 import WhoIsThisFor from "../../components/learn-arabic/WhoIsThisFor";
 import WhatTheyLearn from "../../components/learn-arabic/WhatTheyLearn";
-import HowItWorks from "../../components/learn-arabic/HowItWorks";
 import LearnArabicPricing from "../../components/learn-arabic/LearnArabicPricing";
 import LearnArabicFAQ from "../../components/learn-arabic/LearnArabicFAQ";
 import LearnArabicCTA from "../../components/learn-arabic/LearnArabicCTA";
@@ -60,7 +59,6 @@ export default async function LearnArabicPage({
         <LearnArabicHero />
         <WhoIsThisFor />
         <WhatTheyLearn />
-        <HowItWorks />
         <LearnArabicPricing />
         <LearnArabicFAQ />
         <LearnArabicCTA />

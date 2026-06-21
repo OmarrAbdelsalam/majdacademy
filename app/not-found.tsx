@@ -5,8 +5,8 @@ import "./globals.css";
 
 const content = {
   ar: {
-    title: "أوووه! الصفحة ضايعة",
-    subtitle: "يمكن الرابط غلط أو الصفحة انتقلت. لا تشيل هم، نرجعك للمكان الصح.",
+    title: "عذراً! الصفحة غير موجودة",
+    subtitle: "ربما يكون الرابط غير صحيح أو تم نقل الصفحة. لا تقلق، سنعيدك إلى المكان الصحيح.",
     home: "الصفحة الرئيسية",
     contact: "تواصل معنا",
   },
@@ -34,7 +34,7 @@ export default function NotFound() {
           rel="stylesheet"
         />
       </head>
-      <body style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}>
+      <body >
         <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 sm:px-6 text-center">
           <div className="max-w-[500px]">
             {/* 404 Number */}
@@ -63,8 +63,7 @@ export default function NotFound() {
                 fontSize: "18px",
                 fontWeight: 500,
                 lineHeight: "28px",
-                color: "rgba(38,38,38,0.6)",
-              }}
+                color: "rgba(38,38,38,0.6)" }}
             >
               {t.subtitle}
             </p>

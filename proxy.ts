@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { updateSession } from "@/utils/supabase/middleware";
 
 const locales = ["en", "ar"];
 const defaultLocale = "en";
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip static files, API routes, sanctum, payment, and IPN (Geidea return) pages
@@ -18,6 +19,9 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Refreshes the Supabase session
+  const { supabaseResponse, user } = await updateSession(request);
+
   let locale = defaultLocale;
   const pathLocale = pathname.split('/')[1];
 
@@ -29,20 +33,29 @@ export function proxy(request: NextRequest) {
     const acceptLang = request.headers.get("accept-language") || "";
     const preferred = acceptLang.toLowerCase().includes("ar") ? "ar" : defaultLocale;
     locale = preferred;
-    return NextResponse.redirect(new URL(`/${preferred}${pathname}`, request.url));
+    
+    // Redirect preserving Supabase cookies
+    const redirectResponse = NextResponse.redirect(new URL(`/${preferred}${pathname}`, request.url));
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value);
+    });
+    return redirectResponse;
   } else {
     locale = pathLocale;
   }
 
   // Auth Guard
   if (pathname.startsWith(`/${locale}/dashboard`)) {
-    const token = request.cookies.get("gct_token")?.value;
-    if (!token) {
-      return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    if (!user) {
+      const redirectResponse = NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+      supabaseResponse.cookies.getAll().forEach((cookie) => {
+        redirectResponse.cookies.set(cookie.name, cookie.value);
+      });
+      return redirectResponse;
     }
   }
 
-  return NextResponse.next();
+  return supabaseResponse;
 }
 
 export const config = {

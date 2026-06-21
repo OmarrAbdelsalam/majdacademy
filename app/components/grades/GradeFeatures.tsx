@@ -32,19 +32,13 @@ export default function GradeFeatures({ grade }: { grade: number }) {
         <h2
           className="text-center mb-16"
           style={{
-            fontFamily: "'Cairo', sans-serif",
             fontSize: "clamp(32px, 5vw, 56px)",
             fontWeight: 800,
             letterSpacing: "-0.02em",
             lineHeight: "120%",
-            color: "#262626",
-          }}
+            color: "#262626" }}
         >
-          {isArabic ? "إيش بيتعلم في " : "What they learn in "}
-          <span className="relative inline-block">
-            <span className="absolute z-0 rounded-md" style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }} />
-            <span className="relative z-10">{isArabic ? c.name + "؟" : c.name}</span>
-          </span>
+          {isArabic ? `إيش بيتعلم في ${c.name}؟` : `What they learn in ${c.name}`}
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-5 items-center">
@@ -69,8 +63,7 @@ export default function GradeFeatures({ grade }: { grade: number }) {
                         backgroundImage: `url('${featureBgs[i]}')`,
                         backgroundSize: "cover",
                         backgroundPosition: "bottom left",
-                        transform: "rotate(180deg)",
-                      }}
+                        transform: "rotate(180deg)" }}
                     />
                   )}
                   <div
@@ -80,7 +73,7 @@ export default function GradeFeatures({ grade }: { grade: number }) {
                     {featureIcons[i]}
                   </div>
                   <div className="relative z-10">
-                    <h3 className="mb-1" style={{ fontFamily: "'Cairo', sans-serif", fontSize: "17px", fontWeight: 700, color: isActive ? "#ffffff" : "#262626" }}>
+                    <h3 className="mb-1" style={{ fontSize: "17px", fontWeight: 700, color: isActive ? "#ffffff" : "#262626" }}>
                       {feature.title}
                     </h3>
                     <p style={{ fontSize: "14px", fontWeight: 500, lineHeight: "22px", color: isActive ? "rgba(255,255,255,0.8)" : "rgba(38,38,38,0.6)" }}>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useLang } from "../i18n/LangContext";
+import { useCountry, COUNTRIES } from "../i18n/CountryContext";
 import { getProfile } from "../../lib/api";
 // import { useCart } from "../cart/CartContext";
 
@@ -27,8 +28,12 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("/");
   const [user, setUser] = useState<{ firstname?: string; lastname?: string } | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { country, setCountry, activeCountry } = useCountry();
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const [mobileCountryOpen, setMobileCountryOpen] = useState(false);
   const userDropdownRef = useRef<HTMLDivElement>(null);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
   
   const isCompact = scrolled || pathname?.includes("/login") || pathname?.includes("/register") || pathname?.includes("/forgot-password");
 
@@ -55,6 +60,9 @@ export default function Navbar() {
     const handleClickOutside = (event: MouseEvent) => {
       if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
         setUserDropdownOpen(false);
+      }
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+        setCountryDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -139,7 +147,7 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <span className={`${isCompact ? "text-[13.5px] sm:text-[14px]" : "text-[15px] sm:text-[18px]"} lg:text-[20px] transition-all duration-300 font-bold tracking-[0.1em] text-[#1a1a1a] uppercase leading-none mt-1 lg:-mt-1 relative translate-y-[2px] sm:translate-y-[2.5px] lg:translate-y-[3.5px] whitespace-nowrap shrink-0`}>
+              <span className={`${isCompact ? "text-[13.5px] sm:text-[14px] text-[#1a1a1a]" : "text-[15px] sm:text-[18px] text-white"} lg:text-[20px] transition-all duration-300 font-bold tracking-[0.1em] uppercase leading-none mt-1 lg:-mt-1 relative translate-y-[2px] sm:translate-y-[2.5px] lg:translate-y-[3.5px] whitespace-nowrap shrink-0`}>
                 GCT FOR GOLD TRADE
               </span>
             </Link>
@@ -161,7 +169,7 @@ export default function Navbar() {
                       }
                     }
                   }}
-                  className="text-[15px] text-[#1a1a1a]/70 hover:text-[#1a1a1a] transition-all duration-300 font-semibold tracking-wide relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#C9A84C] after:scale-x-0 hover:after:scale-x-100 after:origin-right hover:after:origin-left after:transition-transform after:duration-300"
+                  className={`text-[15px] ${isCompact ? "text-[#1a1a1a]/70 hover:text-[#1a1a1a]" : "text-white/90 hover:text-white"} transition-all duration-300 font-semibold tracking-wide relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#C9A84C] after:scale-x-0 hover:after:scale-x-100 after:origin-right hover:after:origin-left after:transition-transform after:duration-300`}
                 >
                   {item.label}
                 </Link>
@@ -170,10 +178,48 @@ export default function Navbar() {
 
             {/* Right side actions */}
             <div className="hidden lg:flex items-center gap-5">
+              {/* Country Selector */}
+              <div className="relative" ref={countryDropdownRef}>
+                <button
+                  onClick={() => setCountryDropdownOpen(!countryDropdownOpen)}
+                  className={`flex items-center gap-1.5 text-[15px] font-semibold ${isCompact ? "text-[#1a1a1a]/70 hover:text-[#1a1a1a]" : "text-white/90 hover:text-white"} transition-colors duration-300 cursor-pointer`}
+                >
+                  {activeCountry.flag === "un" ? "🌍" : (
+                    <img src={`https://flagcdn.com/w20/${activeCountry.flag}.png`} alt={activeCountry.labelAr} className="w-4 h-3 object-cover rounded-sm shadow-[0_0_2px_rgba(0,0,0,0.2)]" />
+                  )}
+                  <span className="uppercase">{activeCountry.id === "other" ? "USD" : activeCountry.id}</span>
+                </button>
+                
+                {countryDropdownOpen && (
+                  <div className={`absolute top-full mt-2 ${lang === 'ar' ? 'left-0' : 'right-0'} w-[200px] bg-white rounded-2xl shadow-xl border border-[#f0f0f0] overflow-hidden py-1.5 z-[100]`}>
+                    {COUNTRIES.map(c => (
+                      <button
+                        key={c.id}
+                        onClick={() => {
+                          setCountry(c.id);
+                          setCountryDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-4 py-2.5 text-[13px] font-semibold transition-colors ${activeCountry.id === c.id ? 'bg-[#f7f7f7] text-[#C9A84C]' : 'text-[#1a1a1a] hover:bg-[#f7f7f7]'}`}
+                      >
+                        <div className="flex items-center gap-2.5">
+                          {c.flag === "un" ? <span className="text-[16px] leading-none">🌍</span> : (
+                            <img src={`https://flagcdn.com/w20/${c.flag}.png`} alt="" className="w-5 h-3.5 object-cover rounded-[2px] shadow-[0_0_2px_rgba(0,0,0,0.2)]" />
+                          )}
+                          <span>{lang === "ar" ? c.labelAr : c.labelEn}</span>
+                        </div>
+                        <span className="text-[10px] text-[#888] font-bold">{c.currencyEn}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <span className="w-[1px] h-4 bg-black/10 mx-1"></span>
+
               {/* Language switcher */}
               <button
                 onClick={() => setLang(lang === "en" ? "ar" : "en")}
-                className="flex items-center gap-1.5 text-[15px] font-semibold text-[#1a1a1a]/70 hover:text-[#1a1a1a] transition-colors duration-300 cursor-pointer"
+                className={`flex items-center gap-1.5 text-[15px] font-semibold ${isCompact ? "text-[#1a1a1a]/70 hover:text-[#1a1a1a]" : "text-white/90 hover:text-white"} transition-colors duration-300 cursor-pointer`}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="opacity-80">
                   <circle cx="12" cy="12" r="10" />
@@ -186,20 +232,20 @@ export default function Navbar() {
               <span className="w-[1px] h-4 bg-black/10 mx-1"></span>
 
               {/* Cart icon */}
-              <CartIcon lang={lang} />
+              <CartIcon lang={lang} isWhite={!isCompact} />
 
               {/* Authentication Button/Menu */}
               {isLoggedIn ? (
                 <div className="relative" ref={userDropdownRef}>
                   <button
                     onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                    className="flex items-center gap-1.5 px-2 py-1.5 text-[13px] font-semibold text-[#1a1a1a] bg-transparent rounded-full hover:bg-gray-50 transition-colors outline-none focus:outline-none"
+                    className={`flex items-center gap-1.5 px-2 py-1.5 text-[13px] font-semibold ${isCompact ? "text-[#1a1a1a] hover:bg-gray-50" : "text-white hover:bg-white/10"} bg-transparent rounded-full transition-colors outline-none focus:outline-none`}
                   >
                     <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#C9A84C] to-[#E8C96A] flex items-center justify-center text-white text-[11px] font-bold uppercase shadow-sm">
                       {userName.charAt(0)}
                     </div>
                     <span className={`transition-all duration-300 overflow-hidden whitespace-nowrap ${scrolled ? 'max-w-0 opacity-0' : 'max-w-[100px] opacity-100'}`}>{userName.split(" ")[0]}</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${userDropdownOpen ? "rotate-180" : ""}`}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${userDropdownOpen ? "rotate-180" : ""}`}>
                       <polyline points="6 9 12 15 18 9"></polyline>
                     </svg>
                   </button>
@@ -226,7 +272,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href={`/${lang}/login`}
-                  className="flex items-center gap-2 px-8 py-3.5 text-[14px] font-bold text-white bg-[#1a1a1a] rounded-full hover:bg-black transition-all duration-300 shadow-md group ml-2"
+                  className={`flex items-center gap-2 px-8 py-3.5 text-[14px] font-bold rounded-full transition-all duration-300 shadow-md group ml-2 ${isCompact ? "text-white bg-[#1a1a1a] hover:bg-black" : "text-[#f04da1] bg-white hover:bg-gray-50"}`}
                 >
                   {lang === "en" ? "Login" : "تسجيل الدخول"}
                 </Link>
@@ -235,7 +281,7 @@ export default function Navbar() {
 
             {/* Mobile cart + burger */}
             <div className="lg:hidden flex items-center gap-2">
-              <CartIcon lang={lang} />
+              <CartIcon lang={lang} isWhite={!isCompact} />
               <button
                 className="relative w-9 h-9 flex items-center justify-center rounded-lg hover:bg-[#f5f5f5]/80 transition-colors mr-1"
                 onClick={toggleMenu}
@@ -243,17 +289,17 @@ export default function Navbar() {
               >
                 <div className="w-[18px] h-[14px] flex flex-col justify-between">
                   <span
-                    className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 origin-center ${
+                    className={`block h-[1.5px] ${isCompact ? "bg-[#333]" : "bg-white"} rounded-full transition-all duration-300 origin-center ${
                       menuOpen ? "rotate-45 translate-y-[6px]" : ""
                     }`}
                   />
                   <span
-                    className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 ${
+                    className={`block h-[1.5px] ${isCompact ? "bg-[#333]" : "bg-white"} rounded-full transition-all duration-300 ${
                       menuOpen ? "opacity-0 scale-x-0" : ""
                     }`}
                   />
                   <span
-                    className={`block h-[1.5px] bg-[#333] rounded-full transition-all duration-300 origin-center ${
+                    className={`block h-[1.5px] ${isCompact ? "bg-[#333]" : "bg-white"} rounded-full transition-all duration-300 origin-center ${
                       menuOpen ? "-rotate-45 -translate-y-[6px]" : ""
                     }`}
                   />
@@ -338,6 +384,47 @@ export default function Navbar() {
                   </Link>
                 )}
 
+                {/* Mobile Country Selector */}
+                <div className="w-full mt-2">
+                  <button
+                    onClick={() => setMobileCountryOpen(!mobileCountryOpen)}
+                    className="w-full py-2.5 rounded-2xl border border-[#e0e0e0] text-[15px] font-medium text-[#555] flex items-center justify-center gap-2"
+                  >
+                    {activeCountry.flag === "un" ? <span className="leading-none">🌍</span> : (
+                      <img src={`https://flagcdn.com/w20/${activeCountry.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
+                    )}
+                    {lang === "ar" ? activeCountry.labelAr : activeCountry.labelEn}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform ${mobileCountryOpen ? "rotate-180" : ""}`}>
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  </button>
+                  
+                  {mobileCountryOpen && (
+                    <div className="mt-2 flex flex-col gap-1 border border-[#f0f0f0] rounded-2xl p-2 bg-[#f9f9f9]">
+                      {COUNTRIES.map(c => (
+                        <button
+                          key={c.id}
+                          onClick={() => {
+                            setCountry(c.id);
+                            setMobileCountryOpen(false);
+                            // don't close the whole menu so they can see it changed, or close it:
+                            setMenuOpen(false);
+                          }}
+                          className={`flex items-center justify-between px-3 py-2 rounded-xl text-[14px] transition-colors ${activeCountry.id === c.id ? 'bg-white shadow-sm font-bold text-[#C9A84C]' : 'text-[#555]'}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {c.flag === "un" ? <span className="leading-none">🌍</span> : (
+                              <img src={`https://flagcdn.com/w20/${c.flag}.png`} alt="" className="w-4 h-3 object-cover rounded-sm" />
+                            )}
+                            <span>{lang === "ar" ? c.labelAr : c.labelEn}</span>
+                          </div>
+                          <span className="text-[11px] text-[#888]">{c.currencyEn}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 <button
                   onClick={() => {
                     setLang(lang === "en" ? "ar" : "en");
@@ -369,7 +456,7 @@ export default function Navbar() {
   );
 }
 
-function CartIcon({ lang }: { lang: string }) {
+function CartIcon({ lang, isWhite }: { lang: string, isWhite?: boolean }) {
   // const { totalItems } = useCart();
   const totalItems = 0;
   const [bump, setBump] = useState(false);
@@ -389,7 +476,7 @@ function CartIcon({ lang }: { lang: string }) {
       className={`relative w-8 h-8 flex items-center justify-center rounded-lg hover:bg-[#f5f5f5]/80 transition-all duration-300 ${bump ? "scale-125 -translate-y-1 drop-shadow-md text-[#C9A84C]" : ""}`}
       aria-label="Cart"
     >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={bump ? "#C9A84C" : "#1a1a1a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={bump ? "#C9A84C" : isWhite ? "#ffffff" : "#1a1a1a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
         <line x1="3" y1="6" x2="21" y2="6"></line>
         <path d="M16 10a4 4 0 0 1-8 0"></path>

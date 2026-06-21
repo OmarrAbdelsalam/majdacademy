@@ -45,3 +45,5 @@ next-env.d.ts
 .kiro/
 AGENTS.md
 CLAUDE.md
+.agents/
+skills-lock.json

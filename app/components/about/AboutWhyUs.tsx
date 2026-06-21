@@ -41,16 +41,12 @@ export default function AboutWhyUs() {
   return (
     <>
       <section className="py-12 md:py-16 bg-white">
-        <div className="max-w-[900px] mx-auto px-4 sm:px-6">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <h2
-            className="text-center mb-16"
-            style={{ fontFamily: "'Cairo', sans-serif", fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#262626" }}
+            className="text-center mb-8 md:mb-12"
+            style={{ fontSize: "clamp(28px, 4vw, 40px)", fontWeight: 800, letterSpacing: "-0.02em", lineHeight: "120%", color: "#262626" }}
           >
-            {c.heading}{" "}
-            <span className="relative inline-block">
-              <span className="absolute z-0 rounded-md" style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }} />
-              <span className="relative z-10">{c.highlight}</span>
-            </span>
+            {c.heading}{" "}{c.highlight}
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-12">
@@ -60,7 +56,7 @@ export default function AboutWhyUs() {
                 className="flex items-center gap-4 rounded-[32px] p-5 transition-all duration-300 hover:-translate-y-0.5"
                 style={{ background: "#f8f9fa" }}
               >
-                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "#d3ff5f" }}>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: "var(--color-highlight)" }}>
                   <span className="text-[12px] font-bold text-[#262626]">0{i + 1}</span>
                 </div>
                 <span style={{ fontSize: "16px", fontWeight: 600, color: "#262626" }}>{item}</span>

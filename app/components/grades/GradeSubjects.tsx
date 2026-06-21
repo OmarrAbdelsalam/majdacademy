@@ -25,22 +25,13 @@ export default function GradeSubjects({ grade }: { grade: number }) {
           <h2
             className="text-center mb-16"
             style={{
-              fontFamily: "'Cairo', sans-serif",
               fontSize: "clamp(32px, 5vw, 56px)",
               fontWeight: 800,
               letterSpacing: "-0.02em",
               lineHeight: "120%",
-              color: "#262626",
-            }}
+              color: "#262626" }}
           >
-            {isArabic ? "المواد " : "Subjects "}
-            <span className="relative inline-block">
-              <span
-                className="absolute z-0 rounded-md"
-                style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }}
-              />
-              <span className="relative z-10">{isArabic ? "اللي ندرّسها" : "we teach"}</span>
-            </span>
+            {isArabic ? "المواد التي نُدرّسها" : "Subjects we teach"}
           </h2>
 
           {/* Cards */}
@@ -63,7 +54,7 @@ export default function GradeSubjects({ grade }: { grade: number }) {
                 <div>
                   <h3
                     className="mb-3"
-                    style={{ fontFamily: "'Cairo', sans-serif", fontSize: "24px", fontWeight: 800, color: "#262626" }}
+                    style={{ fontSize: "24px", fontWeight: 800, color: "#262626" }}
                   >
                     {subject.name}
                   </h3>

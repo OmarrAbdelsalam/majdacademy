@@ -176,8 +176,7 @@ export default function ParentReportsPage() {
                           className="h-3 rounded-full transition-all"
                           style={{
                             width: `${report.averageScore}%`,
-                            backgroundColor: report.averageScore >= 80 ? '#10b981' : report.averageScore >= 60 ? '#f59e0b' : '#ef4444',
-                          }}
+                            backgroundColor: report.averageScore >= 80 ? '#10b981' : report.averageScore >= 60 ? '#f59e0b' : '#ef4444' }}
                         />
                       </div>
                     </div>

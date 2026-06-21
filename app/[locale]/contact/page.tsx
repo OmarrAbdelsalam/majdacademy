@@ -157,7 +157,7 @@ export default function ContactPage() {
     <div
       dir={isRTL ? "rtl" : "ltr"}
       className="min-h-screen bg-white text-[#262626] flex flex-col relative"
-      style={{ fontFamily: "'Baloo Bhaijaan 2', 'Cairo', sans-serif" }}
+      
     >
       <AcademyNavbar />
 
@@ -168,10 +168,7 @@ export default function ContactPage() {
         <div
           className="absolute inset-0 z-[1]"
           style={{
-            backgroundImage: "url('https://cdn.kodland.org/main-site-v2/bg-ellipse.webp')",
-            backgroundSize: "cover",
-            backgroundPosition: "center -10vh",
-            backgroundRepeat: "no-repeat",
+            background: "radial-gradient(140% 95% at 50% 0%, #fce7f3 0%, #f9a8d4 50%, #ffffff 100%)"
           }}
         />
         <div className="relative z-10 max-w-[1300px] mx-auto px-4 sm:px-6 text-center">
@@ -180,14 +177,7 @@ export default function ContactPage() {
               className="text-[#262626] font-extrabold leading-[120%] mb-4"
               style={{ fontSize: "clamp(32px, 5vw, 56px)" }}
             >
-              {c.title}{" "}
-              <span className="relative inline-block">
-                <span
-                  className="absolute z-0 rounded-md"
-                  style={{ background: "#d3ff5f", inset: "-2px -8px", borderRadius: "8px" }}
-                />
-                <span className="relative z-10">{c.titleHighlight}</span>
-              </span>
+              {c.title}{" "}{c.titleHighlight}
             </h1>
             <p
               className="mx-auto"
@@ -196,8 +186,7 @@ export default function ContactPage() {
                 fontWeight: 500,
                 lineHeight: "28px",
                 color: "rgba(38,38,38,0.6)",
-                maxWidth: "600px",
-              }}
+                maxWidth: "600px" }}
             >
               {c.subtitle}
             </p>
@@ -230,8 +219,7 @@ export default function ContactPage() {
                   viewport={{ once: true }}
                   variants={{
                     hidden: { opacity: 0, y: 30 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1, ease: [0, 0, 0.2, 1] as const } },
-                  }}
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1, ease: [0, 0, 0.2, 1] as const } } }}
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-full bg-[#fef0f8] flex items-center justify-center shrink-0">

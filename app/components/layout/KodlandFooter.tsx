@@ -13,26 +13,17 @@ export default function KodlandFooter() {
   return (
     <footer
       role="contentinfo"
-      className="relative w-full min-h-screen flex flex-col justify-end pt-32 sm:pt-28 pb-0"
+      className="relative w-full pt-12 sm:pt-16 pb-0"
     >
-      {/* Background image — Mobile */}
+      {/* Dynamic Theme Background */}
       <div
-        className="absolute inset-0 z-0 sm:hidden"
+        className="absolute inset-0 z-0 opacity-70"
         style={{
-          backgroundImage: "url('https://cdn.kodland.org/main-site-v2/footer-bg.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center bottom",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-      {/* Background image — Desktop */}
-      <div
-        className="absolute inset-0 z-0 hidden sm:block"
-        style={{
-          backgroundImage: "url('https://cdn.kodland.org/main-site-v2/footer-bg.png')",
-          backgroundSize: "100% auto",
-          backgroundPosition: "center calc(100% + 10vh)",
-          backgroundRepeat: "no-repeat",
+          background: `
+            radial-gradient(70% 30% at 50% 100%, var(--color-highlight) 0%, rgba(255,255,255,0) 100%),
+            radial-gradient(100% 50% at 50% 100%, var(--color-highlight-hover) 0%, rgba(255,255,255,0) 100%),
+            radial-gradient(150% 80% at 50% 100%, var(--color-highlight-hover) 0%, rgba(255,255,255,0) 100%)
+          `
         }}
       />
       {/* Top fade — smooth transition from white to transparent */}
@@ -59,7 +50,18 @@ export default function KodlandFooter() {
           {/* Columns */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
 
-            {/* Column 1 — Links */}
+            {/* Column 1 — Mission Statement */}
+            <div>
+              <p className="text-[#262626] font-bold text-[18px] font-arabic mb-4">
+                ﴿وَعَلَّمَ آدَمَ الْأَسْمَاءَ كُلَّهَا﴾
+              </p>
+              <p className="text-[14px] font-medium text-[#262626]/70 mb-6 leading-relaxed">
+                هُنَا فِي رِحَابِ الْعَرَبِيَّةِ، مِنْ نُورِ الْكَلِمَةِ إِلَى عُمْقِ الْمَعْنَى.<br/>
+                وَإِذَا كَانَتِ الْأَسْمَاءُ أَوَّلَ أَبْوَابِ الْمَعْرِفَةِ، فَإِنَّ رِسَالَتَنَا أَنْ نُعِينَكُمْ عَلَى اكْتِشَافِ الْعَرَبِيَّةِ لُغَةً وَحَضَارَةً وَبَيَانًا، وَأَنْ نَنْقُلَ هَذَا الْعِلْمَ إِلَيْكُمْ بِأَمَانَةٍ وَإِتْقَانٍ.
+              </p>
+            </div>
+
+            {/* Column 2 — Links */}
             <div>
               <p className="text-[13px] font-medium mb-4" style={{ color: "rgba(38,38,38,0.5)" }}>{content.footer.col1Title}</p>
               <ul className="flex flex-col gap-3">
@@ -85,7 +87,7 @@ export default function KodlandFooter() {
               </ul>
             </div>
 
-            {/* Column 2 — Subjects */}
+            {/* Column 3 — Subjects */}
             <div>
               <p className="text-[13px] font-medium mb-4" style={{ color: "rgba(38,38,38,0.5)" }}>{content.footer.col2Title}</p>
               <ul className="flex flex-col gap-3">
@@ -93,33 +95,6 @@ export default function KodlandFooter() {
                   <li key={i}><a href={landingPath} className="text-[15px] font-medium text-[#262626] hover:text-[#ef5da8] transition-colors">{link}</a></li>
                 ))}
               </ul>
-            </div>
-
-            {/* Column 3 — Newsletter */}
-            <div>
-              <p className="text-[13px] font-medium mb-4" style={{ color: "rgba(38,38,38,0.5)" }}>{content.footer.col3Title}</p>
-              <p className="text-[15px] font-medium text-[#262626] mb-4 leading-relaxed">
-                {content.footer.col3Desc}
-              </p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder={content.footer.col3Placeholder}
-                  className="flex-1 px-4 py-3 rounded-full bg-[#f5f5f5] text-[14px] text-[#262626] placeholder:text-gray-400 outline-none focus:ring-2 focus:ring-[#ef5da8]/30 transition-all"
-                />
-                <button
-                  className="px-6 py-3 rounded-full bg-[#262626] text-white text-[14px] font-medium hover:bg-[#3a3a3a] transition-colors"
-                >
-                  {content.footer.col3Button}
-                </button>
-              </div>
-
-              {/* Contact info */}
-              <div className="mt-6">
-                <p className="text-[12px] leading-relaxed whitespace-pre-line" style={{ color: "rgba(38,38,38,0.5)" }}>
-                  {content.footer.col3Address}
-                </p>
-              </div>
             </div>
 
           </div>

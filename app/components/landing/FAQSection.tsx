@@ -1,12 +1,10 @@
-"use client";
 import React from "react";
-import { useLandingContent } from "./useLandingContent";
-import { useLang } from "../../i18n/LangContext";
+import { getLandingContent } from "./getLandingContent";
 import GenericFAQ from "../shared/GenericFAQ";
 
-export default function FAQSection() {
-  const content = useLandingContent();
-  const { isRTL } = useLang();
+export default function FAQSection({ locale }: { locale: string }) {
+  const content = getLandingContent(locale);
+  const isRTL = locale === "ar";
 
   return (
     <GenericFAQ

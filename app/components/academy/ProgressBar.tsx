@@ -47,8 +47,7 @@ export default function ProgressBar({
           className={`rounded-full transition-all duration-500 ease-out ${sizeConfig[size]}`}
           style={{
             width: `${clampedPercentage}%`,
-            backgroundColor: color,
-          }}
+            backgroundColor: color }}
         />
       </div>
     </div>

@@ -9,7 +9,7 @@ export default function GradeCTA() {
 
   return (
     <GenericCTABanner
-      title={isArabic ? "ابدأ رحلة ولدك الأكاديمية" : "Start your child's academic journey"}
+      title={isArabic ? "ابدأ رحلة طفلك الأكاديمية" : "Start your child's academic journey"}
       description={isArabic ? "حصة تجريبية مجانية — نقيّم مستواه ونوصيك بأفضل خطة." : "Free trial class — we assess their level and recommend the best plan."}
       ctaText={isArabic ? "احجز الحصة المجانية" : "Book the free class"}
       characterImage="/gur.webp"
