@@ -1,30 +1,43 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useLang } from "../../i18n/LangContext";
 
 export default function WhatsAppReviewsSlider() {
+  const { lang } = useLang();
+  const isAr = lang === "ar";
+
+  const t = {
+    badge: isAr ? "آراء المتميزين" : "Outstanding Reviews",
+    title: isAr ? "رأي طلابنا المتفوقين" : "Our Top Students' Feedback",
+    desc: isAr 
+      ? "تعرف على آراء طلابنا الذين حققوا نتائج مميزة معنا" 
+      : "Discover the feedback from our students who achieved outstanding results with us",
+    successStory: isAr ? "قصص النجاح" : "Success Stories"
+  };
+
   const reviews = [
     {
-      name: "محمد علي",
-      grade: "الصف الثاني الثانوي",
+      name: isAr ? "محمد علي" : "Mohammed Ali",
+      grade: isAr ? "الصف الثاني الثانوي" : "11th Grade",
       image: "/testimonials/media__1781178101489.png",
       score: "95%",
     },
     {
-      name: "سارة إبراهيم",
-      grade: "الصف الثالث الثانوي",
+      name: isAr ? "سارة إبراهيم" : "Sarah Ibrahim",
+      grade: isAr ? "الصف الثالث الثانوي" : "12th Grade",
       image: "/testimonials/media__1781178107598.png",
       score: "96%",
     },
     {
-      name: "نور الدين",
-      grade: "الصف الأول الثانوي",
+      name: isAr ? "نور الدين" : "Nour Eldin",
+      grade: isAr ? "الصف الأول الثانوي" : "10th Grade",
       image: "/testimonials/media__1781178113328.png",
       score: "98%",
     },
     {
-      name: "أحمد محمود",
-      grade: "الصف الثالث الثانوي",
+      name: isAr ? "أحمد محمود" : "Ahmed Mahmoud",
+      grade: isAr ? "الصف الثالث الثانوي" : "12th Grade",
       image: "/testimonials/media__1781178123601.png",
       score: "97%",
     },
@@ -57,7 +70,7 @@ export default function WhatsAppReviewsSlider() {
   };
 
   return (
-    <section id="reviews" className="w-full bg-white relative overflow-hidden py-16 md:py-24" dir="rtl">
+    <section id="reviews" className="w-full bg-white relative overflow-hidden py-16 md:py-24" dir={isAr ? "rtl" : "ltr"}>
       
       {/* Main Content Container (Reverted to white background with dark text) */}
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 relative z-10">
@@ -65,7 +78,7 @@ export default function WhatsAppReviewsSlider() {
         {/* Section Header */}
         <div className="text-center mb-8 md:mb-12 relative z-10">
           <div className="inline-flex items-center px-4 py-1.5 bg-[#f6428c]/10 text-[#f6428c] rounded-full text-[14px] font-bold mb-4">
-            آراء المتميزين
+            {t.badge}
           </div>
           <h2
             style={{
@@ -76,13 +89,13 @@ export default function WhatsAppReviewsSlider() {
               color: "#262626",
             }}
           >
-            رأي طلابنا المتفوقين
+            {t.title}
           </h2>
           <p
             className="mt-4 mx-auto"
             style={{ fontSize: "18px", fontWeight: 500, lineHeight: "28px", color: "rgba(38,38,38,0.6)", maxWidth: "550px" }}
           >
-            تعرف على آراء طلابنا الذين حققوا نتائج مميزة معنا
+            {t.desc}
           </p>
         </div>
 
@@ -94,7 +107,7 @@ export default function WhatsAppReviewsSlider() {
             <div 
               className="flex gap-6 transition-transform duration-500 ease-in-out items-center"
               style={{
-                transform: `translateX(${currentIndex * (100 / visibleCount)}%)`,
+                transform: `translateX(${isAr ? (currentIndex * (100 / visibleCount)) : -(currentIndex * (100 / visibleCount))}%)`,
                 width: `${(reviews.length / visibleCount) * 100}%`
               }}
             >
@@ -111,7 +124,7 @@ export default function WhatsAppReviewsSlider() {
                     <div className="flex justify-center mb-4 mt-1">
                       <div className="bg-white/20 backdrop-blur-md text-white font-bold px-4 py-1.5 rounded-full text-[11px] shadow-sm tracking-wider flex items-center gap-2 border border-white/20">
                         <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.8)] animate-pulse"></span>
-                        قصص النجاح
+                        {t.successStory}
                       </div>
                     </div>
 
@@ -139,17 +152,17 @@ export default function WhatsAppReviewsSlider() {
           {reviews.length > Math.floor(visibleCount) && (
             <>
               <button 
-                onClick={prevSlide}
-                className="absolute top-1/2 -right-2 md:-right-6 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40"
-                aria-label="Previous slide"
+                onClick={isAr ? prevSlide : nextSlide}
+                className={`absolute top-1/2 -right-2 md:-right-6 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40`}
+                aria-label="Next slide"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
               
               <button 
-                onClick={nextSlide}
-                className="absolute top-1/2 -left-2 md:-left-6 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40"
-                aria-label="Next slide"
+                onClick={isAr ? nextSlide : prevSlide}
+                className={`absolute top-1/2 -left-2 md:-left-6 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40`}
+                aria-label="Previous slide"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>

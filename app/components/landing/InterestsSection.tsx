@@ -267,7 +267,7 @@ export default function InterestsSection({ locale }: { locale: string }) {
                       {content.interests.ctaDesc}
                     </p>
                     <a
-                      href="/ar/learn-arabic"
+                      href={`/${lang}/learn-arabic`}
                       className="inline-flex items-center justify-center gap-2 rounded-[60px] bg-white text-[#ef5da8] hover:bg-gray-100 hover:-translate-y-0.5 transition-all duration-300 shadow-lg"
                       style={{ padding: "16px 32px", fontSize: "15px", fontWeight: 600 }}
                     >
