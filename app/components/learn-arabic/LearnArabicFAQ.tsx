@@ -41,7 +41,7 @@ export default function LearnArabicFAQ() {
       subtitle={c.subtitle}
       items={c.items}
       ctaText={c.ctaText}
-      whatsappLink="https://wa.me/201098505924"
+      whatsappLink="https://wa.me/971528150547"
       isRTL={isRTL}
     />
   );

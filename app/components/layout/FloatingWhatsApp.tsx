@@ -20,7 +20,7 @@ export default function FloatingWhatsApp() {
 
   return (
     <a
-      href="https://wa.me/+96555511660" // Updated to match the provided number
+      href="https://wa.me/971528150547"
       target="_blank"
       rel="noopener noreferrer"
       className={`fixed bottom-6 right-6 z-[999] bg-[#25d366] text-white p-4 rounded-full shadow-[0_4px_14px_rgba(37,211,102,0.4)] hover:bg-[#20bd5a] hover:scale-110 transition-all duration-500 ease-in-out group flex items-center justify-center ${

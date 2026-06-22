@@ -12,7 +12,7 @@ export default function FAQSection({ locale }: { locale: string }) {
       subtitle={content.faq.subtitle}
       items={content.faq.items}
       ctaText={content.faq.ctaText}
-      whatsappLink="https://wa.me/201098505924"
+      whatsappLink="https://wa.me/971528150547"
       isRTL={isRTL}
     />
   );

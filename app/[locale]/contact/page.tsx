@@ -113,7 +113,7 @@ export default function ContactPage() {
       title: c.whatsapp,
       desc: c.whatsappDesc,
       value: c.whatsappNum,
-      href: "https://wa.me/971500000000",
+      href: "https://wa.me/971528150547",
     },
     {
       icon: (

@@ -312,7 +312,7 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
       }
     }
 
-    const whatsappUrl = `https://wa.me/201098505924?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/971528150547?text=${encodeURIComponent(message)}`;
     
     setWhatsappLink(whatsappUrl);
     setIsSuccess(true);

@@ -21,7 +21,7 @@ export default function GenericFAQ({
   subtitle,
   items,
   ctaText,
-  whatsappLink = "https://wa.me/201098505924",
+  whatsappLink = "https://wa.me/971528150547",
   isRTL = true,
 }: GenericFAQProps) {
   const [openId, setOpenId] = useState<number | null>(0);
