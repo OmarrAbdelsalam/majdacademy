@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { format, parseISO } from "date-fns";
 import { ar } from "date-fns/locale";
-import { Calendar, Clock, User, Phone, Video, Trash2 } from "lucide-react";
+import { Calendar, Clock, User, Phone, Trash2 } from "lucide-react";
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -147,18 +147,7 @@ export default function BookingsPage() {
                   </div>
                 </div>
 
-                {/* Actions */}
-                <div className="pt-2 mt-auto">
-                  <a 
-                    href={`https://calendar.google.com/calendar/u/0/r/eventedit/${booking.google_event_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 py-3 bg-[#4285F4]/5 text-[#4285F4] hover:bg-[#4285F4] hover:text-white font-bold text-[14px] rounded-[60px] transition-all duration-200"
-                  >
-                    <Video className="w-[18px] h-[18px]" />
-                    فتح في Google Calendar
-                  </a>
-                </div>
+
               </div>
             );
           })}
