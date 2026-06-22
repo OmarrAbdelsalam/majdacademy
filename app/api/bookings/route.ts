@@ -7,6 +7,7 @@ import nodemailer from 'nodemailer';
 import { nextDay, startOfDay, addHours, isBefore, isAfter, format } from 'date-fns';
 import { toDate, formatInTimeZone } from 'date-fns-tz';
 
+const TEACHER_EMAIL = 'abuhashemmajd@gmail.com';
 const ADMIN_EMAIL = 'omar3328101@gmail.com';
 const DURATION_MINUTES = 60;
 const TIMEZONE = 'Asia/Dubai';
@@ -24,7 +25,6 @@ const dayNameToNumber: Record<string, 0|1|2|3|4|5|6> = {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    // Now receiving generic day and block start/end along with form details
     const { 
       studentName, studentEmail, studentPhone, childAge, 
       selectedDay, blockStartHour, blockEndHour,
@@ -42,17 +42,15 @@ export async function POST(request: Request) {
     }
 
     const now = new Date();
-    // Get the next occurrence of the selected day (or today if it matches)
     let targetDate = nextDay(now, dayNumber);
     
-    // Create the start and end bounds in Dubai time for that day
     const targetDateStr = format(targetDate, 'yyyy-MM-dd');
     const boundsStart = toDate(`${targetDateStr}T${blockStartHour.toString().padStart(2, '0')}:00:00`, { timeZone: TIMEZONE });
     const boundsEnd = toDate(`${targetDateStr}T${blockEndHour.toString().padStart(2, '0')}:00:00`, { timeZone: TIMEZONE });
 
     let authClient = null;
     try {
-      authClient = await getValidGoogleToken(ADMIN_EMAIL);
+      authClient = await getValidGoogleToken(TEACHER_EMAIL);
     } catch (e) {
       console.warn("Google Calendar not connected, skipping calendar event creation.");
     }
@@ -62,7 +60,7 @@ export async function POST(request: Request) {
 
     let busyPeriods: { start: string, end: string }[] = [];
 
-    // 1. Fetch busy periods from Google Calendar
+    // 2. Fetch busy periods from Google Calendar
     if (authClient) {
       const calendar = google.calendar({ version: 'v3', auth: authClient });
       const freeBusyResponse = await calendar.freebusy.query({
@@ -77,21 +75,21 @@ export async function POST(request: Request) {
       busyPeriods.push(...calBusy.map(b => ({ start: b.start as string, end: b.end as string })));
     }
 
-    // 2. Fetch busy periods from Supabase Database
+    // 3. Fetch busy periods from Supabase Database
     const cookieStore = await cookies();
     const supabase = createClient(cookieStore);
-    const { data: dbBookings, error: dbError } = await supabase
+    const { data: dbBookings, error: fetchError } = await supabase
       .from('bookings')
       .select('start_time, end_time')
       .gte('start_time', boundsStart.toISOString())
       .lt('start_time', boundsEnd.toISOString())
       .in('status', ['confirmed']);
 
-    if (dbBookings && !dbError) {
+    if (dbBookings && !fetchError) {
       busyPeriods.push(...dbBookings.map(b => ({ start: b.start_time, end: b.end_time })));
     }
 
-    // 3. Find the first available 1-hour slot in this block
+    // 4. Find the first available 1-hour slot in this block
     let foundSlotStart: Date | null = null;
     let foundSlotEnd: Date | null = null;
     
@@ -99,9 +97,8 @@ export async function POST(request: Request) {
     
     while (isBefore(currentCheckStart, boundsEnd)) {
       const currentCheckEnd = addHours(currentCheckStart, 1);
-      if (isAfter(currentCheckEnd, boundsEnd)) break; // Not enough time left in block
+      if (isAfter(currentCheckEnd, boundsEnd)) break;
 
-      // Check if this 1-hour slot overlaps with any busy period
       const isOverlapping = busyPeriods.some(busy => {
         if (!busy.start || !busy.end) return false;
         const bStart = new Date(busy.start);
@@ -112,10 +109,9 @@ export async function POST(request: Request) {
       if (!isOverlapping) {
         foundSlotStart = currentCheckStart;
         foundSlotEnd = currentCheckEnd;
-        break; // Found our slot!
+        break;
       }
 
-      // Move to next hour
       currentCheckStart = addHours(currentCheckStart, 1);
     }
 
@@ -125,10 +121,12 @@ export async function POST(request: Request) {
       }, { status: 409 });
     }
 
-    // 4. Create the Google Calendar Event with Google Meet link
-    const event = {
-      summary: `حصة تجريبية - ${studentName}`,
-      description: `
+    // 5. Create the Google Calendar Event with Google Meet link
+    if (authClient) {
+      const calendar = google.calendar({ version: 'v3', auth: authClient });
+      const event = {
+        summary: `حصة تجريبية - ${studentName}`,
+        description: `
 اسم الطالب: ${studentName}
 العمر/الصف: ${childAge || grade || 'غير محدد'}
 رقم الهاتف: ${studentPhone || 'غير محدد'}
@@ -142,43 +140,40 @@ export async function POST(request: Request) {
 المستوى (للعربية): ${studentLevel || 'غير محدد'}
 
 تم اختيار الفترة: ${blockStartHour}:00 إلى ${blockEndHour}:00 بتوقيت دبي.
-      `,
-      start: { dateTime: foundSlotStart.toISOString() },
-      end: { dateTime: foundSlotEnd.toISOString() },
-      attendees: [
-        { email: studentEmail }
-      ],
-      conferenceData: {
-        createRequest: {
-          requestId: `majd-${Date.now()}`,
-          conferenceSolutionKey: { type: 'hangoutsMeet' }
+        `,
+        start: { dateTime: foundSlotStart.toISOString() },
+        end: { dateTime: foundSlotEnd.toISOString() },
+        attendees: [
+          { email: studentEmail }
+        ],
+        conferenceData: {
+          createRequest: {
+            requestId: `majd-${Date.now()}`,
+            conferenceSolutionKey: { type: 'hangoutsMeet' }
+          }
+        },
+        reminders: {
+          useDefault: false,
+          overrides: [
+            { method: 'email', minutes: 24 * 60 },
+            { method: 'popup', minutes: 30 }
+          ]
         }
-      },
-      reminders: {
-        useDefault: false,
-        overrides: [
-          { method: 'email', minutes: 24 * 60 },
-          { method: 'popup', minutes: 30 }
-        ]
-      }
-    };
+      };
 
-    const createdEvent = await calendar.events.insert({
-      calendarId: 'primary',
-      conferenceDataVersion: 1,
-      sendUpdates: 'all', // Send email to attendees
-      requestBody: event,
-    });
+      const createdEvent = await calendar.events.insert({
+        calendarId: 'primary',
+        conferenceDataVersion: 1,
+        sendUpdates: 'all',
+        requestBody: event,
+      });
 
-    meetLink = createdEvent.data.hangoutLink || meetLink;
-    eventId = createdEvent.data.id || eventId;
-    } // End of if (authClient)
+      meetLink = createdEvent.data.hangoutLink || meetLink;
+      eventId = createdEvent.data.id || eventId;
+    }
 
-    // 5. Save booking to Supabase
-    const cookieStore = await cookies();
-    const supabase = createClient(cookieStore);
-    
-    const { data: booking, error: dbError } = await supabase
+    // 6. Save booking to Supabase
+    const { data: booking, error: saveError } = await supabase
       .from('bookings')
       .insert({
         student_name: studentName,
@@ -199,11 +194,11 @@ export async function POST(request: Request) {
       .select()
       .single();
 
-    if (dbError) {
-      console.error('Failed to save booking to Supabase:', dbError);
+    if (saveError) {
+      console.error('Failed to save booking to Supabase:', saveError);
     }
 
-    // 6. Send Custom Email
+    // 7. Send Custom Email
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = nodemailer.createTransport({
@@ -219,7 +214,6 @@ export async function POST(request: Request) {
           hour: 'numeric', minute: 'numeric', timeZone: TIMEZONE
         }).format(foundSlotStart);
 
-        // Send Admin Email
         await transporter.sendMail({
           from: `"نظام أكاديمية مجد" <${process.env.EMAIL_USER}>`,
           to: ADMIN_EMAIL,
@@ -254,8 +248,8 @@ export async function POST(request: Request) {
       calendarSkipped: !authClient
     });
 
-  } catch (error: any) {
+  } catch (error) {
     console.error('Booking Error:', error);
-    return NextResponse.json({ error: error.message || 'Failed to create booking' }, { status: 500 });
+    return NextResponse.json({ error: (error as any).message || 'Failed to create booking' }, { status: 500 });
   }
 }

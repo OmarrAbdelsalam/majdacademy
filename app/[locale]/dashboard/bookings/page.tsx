@@ -4,15 +4,34 @@ import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { format, parseISO } from "date-fns";
 import { ar } from "date-fns/locale";
-import { Calendar, Clock, User, Phone, Video } from "lucide-react";
+import { Calendar, Clock, User, Phone, Video, Trash2 } from "lucide-react";
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [bookingToDelete, setBookingToDelete] = useState<string | null>(null);
 
   useEffect(() => {
     fetchBookings();
   }, []);
+
+  const confirmDelete = async () => {
+    if (!bookingToDelete) return;
+    const id = bookingToDelete;
+    setBookingToDelete(null);
+    
+    // Optimistic update
+    const previousBookings = [...bookings];
+    setBookings(bookings.filter((b) => b.id !== id));
+    
+    const supabase = createClient();
+    const { error } = await supabase.from("bookings").delete().eq("id", id);
+    
+    if (error) {
+      alert("حدث خطأ أثناء الحذف. تأكد من صلاحيات قاعدة البيانات.");
+      setBookings(previousBookings); // revert
+    }
+  };
 
   const fetchBookings = async () => {
     setIsLoading(true);
@@ -23,45 +42,8 @@ export default function BookingsPage() {
       .order("start_time", { ascending: true })
       .gte("start_time", new Date().toISOString());
 
-    if (!error && data && data.length > 0) {
+    if (data) {
       setBookings(data);
-    } else {
-      // Dummy data for testing
-      setBookings([
-        {
-          id: 'test-1',
-          student_name: 'أحمد محمود',
-          start_time: new Date(Date.now() + 86400000).toISOString(), // tomorrow
-          course_type: 'تأسيس لغة عربية',
-          student_level: 'المرحلة الابتدائية - الصف الثالث',
-          package_name: 'الباقة الماسية',
-          student_phone: '+966 50 123 4567',
-          student_email: 'ahmed@example.com',
-          google_event_id: 'test_event_1'
-        },
-        {
-          id: 'test-2',
-          student_name: 'سارة خالد',
-          start_time: new Date(Date.now() + 86400000 * 2).toISOString(), // day after tomorrow
-          course_type: 'متابعة المنهج',
-          student_level: 'المرحلة الإعدادية - الصف الثاني',
-          package_name: 'الباقة الذهبية',
-          student_phone: '+966 55 987 6543',
-          student_email: 'sara@example.com',
-          google_event_id: 'test_event_2'
-        },
-        {
-          id: 'test-3',
-          student_name: 'عمر ياسر',
-          start_time: new Date(Date.now() + 86400000 * 4).toISOString(), 
-          course_type: 'نطق سليم (نور البيان)',
-          student_level: 'مرحلة الروضة',
-          package_name: 'الباقة الفضية',
-          student_phone: '+966 56 111 2222',
-          student_email: 'omar@example.com',
-          google_event_id: 'test_event_3'
-        }
-      ]);
     }
     setIsLoading(false);
   };
@@ -108,9 +90,18 @@ export default function BookingsPage() {
                       {format(startDate, "h:mm a")}
                     </p>
                   </div>
-                  <span className="px-3 py-1.5 bg-[#fef0f8] text-[#ef5da8] text-[12px] font-extrabold rounded-[60px]">
-                    مؤكد
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setBookingToDelete(booking.id)}
+                      className="p-2 text-[rgba(38,38,38,0.3)] hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-200"
+                      title="حذف الحجز"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    <span className="px-3 py-1.5 bg-[#fef0f8] text-[#ef5da8] text-[12px] font-extrabold rounded-[60px]">
+                      مؤكد
+                    </span>
+                  </div>
                 </div>
 
                 {/* Student Details */}
@@ -171,6 +162,35 @@ export default function BookingsPage() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {bookingToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="bg-white rounded-[24px] p-6 max-w-sm w-full shadow-xl animate-in fade-in zoom-in duration-200">
+            <div className="w-12 h-12 rounded-[20px] bg-red-50 flex items-center justify-center mx-auto mb-4">
+              <Trash2 className="w-6 h-6 text-red-500" />
+            </div>
+            <h3 className="text-xl font-extrabold text-[#262626] text-center mb-2">حذف الحجز</h3>
+            <p className="text-[14px] text-[rgba(38,38,38,0.6)] text-center mb-6 font-medium">
+              هل أنت متأكد من حذف هذا الحجز؟ لا يمكن التراجع عن هذه الخطوة بعد تنفيذها.
+            </p>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={confirmDelete}
+                className="flex-1 py-3 bg-red-500 text-white rounded-[60px] font-bold text-[15px] hover:bg-red-600 transition-colors"
+              >
+                تأكيد الحذف
+              </button>
+              <button 
+                onClick={() => setBookingToDelete(null)}
+                className="flex-1 py-3 bg-[#f8f9fa] text-[#262626] rounded-[60px] font-bold text-[15px] hover:bg-[#e9ecef] transition-colors"
+              >
+                إلغاء
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

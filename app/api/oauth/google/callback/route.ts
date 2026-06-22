@@ -24,7 +24,7 @@ export async function GET(request: Request) {
     // We need to associate this token with the admin/teacher.
     // Since this is for a single teacher, we can hardcode an email or use a placeholder
     // In a real app with Supabase Auth, you would get the logged-in user's email.
-    const adminEmail = 'abuhashemmajd@gmail.com'; // Placeholder for the single teacher
+    const adminEmail = 'abuhashemmajd@gmail.com';
 
     // Save tokens to Supabase
     // If the teacher already exists, update their tokens. Otherwise, insert.
