@@ -120,6 +120,33 @@ body {
   font-family: "JF Flat", var(--font-tajawal), var(--font-amiri), sans-serif !important;
 }
 
+/* ── Hero Gradients — explicit CSS for reliable mobile rendering ── */
+.hero-bg-gradient {
+  background-color: #fdf2f8; /* fallback */
+  background-image: -webkit-linear-gradient(315deg, #fbcfe8 0%, #fdf2f8 50%, #ffffff 100%);
+  background-image: linear-gradient(135deg, #fbcfe8 0%, #fdf2f8 50%, #ffffff 100%);
+}
+
+.hero-cta-gradient {
+  background-color: #f6428c; /* fallback */
+  background-image: -webkit-linear-gradient(left, #f6428c 0%, #ff66a3 100%);
+  background-image: linear-gradient(to right, #f6428c 0%, #ff66a3 100%);
+}
+
+.hero-text-gradient {
+  color: #f6428c; /* fallback for browsers without background-clip:text */
+  background-image: -webkit-linear-gradient(left, #f6428c 0%, #ff66a3 100%);
+  background-image: linear-gradient(to right, #f6428c 0%, #ff66a3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[dir="rtl"] .hero-cta-gradient {
+  background-image: -webkit-linear-gradient(right, #f6428c 0%, #ff66a3 100%);
+  background-image: linear-gradient(to left, #f6428c 0%, #ff66a3 100%);
+}
+
 .gold-gradient {
   background: linear-gradient(135deg, #C026D3, #E879F9, #EC4899);
 }

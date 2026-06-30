@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
-import { oauth2Client, SCOPES } from '../../../../lib/google';
+import { createOAuthClient, SCOPES } from '../../../../lib/google';
 
-export async function GET() {
+export async function GET(request: Request) {
+  // Derive the redirect URI from the live request origin so the OAuth flow
+  // returns to the same domain the user is browsing (not localhost).
+  const origin = new URL(request.url).origin;
+  const client = createOAuthClient(origin);
+
   // Generate a url that asks permissions for Google Calendar scopes
-  const authorizationUrl = oauth2Client.generateAuthUrl({
+  const authorizationUrl = client.generateAuthUrl({
     // 'offline' gets us a refresh token
     access_type: 'offline',
     // Always prompt for consent so we definitely get a refresh token

@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { oauth2Client } from '../../../../../lib/google';
+import { createOAuthClient } from '../../../../../lib/google';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
+  const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
   const error = searchParams.get('error');
 
@@ -18,8 +18,12 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Use the same redirect URI (derived from this request's origin) that was
+    // used to start the flow, otherwise Google rejects the token exchange.
+    const oauthClient = createOAuthClient(origin);
+
     // Exchange the authorization code for an access token and a refresh token
-    const { tokens } = await oauth2Client.getToken(code);
+    const { tokens } = await oauthClient.getToken(code);
     
     // We need to associate this token with the admin/teacher.
     // Since this is for a single teacher, we can hardcode an email or use a placeholder

@@ -268,10 +268,20 @@ export default function SubscriberDetailPage() {
                 <h2 className="text-2xl font-extrabold text-[#262626]">{subscriber.student_name}</h2>
                 {getStatusBadge(subscriber.status)}
               </div>
-              <p className="text-[14px] font-medium text-[rgba(38,38,38,0.6)] flex items-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                {subscriber.course_type} • {subscriber.subject || 'مادة غير محددة'} • باقة {subscriber.package_sessions} حصص ({subscriber.package_price} درهم)
-              </p>
+              <div className="space-y-1.5 mt-2">
+                <p className="text-[14px] font-medium text-[rgba(38,38,38,0.6)] flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  {subscriber.course_type} • {subscriber.subject || 'مادة غير محددة'}
+                </p>
+                <p className="text-[14px] font-medium text-[rgba(38,38,38,0.6)] flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  الصف: {subscriber.grade || 'غير محدد'} {subscriber.child_age ? `• العمر: ${subscriber.child_age}` : ''}
+                </p>
+                <p className="text-[14px] font-medium text-[rgba(38,38,38,0.6)] flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" />
+                  باقة {subscriber.package_sessions} حصص ({subscriber.package_price} درهم)
+                </p>
+              </div>
             </div>
           </div>
           
@@ -317,6 +327,8 @@ export default function SubscriberDetailPage() {
                   parent_phone: subscriber.parent_phone || '',
                   subject: subscriber.subject || '',
                   course_type: subscriber.course_type || '',
+                  grade: subscriber.grade || '',
+                  child_age: subscriber.child_age || '',
                 });
                 setIsEditModalOpen(true);
               }}
@@ -725,6 +737,16 @@ export default function SubscriberDetailPage() {
                 <div>
                   <label className="block text-[13px] font-bold text-[#262626] mb-1.5">المنهج / النوع</label>
                   <input type="text" value={editData.course_type || ''} onChange={e => setEditData({...editData, course_type: e.target.value})} className="w-full bg-[#f8f9fa] rounded-xl px-4 py-2.5 text-sm outline-none" />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[13px] font-bold text-[#262626] mb-1.5">الصف الدراسي</label>
+                    <input type="text" value={editData.grade || ''} onChange={e => setEditData({...editData, grade: e.target.value})} className="w-full bg-[#f8f9fa] rounded-xl px-4 py-2.5 text-sm outline-none" placeholder="مثال: Grade 5" />
+                  </div>
+                  <div>
+                    <label className="block text-[13px] font-bold text-[#262626] mb-1.5">العمر</label>
+                    <input type="text" value={editData.child_age || ''} onChange={e => setEditData({...editData, child_age: e.target.value})} className="w-full bg-[#f8f9fa] rounded-xl px-4 py-2.5 text-sm outline-none" placeholder="مثال: 10" />
+                  </div>
                 </div>
               </div>
 

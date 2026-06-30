@@ -2,15 +2,29 @@ import { google } from 'googleapis';
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-// Fallback to localhost for development if not provided
-const REDIRECT_URI = process.env.NEXT_PUBLIC_APP_URL 
-  ? `${process.env.NEXT_PUBLIC_APP_URL}/api/oauth/google/callback` 
-  : 'http://localhost:3000/api/oauth/google/callback';
 
+// Build the OAuth callback redirect URI. Prefer the actual request origin so the
+// flow works on any domain (localhost, Vercel, custom domain) without relying on
+// an env var. Falls back to NEXT_PUBLIC_APP_URL, then localhost for dev.
+export function getRedirectUri(origin?: string) {
+  const base =
+    origin ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    'http://localhost:3000';
+  return `${base.replace(/\/$/, '')}/api/oauth/google/callback`;
+}
+
+// Create a fresh OAuth2 client bound to a specific redirect URI. Use this for the
+// authorization + token-exchange flow so the redirect URI matches the live domain.
+export function createOAuthClient(origin?: string) {
+  return new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, getRedirectUri(origin));
+}
+
+// Shared singleton — used for token refresh where the redirect URI is irrelevant.
 export const oauth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  REDIRECT_URI
+  getRedirectUri()
 );
 
 // Scopes required for the application

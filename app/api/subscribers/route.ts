@@ -83,6 +83,20 @@ export async function POST(request: Request) {
 
     if (subError) throw subError;
 
+    // 1b. Mark the originating booking as converted so it no longer
+    //     appears in the quick-add list or the trial schedule.
+    if (booking_id) {
+      const { error: bookingError } = await supabase
+        .from('bookings')
+        .update({ status: 'converted' })
+        .eq('id', booking_id);
+
+      if (bookingError) {
+        console.error('Error marking booking as converted:', bookingError);
+        // Don't throw — the subscriber was created successfully.
+      }
+    }
+
     // 2. Generate sessions
     const generatedSessions = [];
     if (session_days && session_days.length > 0 && package_sessions > 0) {

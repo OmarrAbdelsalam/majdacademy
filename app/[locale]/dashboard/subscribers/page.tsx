@@ -58,10 +58,21 @@ export default function SubscribersPage() {
         .eq('status', 'confirmed')
         .gte('start_time', new Date().toISOString())
         .order('start_time', { ascending: true })
-        .limit(5);
-        
+        .limit(20);
+
+      // 2b. Fetch booking_ids that have already been converted to subscribers,
+      //     so we can exclude them from the quick-add list even if the booking
+      //     status wasn't updated (e.g. blocked by RLS).
+      const { data: usedBookings } = await supabase
+        .from('subscribers')
+        .select('booking_id')
+        .not('booking_id', 'is', null);
+
+      const usedBookingIds = new Set((usedBookings || []).map((s: any) => s.booking_id));
+
       if (recentBookings) {
-        setBookings(recentBookings);
+        const available = recentBookings.filter((b: any) => !usedBookingIds.has(b.id));
+        setBookings(available.slice(0, 5));
       }
       
     } catch (error) {
