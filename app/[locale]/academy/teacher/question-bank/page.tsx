@@ -146,9 +146,6 @@ export default function QuestionBankPage() {
                 <select value={newSubject} onChange={(e) => setNewSubject(e.target.value)} className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F0548B]/30">
                   <option value="">{isRTL ? 'اختر' : 'Select'}</option>
                   <option value="اللغة العربية">اللغة العربية</option>
-                  <option value="الرياضيات">الرياضيات</option>
-                  <option value="العلوم">العلوم</option>
-                  <option value="English">English</option>
                   <option value="التربية الإسلامية">التربية الإسلامية</option>
                 </select>
               </div>
@@ -204,9 +201,6 @@ export default function QuestionBankPage() {
           <select value={subjectFilter} onChange={(e) => setSubjectFilter(e.target.value)} className="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F0548B]/30">
             <option value="">{isRTL ? 'كل المواد' : 'All Subjects'}</option>
             <option value="اللغة العربية">اللغة العربية</option>
-            <option value="الرياضيات">الرياضيات</option>
-            <option value="العلوم">العلوم</option>
-            <option value="English">English</option>
             <option value="التربية الإسلامية">التربية الإسلامية</option>
           </select>
           <select value={gradeFilter} onChange={(e) => setGradeFilter(e.target.value)} className="px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F0548B]/30">

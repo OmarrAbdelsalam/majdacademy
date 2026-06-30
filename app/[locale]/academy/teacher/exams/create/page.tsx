@@ -322,9 +322,6 @@ function MetadataStep({
           >
             <option value="">{isRTL ? 'اختر المادة' : 'Select subject'}</option>
             <option value="اللغة العربية">اللغة العربية</option>
-            <option value="الرياضيات">الرياضيات</option>
-            <option value="العلوم">العلوم</option>
-            <option value="English">English</option>
             <option value="التربية الإسلامية">التربية الإسلامية</option>
           </select>
         </div>

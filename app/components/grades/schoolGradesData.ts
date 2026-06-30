@@ -779,22 +779,22 @@ export const schoolGradesData: CourseData[] = [
     seo: {
       ar: {
         title: "دروس لغة عربية الصف التاسع | مَجْد أكاديمي",
-        description: "دورة اللغة العربية للصف التاسع. السنة المحورية لختام المرحلة المتوسطة والانطلاق نحو الثانوية والإمسات بأساس لغوي صلب.",
-        keywords: "لغة عربية صف تاسع, ختام المرحلة المتوسطة, مدرس عربي لتاسع, تأسيس امسات مبكر, مراجعات شاملة"
+        description: "دورة اللغة العربية للصف التاسع. السنة المحورية لختام المرحلة المتوسطة والانطلاق نحو الثانوية بأساس لغوي صلب.",
+        keywords: "لغة عربية صف تاسع, ختام المرحلة المتوسطة, مدرس عربي لتاسع, تأسيس مبكر للثانوية, مراجعات شاملة"
       },
       en: {
         title: "Grade 9 Arabic Classes | Majd Academy",
-        description: "Grade 9 Arabic course. The pivotal year to conclude middle school and launch towards high school and EmSAT with a solid foundation.",
-        keywords: "Grade 9 Arabic, end of middle school Arabic, early EmSAT prep, comprehensive Arabic review"
+        description: "Grade 9 Arabic course. The pivotal year to conclude middle school and launch towards high school with a solid foundation.",
+        keywords: "Grade 9 Arabic, end of middle school Arabic, early high school prep, comprehensive Arabic review"
       }
     },
     ar: {
       title: "الصف التاسع المتوسط",
       subtitle: "سنة الختام للمتوسط.. ومفتاح الدخول الواثق للثانوية.",
-      intro: "الصف التاسع هو خط النهاية للمرحلة المتوسطة، والفرصة الأخيرة لسد أي فجوات قبل الدخول في معترك الثانوية وتراكمات الإمسات. هل يمتلك ابنك المهارات اللغوية التي تؤهله للتفوق في الثانوية؟ دورتنا تضمن لك هذه الجاهزية.",
+      intro: "الصف التاسع هو خط النهاية للمرحلة المتوسطة، والفرصة الأخيرة لسد أي فجوات قبل الدخول في معترك الثانوية. هل يمتلك ابنك المهارات اللغوية التي تؤهله للتفوق في الثانوية؟ دورتنا تضمن لك هذه الجاهزية.",
       details: [
         "في هذه الدورة، نجمع كل ما تعلمه الطالب في السنوات الماضية ونضعه في إطار تطبيقي شامل. نركز على مهارات الاستماع، التحدث، القراءة السريعة، والكتابة الإقناعية.",
-        "نبدأ أيضاً بتهيئة الطالب ذهنياً لطبيعة أسئلة اختبارات EmSAT من خلال تسريب بعض أنماط الأسئلة المتقدمة في تدريباتنا الدورية."
+        "نبدأ أيضاً بتهيئة الطالب ذهنياً لطبيعة أسئلة امتحانات الثانوية من خلال تضمين بعض أنماط الأسئلة المتقدمة في تدريباتنا الدورية."
       ],
       featuresList: [
         "مراجعة شاملة ومكثفة لجميع قواعد النحو والبلاغة الأساسية.",
@@ -815,15 +815,15 @@ export const schoolGradesData: CourseData[] = [
       conclusion: "اجعل ختام المتوسطة مسكاً! احجز حصة تقييمية لابنك وتأكد من جاهزيته للثانوية.",
       image: "/icon3.webp",
             period: "يبدأ من",
-      features: ["مراجعة شاملة للأساسيات", "تهيئة مبكرة للإمسات", "مهارات الخطابة", "إدارة وقت الاختبار"]
+      features: ["مراجعة شاملة للأساسيات", "تهيئة مبكرة للثانوية", "مهارات الخطابة", "إدارة وقت الاختبار"]
     },
     en: {
       title: "Grade 9",
       subtitle: "The concluding year of middle school.. and the key to confident high school entry.",
-      intro: "Grade 9 is the finish line for middle school, and the last chance to bridge gaps before entering the high school battlefield and EmSAT accumulations. Does your child possess the linguistic skills to excel in high school? Our course guarantees this readiness.",
+      intro: "Grade 9 is the finish line for middle school, and the last chance to bridge gaps before entering the high school battlefield. Does your child possess the linguistic skills to excel in high school? Our course guarantees this readiness.",
       details: [
         "In this course, we gather everything learned in past years into a comprehensive practical framework. We focus on listening, speaking, speed reading, and persuasive writing.",
-        "We also start mentally preparing students for EmSAT question formats by introducing advanced question patterns in our regular drills."
+        "We also start mentally preparing students for high school exam formats by introducing advanced question patterns in our regular drills."
       ],
       featuresList: [
         "Comprehensive and intensive review of all core grammar and rhetoric rules.",
@@ -844,7 +844,7 @@ export const schoolGradesData: CourseData[] = [
       conclusion: "End middle school on a high note! Book an evaluation class for your child and ensure their high school readiness.",
       image: "/girll.png",
             period: "/term",
-      features: ["Comprehensive basics review", "Early EmSAT prep", "Public speaking skills", "Exam time management"]
+      features: ["Comprehensive basics review", "Early high school prep", "Public speaking skills", "Exam time management"]
     }
   },
 
@@ -856,25 +856,25 @@ export const schoolGradesData: CourseData[] = [
     seo: {
       ar: {
         title: "دروس لغة عربية الصف العاشر | مَجْد أكاديمي",
-        description: "دورة اللغة العربية للصف العاشر. بداية التحضير الجاد لاختبارات EmSAT، والتركيز على المهارات العليا في القراءة التحليلية والنقد.",
-        keywords: "لغة عربية صف عاشر, تأسيس امسات لغة عربية, مدرس ثانوي لغة عربية, مهارات عليا للثانوية"
+        description: "دورة اللغة العربية للصف العاشر. بداية التحضير الجاد للمرحلة الثانوية، والتركيز على المهارات العليا في القراءة التحليلية والنقد.",
+        keywords: "لغة عربية صف عاشر, تأسيس لغة عربية للثانوية, مدرس ثانوي لغة عربية, مهارات عليا للثانوية"
       },
       en: {
         title: "Grade 10 Arabic Classes | Majd Academy",
-        description: "Grade 10 Arabic course. Serious preparation for EmSAT exams begins, focusing on higher-order analytical reading and criticism skills.",
-        keywords: "Grade 10 Arabic, EmSAT prep Arabic, High school Arabic tutor, higher-order skills Arabic"
+        description: "Grade 10 Arabic course. Serious preparation for high school begins, focusing on higher-order analytical reading and criticism skills.",
+        keywords: "Grade 10 Arabic, high school prep Arabic, High school Arabic tutor, higher-order skills Arabic"
       }
     },
     ar: {
       title: "الصف العاشر الثانوي",
-      subtitle: "مرحلة الجد وبداية الطريق نحو احتراف الـ EmSAT.",
-      intro: "مرحباً بكم في المرحلة الثانوية! هنا لا مجال للتأجيل. الصف العاشر هو الوقت المثالي لبدء التحضير التراكمي لاختبارات القياس (EmSAT) لضمان القبول الجامعي. هل يشعر ابنك بتوتر البدايات؟ نحن نوفر له خطة دراسية واضحة تضمن له التفوق بأقل جهد ضائع.",
+      subtitle: "مرحلة الجد وبداية الطريق نحو احتراف اللغة العربية.",
+      intro: "مرحباً بكم في المرحلة الثانوية! هنا لا مجال للتأجيل. الصف العاشر هو الوقت المثالي لبدء التحضير التراكمي لامتحانات الثانوية لضمان القبول الجامعي. هل يشعر ابنك بتوتر البدايات؟ نحن نوفر له خطة دراسية واضحة تضمن له التفوق بأقل جهد ضائع.",
       details: [
         "في الصف العاشر، تصبح النصوص أكثر دسامة وتحتاج إلى مهارات تفكير عليا (Higher Order Thinking). نحن نُدرب الطالب على التعامل مع هذه النصوص كباحث وناقد.",
-        "نبدأ بتضمين أسئلة محاكية للإمسات في كل حصة، ليصبح نمط الاختبار مألوفاً جداً لديه عندما يصل للصف الثاني عشر."
+        "نبدأ بتضمين أسئلة محاكية لامتحانات الثانوية في كل حصة، ليصبح نمط الاختبار مألوفاً جداً لديه عندما يصل للصف الثاني عشر."
       ],
       featuresList: [
-        "خطة دراسية استراتيجية توازن بين منهج المدرسة وتأسيس الـ EmSAT.",
+        "خطة دراسية استراتيجية توازن بين منهج المدرسة والتأسيس المتقدم.",
         "تدريب متقدم على الاستيعاب القرائي السريع للنصوص الطويلة.",
         "تطبيقات نحوية وبلاغية معقدة بأسلوب الخرائط الذهنية."
       ],
@@ -892,18 +892,18 @@ export const schoolGradesData: CourseData[] = [
       conclusion: "ابنِ أساساً جامعياً متيناً منذ الصف العاشر! احجز الحصة التجريبية الآن لتتعرف على خطتنا.",
       image: "/icon4.webp",
             period: "يبدأ من",
-      features: ["بداية تحضير EmSAT", "مهارات التفكير العليا", "نصوص متحررة", "خطة دراسية مخصصة"]
+      features: ["بداية التحضير للثانوية", "مهارات التفكير العليا", "نصوص متحررة", "خطة دراسية مخصصة"]
     },
     en: {
       title: "Grade 10",
-      subtitle: "The serious stage and the beginning of the road to EmSAT mastery.",
-      intro: "Welcome to high school! There's no room for delay here. Grade 10 is the perfect time to start cumulative preparation for EmSAT standardized tests to secure university admission. Is your child feeling initial anxiety? We provide a clear study plan ensuring excellence with minimum wasted effort.",
+      subtitle: "The serious stage and the beginning of the road to Arabic mastery.",
+      intro: "Welcome to high school! There's no room for delay here. Grade 10 is the perfect time to start cumulative preparation for high school exams to secure university admission. Is your child feeling initial anxiety? We provide a clear study plan ensuring excellence with minimum wasted effort.",
       details: [
         "In Grade 10, texts become denser, requiring Higher Order Thinking skills. We train students to approach these texts as researchers and critics.",
-        "We start incorporating EmSAT-simulated questions in every class, making the exam pattern completely familiar by the time they reach Grade 12."
+        "We start incorporating high-school-simulated questions in every class, making the exam pattern completely familiar by the time they reach Grade 12."
       ],
       featuresList: [
-        "Strategic study plan balancing school curriculum and EmSAT foundation.",
+        "Strategic study plan balancing school curriculum and advanced foundation.",
         "Advanced training on rapid reading comprehension for long texts.",
         "Complex grammatical and rhetorical applications using mind maps."
       ],
@@ -921,7 +921,7 @@ export const schoolGradesData: CourseData[] = [
       conclusion: "Build a solid university foundation starting Grade 10! Book a trial class now to see our plan.",
       image: "/girll.png",
             period: "/term",
-      features: ["Start of EmSAT Prep", "Higher Order Thinking", "Unseen texts practice", "Custom study plan"]
+      features: ["Start of high school prep", "Higher Order Thinking", "Unseen texts practice", "Custom study plan"]
     }
   },
 
@@ -933,25 +933,25 @@ export const schoolGradesData: CourseData[] = [
     seo: {
       ar: {
         title: "دروس لغة عربية الصف الحادي عشر | مَجْد أكاديمي",
-        description: "دورة اللغة العربية للصف الحادي عشر. نكثف تدريبات الإمسات ونعالج أي ضعف متراكم في النحو والبلاغة لضمان دخول الصف 12 بقوة.",
-        keywords: "لغة عربية صف حادي عشر, تدريب مكثف امسات, مدرس عربي ثانوي, مراجعات النحو والبلاغة"
+        description: "دورة اللغة العربية للصف الحادي عشر. نكثف التدريبات ونعالج أي ضعف متراكم في النحو والبلاغة لضمان دخول الصف 12 بقوة.",
+        keywords: "لغة عربية صف حادي عشر, تدريب مكثف ثانوي, مدرس عربي ثانوي, مراجعات النحو والبلاغة"
       },
       en: {
         title: "Grade 11 Arabic Classes | Majd Academy",
-        description: "Grade 11 Arabic course. Intensifying EmSAT drills and addressing accumulated weaknesses in grammar and rhetoric before Grade 12.",
-        keywords: "Grade 11 Arabic, Intensive EmSAT drills, High school Arabic tutor, grammar rhetoric review"
+        description: "Grade 11 Arabic course. Intensifying drills and addressing accumulated weaknesses in grammar and rhetoric before Grade 12.",
+        keywords: "Grade 11 Arabic, Intensive Arabic drills, High school Arabic tutor, grammar rhetoric review"
       }
     },
     ar: {
       title: "الصف الحادي عشر",
-      subtitle: "سنة الحسم التأسيسي وتكثيف تدريبات الـ EmSAT.",
+      subtitle: "سنة الحسم التأسيسي وتكثيف التدريبات.",
       intro: "الصف 11 هو عنق الزجاجة للثانوية العامة. أي ضعف يمر هنا سيكلف الطالب الكثير في سنته الأخيرة. هل يشعر الطالب بصعوبة في التعامل مع البلاغة أو كتابة المقالات الطويلة؟ في هذه الدورة، نضع الطالب تحت برنامج تدريبي مكثف يعالج أي قصور سابق.",
       details: [
         "تعتمد استراتيجيتنا في الصف 11 على (سد الفجوات + التدريب المكثف). نقوم بعمل مسح لمهارات الطالب النحوية والإملائية لمعالجة ما فاته.",
         "نرفع وتيرة التحدي في حصصنا لتشمل حل نماذج امتحانات فعلية وأسئلة قياس متقدمة، ليدخل الطالب الصف 12 وهو في قمة الجاهزية."
       ],
       featuresList: [
-        "برنامج مكثف للتدريب على أسئلة اختبار الـ EmSAT.",
+        "برنامج مكثف للتدريب على أسئلة امتحانات الثانوية.",
         "تغطية شاملة للمنهج المدرسي مع التركيز على مهارات الفهم والاستنتاج.",
         "دعم نفسي وتوجيه أكاديمي لتقليل التوتر."
       ],
@@ -969,18 +969,18 @@ export const schoolGradesData: CourseData[] = [
       conclusion: "لا تؤجل استعدادك للصف الأخير، ابدأ من الآن لترتاح غداً! احجز حصتك التجريبية.",
       image: "/icon4.webp",
             period: "يبدأ من",
-      features: ["سد الفجوات اللغوية", "تدريب مكثف للإمسات", "حل نماذج واقعية", "دعم نفسي وأكاديمي"]
+      features: ["سد الفجوات اللغوية", "تدريب مكثف للثانوية", "حل نماذج واقعية", "دعم نفسي وأكاديمي"]
     },
     en: {
       title: "Grade 11",
-      subtitle: "The foundational tipping point and intensive EmSAT drills.",
+      subtitle: "The foundational tipping point and intensive Arabic drills.",
       intro: "Grade 11 is the bottleneck of high school. Any weakness passed here will cost the student dearly in their final year. Does the student struggle with rhetoric or long essay writing? In this course, we put the student under an intensive training program to address any prior shortcomings.",
       details: [
         "Our strategy in Grade 11 relies on (Gap bridging + Intensive training). We scan the student's grammar and spelling skills to fix what they missed.",
         "We raise the challenge in our classes to include solving actual exam models and advanced standardized questions, ensuring they enter Grade 12 at peak readiness."
       ],
       featuresList: [
-        "Intensive training program for EmSAT questions.",
+        "Intensive training program for high school exam questions.",
         "Comprehensive coverage of the school curriculum focusing on comprehension and inference.",
         "Psychological support and academic guidance to reduce stress."
       ],
@@ -998,7 +998,7 @@ export const schoolGradesData: CourseData[] = [
       conclusion: "Don't delay your preparation for the final year, start now to rest tomorrow! Book your trial class.",
       image: "/girll.png",
             period: "/term",
-      features: ["Bridging language gaps", "Intensive EmSAT drills", "Solving real models", "Mental & Academic support"]
+      features: ["Bridging language gaps", "Intensive Arabic drills", "Solving real models", "Mental & Academic support"]
     }
   },
 
@@ -1010,26 +1010,26 @@ export const schoolGradesData: CourseData[] = [
     seo: {
       ar: {
         title: "دروس لغة عربية الصف الثاني عشر (ثانوية عامة) | مَجْد أكاديمي",
-        description: "دورة اللغة العربية لطلاب الصف 12. تجهيز نهائي وشامل لاختبارات الإمسات (EmSAT) وامتحانات الوزارة مع نخبة من الخبراء لضمان أعلى الدرجات.",
-        keywords: "لغة عربية صف 12, ثانوية عامة الامارات, اختبار امسات لغة عربية, مراجعة نهائية 12, مدرس امسات عربي"
+        description: "دورة اللغة العربية لطلاب الصف 12. تجهيز نهائي وشامل لامتحانات الوزارة والثانوية العامة مع نخبة من الخبراء لضمان أعلى الدرجات.",
+        keywords: "لغة عربية صف 12, ثانوية عامة الامارات, امتحانات الوزارة لغة عربية, مراجعة نهائية 12, مدرس لغة عربية ثانوي"
       },
       en: {
         title: "Grade 12 Arabic Classes (Senior Year) | Majd Academy",
-        description: "Arabic course for Grade 12 students. Final comprehensive prep for EmSAT and Ministry exams with top experts to ensure the highest scores.",
-        keywords: "Grade 12 Arabic, UAE high school seniors, EmSAT Arabic test, final review grade 12, EmSAT Arabic tutor"
+        description: "Arabic course for Grade 12 students. Final comprehensive prep for Ministry and high school exams with top experts to ensure the highest scores.",
+        keywords: "Grade 12 Arabic, UAE high school seniors, Ministry Arabic exam, final review grade 12, high school Arabic tutor"
       }
     },
     ar: {
       title: "الصف الثاني عشر (الثانوية العامة)",
-      subtitle: "عام الحصاد.. تحضير نهائي لضمان أعلى سكور في الـ EmSAT واختبارات الوزارة.",
+      subtitle: "عام الحصاد.. تحضير نهائي لضمان أعلى الدرجات في امتحانات الوزارة والثانوية العامة.",
       intro: "لقد وصلنا إلى المحطة الأهم! الصف 12 ليس مجرد سنة دراسية، بل هو تذكرة العبور للجامعة ومستقبل الطالب. هل تشعر بضغط الوقت وكثافة المتطلبات؟ نحن في مَجْد أكاديمي نوفر لك بيئة دراسية مركزة، تختصر عليك الوقت وتضمن لك العلامة الكاملة.",
       details: [
         "في هذه السنة الحساسة، لا يوجد مجال للتجربة أو إضاعة الوقت مع طرق تدريس تقليدية. نحن نقدم 'خلاصة الخلاصة'.",
-        "برنامجنا يتضمن حل مئات النماذج السابقة لاختبارات الوزارة والـ EmSAT، وتدريب الطالب على خدع الامتحانات وإدارة الوقت تحت الضغط لضمان أفضل أداء."
+        "برنامجنا يتضمن حل مئات النماذج السابقة لامتحانات الوزارة، وتدريب الطالب على خدع الامتحانات وإدارة الوقت تحت الضغط لضمان أفضل أداء."
       ],
       featuresList: [
         "خطة إنقاذ ومراجعة نهائية مكثفة قبل الامتحانات.",
-        "تدريب تفاعلي على حل امتحانات EmSAT السابقة بأسلوب محاكي للواقع.",
+        "تدريب تفاعلي على حل امتحانات الوزارة السابقة بأسلوب محاكي للواقع.",
         "متابعة دقيقة ومستمرة لضمان بقاء الطالب في قمة تركيزه."
       ],
       whatYouWillLearn: [
@@ -1039,26 +1039,26 @@ export const schoolGradesData: CourseData[] = [
         "مراجعة شاملة للتربية الإسلامية تضمن تغطية كل نقاط الامتحان."
       ],
       expectedOutcomes: [
-        "تحقيق 'سكور' عالي جداً في اختبار EmSAT اللغة العربية.",
+        "تحقيق درجات عالية جداً في امتحانات اللغة العربية النهائية.",
         "التفوق في امتحانات الوزارة النهائية بثقة تامة.",
         "القبول في التخصص الجامعي الذي يطمح إليه الطالب."
       ],
       conclusion: "مستقبلك يبدأ من هنا. انضم إلى صفوة الطلاب المتفوقين واحجز مقعدك في دورتنا المكثفة الآن!",
       image: "/icon4.webp",
             period: "يبدأ من",
-      features: ["خلاصة المنهج", "محاكاة لاختبار EmSAT", "حل نماذج الوزارة السابقة", "متابعة يومية مكثفة"]
+      features: ["خلاصة المنهج", "محاكاة لامتحانات الوزارة", "حل نماذج الوزارة السابقة", "متابعة يومية مكثفة"]
     },
     en: {
       title: "Grade 12 (Senior Year)",
-      subtitle: "The year of harvest.. Final preparation to ensure the highest EmSAT & Ministry scores.",
+      subtitle: "The year of harvest.. Final preparation to ensure the highest Ministry & high school scores.",
       intro: "We've reached the most important milestone! Grade 12 isn't just a school year; it's the ticket to university and the student's future. Do you feel the pressure of time and heavy requirements? At Majd Academy, we provide a focused study environment that saves you time and guarantees top marks.",
       details: [
         "In this critical year, there's no room for trial or wasting time with traditional teaching methods. We provide the 'core essence'.",
-        "Our program includes solving hundreds of past Ministry and EmSAT exams, training students on exam tricks and time management under pressure to ensure optimal performance."
+        "Our program includes solving hundreds of past Ministry exams, training students on exam tricks and time management under pressure to ensure optimal performance."
       ],
       featuresList: [
         "Rescue plan and intensive final review before exams.",
-        "Interactive training on past EmSAT exams with realistic simulation.",
+        "Interactive training on past Ministry exams with realistic simulation.",
         "Precise continuous follow-up to keep the student highly focused."
       ],
       whatYouWillLearn: [
@@ -1068,14 +1068,14 @@ export const schoolGradesData: CourseData[] = [
         "Comprehensive Islamic Education review covering all exam points."
       ],
       expectedOutcomes: [
-        "Achieving a very high 'score' in the Arabic EmSAT test.",
+        "Achieving very high scores in the final Arabic exams.",
         "Excelling in final Ministry exams with complete confidence.",
         "Admission to the university major the student aspires to."
       ],
       conclusion: "Your future starts here. Join the elite high-achievers and book your seat in our intensive course now!",
       image: "/girll.png",
             period: "/term",
-      features: ["Curriculum essence", "EmSAT simulation", "Solving past Ministry papers", "Intensive daily follow-up"]
+      features: ["Curriculum essence", "Ministry exam simulation", "Solving past Ministry papers", "Intensive daily follow-up"]
     }
   }
 ];

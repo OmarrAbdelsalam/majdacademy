@@ -266,11 +266,11 @@ export const gradesContent: {
       name: "الصف العاشر",
       stage: "secondary",
       stageName: "المرحلة الثانوية",
-      description: "بداية المرحلة الثانوية — نبني أساساً أكاديمياً قوياً ونبدأ التحضير المبكر للإمسات.",
+      description: "بداية المرحلة الثانوية — نبني أساساً أكاديمياً قوياً في اللغة العربية والتربية الإسلامية مع مراجعات منتظمة.",
       subjects: [
         {
           name: "اللغة العربية",
-          desc: "نركّز على المهارات المطلوبة في الإمسات ونقوّي التحليل الأدبي والكتابة الأكاديمية المتقدمة.",
+          desc: "نركّز على تقوية التحليل الأدبي والكتابة الأكاديمية المتقدمة في اللغة العربية.",
           cta: "احجز حصة مجانية",
         },
         {
@@ -280,7 +280,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "تحضير EmSAT مبكر", desc: "نبدأ التحضير لاختبارات الإمسات مبكراً لضمان جاهزية الطالب." },
+        { title: "تأسيس متقدم", desc: "نبني أساساً متقدماً في اللغة العربية والتربية الإسلامية لضمان جاهزية الطالب." },
         { title: "مراجعات منظمة", desc: "حصص مراجعة دورية تغطي المنهج بشكل منظم ومرتب." },
         { title: "استراتيجيات الامتحان", desc: "نعلّمه كيفية إدارة وقته والإجابة بذكاء في الامتحانات." },
         { title: "خطة دراسية مخصصة", desc: "نصمم جدولاً دراسياً يتناسب مع مستواه وأهدافه الأكاديمية." },
@@ -292,11 +292,11 @@ export const gradesContent: {
       name: "الصف الحادي عشر",
       stage: "secondary",
       stageName: "المرحلة الثانوية",
-      description: "سنة حاسمة — نكثّف التحضير للإمسات ونركّز على المواضيع الأساسية مع متابعة مستمرة.",
+      description: "سنة حاسمة — نكثّف التركيز على المواضيع الأساسية في اللغة العربية والتربية الإسلامية مع متابعة مستمرة.",
       subjects: [
         {
           name: "اللغة العربية",
-          desc: "تدريب مكثف على نماذج الإمسات مع تقوية نقاط الضعف والتركيز على مهارات الكتابة المتقدمة.",
+          desc: "تدريب مكثف مع تقوية نقاط الضعف والتركيز على مهارات الكتابة والتحليل المتقدمة.",
           cta: "احجز حصة مجانية",
         },
         {
@@ -306,7 +306,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "تدريب EmSAT مكثف", desc: "نماذج وتدريبات مكثفة على نمط أسئلة الإمسات الفعلية." },
+        { title: "تدريب مكثف", desc: "نماذج وتدريبات مكثفة على مهارات اللغة العربية والتربية الإسلامية." },
         { title: "مراجعات أسبوعية", desc: "حصص مراجعة أسبوعية تضمن ترسيخ كافة أجزاء المنهج." },
         { title: "تقوية نقاط الضعف", desc: "نحدد نقاط الضعف ونعمل على تقويتها بشكل مركّز." },
         { title: "دعم نفسي ومعنوي", desc: "نساعد الطالب على التعامل مع الضغوطات والمحافظة على تركيزه." },
@@ -318,11 +318,11 @@ export const gradesContent: {
       name: "الصف الثاني عشر",
       stage: "secondary",
       stageName: "المرحلة الثانوية",
-      description: "السنة الأخيرة والأهم — تحضير شامل ومكثف للإمسات مع مراجعات نهائية وخطة واضحة للنجاح.",
+      description: "السنة الأخيرة والأهم — تحضير شامل ومكثف للامتحانات النهائية مع مراجعات نهائية وخطة واضحة للنجاح.",
       subjects: [
         {
           name: "اللغة العربية",
-          desc: "تحضير نهائي شامل للإمسات مع حل نماذج سابقة ومراجعة مكثفة لكافة أجزاء المنهج.",
+          desc: "تحضير نهائي شامل مع حل نماذج سابقة ومراجعة مكثفة لكافة أجزاء المنهج.",
           cta: "احجز حصة مجانية",
         },
         {
@@ -332,7 +332,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "تحضير EmSAT نهائي", desc: "خطة مكثفة للإمسات مع نماذج سابقة وتدريبات يومية." },
+        { title: "تحضير نهائي", desc: "خطة مكثفة للامتحانات النهائية مع نماذج سابقة وتدريبات يومية." },
         { title: "مراجعات شاملة", desc: "نغطي كامل المنهج بمراجعات منظمة قبل الامتحان النهائي." },
         { title: "محاكاة الامتحان", desc: "امتحانات تجريبية بنفس ظروف الامتحان الحقيقي." },
         { title: "متابعة يومية", desc: "متابعة مستمرة ودعم يومي حتى إنهاء كافة الامتحانات بنجاح." },
@@ -580,11 +580,11 @@ export const gradesContent: {
       name: "Grade 10",
       stage: "secondary",
       stageName: "Secondary Stage",
-      description: "The start of secondary — we build a strong academic foundation and begin early EmSAT preparation.",
+      description: "The start of secondary — we build a strong academic foundation in Arabic and Islamic Education with regular reviews.",
       subjects: [
         {
           name: "Arabic Language",
-          desc: "We focus on EmSAT-required skills and strengthen literary analysis and advanced academic writing.",
+          desc: "We focus on strengthening literary analysis and advanced academic writing in Arabic.",
           cta: "Book a free class",
         },
         {
@@ -594,7 +594,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "Early EmSAT Prep", desc: "We start EmSAT preparation early so the student is fully ready." },
+        { title: "Advanced Foundation", desc: "We build an advanced foundation in Arabic and Islamic Education so the student is fully ready." },
         { title: "Organized Reviews", desc: "Regular review sessions covering the curriculum in an organized manner." },
         { title: "Exam Strategies", desc: "We teach time management and smart answering techniques for exams." },
         { title: "Custom Study Plan", desc: "We design a schedule that fits their level and academic goals." },
@@ -606,11 +606,11 @@ export const gradesContent: {
       name: "Grade 11",
       stage: "secondary",
       stageName: "Secondary Stage",
-      description: "A crucial year — we intensify EmSAT preparation and focus on core topics with continuous follow-up.",
+      description: "A crucial year — we intensify focus on core Arabic and Islamic Education topics with continuous follow-up.",
       subjects: [
         {
           name: "Arabic Language",
-          desc: "Intensive training on EmSAT models while strengthening weak points and focusing on advanced writing skills.",
+          desc: "Intensive training while strengthening weak points and focusing on advanced writing and analysis skills.",
           cta: "Book a free class",
         },
         {
@@ -620,7 +620,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "Intensive EmSAT Training", desc: "Intensive models and exercises matching actual EmSAT question patterns." },
+        { title: "Intensive Training", desc: "Intensive models and exercises for Arabic and Islamic Education skills." },
         { title: "Weekly Reviews", desc: "Weekly review sessions ensuring nothing from the curriculum is forgotten." },
         { title: "Weakness Strengthening", desc: "We identify weak points and work on them with focused attention." },
         { title: "Mental & Moral Support", desc: "We help students handle pressure and maintain their focus." },
@@ -632,11 +632,11 @@ export const gradesContent: {
       name: "Grade 12",
       stage: "secondary",
       stageName: "Secondary Stage",
-      description: "The final and most important year — comprehensive intensive EmSAT preparation with final reviews and a clear plan for success.",
+      description: "The final and most important year — comprehensive intensive preparation for final exams with final reviews and a clear plan for success.",
       subjects: [
         {
           name: "Arabic Language",
-          desc: "Final comprehensive EmSAT preparation with past paper solutions and intensive review of all curriculum sections.",
+          desc: "Final comprehensive preparation with past paper solutions and intensive review of all curriculum sections.",
           cta: "Book a free class",
         },
         {
@@ -646,7 +646,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "Final EmSAT Prep", desc: "Intensive EmSAT plan with past papers and daily practice." },
+        { title: "Final Prep", desc: "Intensive plan for final exams with past papers and daily practice." },
         { title: "Comprehensive Reviews", desc: "We cover the entire curriculum with organized reviews before the final exam." },
         { title: "Exam Simulation", desc: "Mock exams under the same conditions as the real exam." },
         { title: "Daily Follow-up", desc: "Continuous follow-up and daily support until exams are complete." },

@@ -132,7 +132,7 @@ export default function TeacherAttendancePage() {
               type="text"
               value={session}
               onChange={(e) => { setSession(e.target.value); setSaved(false); }}
-              placeholder={isRTL ? 'مثال: اللغة العربية - الحصة الأولى' : 'e.g. Math - Period 1'}
+              placeholder={isRTL ? 'مثال: اللغة العربية - الحصة الأولى' : 'e.g. Arabic - Period 1'}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F0548B] focus:border-transparent"
             />
           </div>

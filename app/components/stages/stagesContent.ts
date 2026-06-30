@@ -33,14 +33,14 @@ export const stagesContent = {
       features: [
         { title: "تأسيس القراءة", desc: "نعلّم الطفل القراءة بطلاقة بدءاً من الحروف وصولاً إلى الجمل والقصص القصيرة." },
         { title: "الكتابة الإبداعية", desc: "نطوّر مهارة التعبير الكتابي بأسلوب ممتع يُشجّع الطفل على الكتابة." },
-        { title: "الحساب الذهني", desc: "نبني أساساً رياضياً قوياً بطرق تفاعلية تجعل فهم الأرقام سهلاً." },
+        { title: "التربية الإسلامية", desc: "نغرس القيم والمفاهيم الإسلامية الأساسية بأسلوب مبسط محبب للطفل." },
         { title: "حب التعلم", desc: "نخلق بيئة تعليمية ممتعة تُحفّز الطفل على التعلّم والتساؤل والاستكشاف." },
       ],
     },
     middle: {
       title: "المرحلة المتوسطة",
       badge: "الصفوف 6-9",
-      subtitle: "نطوّر مهارات التفكير التحليلي والفهم العميق مع التركيز على المواد الأساسية في المنهج الإماراتي.",
+      subtitle: "نطوّر مهارات التفكير التحليلي والفهم العميق مع التركيز على اللغة العربية والتربية الإسلامية في المنهج الإماراتي.",
       cta: "احجز حصة تجريبية",
       grades: [
         { id: 6, label: "الصف السادس" },
@@ -58,7 +58,7 @@ export const stagesContent = {
     secondary: {
       title: "المرحلة الثانوية",
       badge: "الصفوف 10-12",
-      subtitle: "نُعدّ الطالب للامتحانات النهائية لا سيما اختبارات الإمسات (EmSAT) بمتابعة مكثفة ومراجعات شاملة.",
+      subtitle: "نرتقي بمستوى الطالب في اللغة العربية والتربية الإسلامية بمتابعة مكثفة ومراجعات شاملة استعداداً للامتحانات النهائية.",
       cta: "احجز حصة تجريبية",
       grades: [
         { id: 10, label: "الصف العاشر" },
@@ -66,7 +66,7 @@ export const stagesContent = {
         { id: 12, label: "الصف الثاني عشر" },
       ],
       features: [
-        { title: "تحضير EmSAT", desc: "خطة مخصصة لاختبارات الإمسات مع تدريبات ونماذج سابقة." },
+        { title: "إتقان متقدم", desc: "نركّز على المهارات المتقدمة في اللغة العربية والتربية الإسلامية مع تدريبات ونماذج تطبيقية." },
         { title: "مراجعات مكثفة", desc: "حصص مراجعة قبل كل امتحان تغطي كامل المنهج بشكل منظم." },
         { title: "خطة مخصصة", desc: "نصمم جدولاً دراسياً يتناسب مع مستوى الطالب وأهدافه." },
         { title: "الدعم النفسي", desc: "نساعد الطالب على التعامل مع ضغط الامتحانات ليخوضها بثقة تامة." },
@@ -105,14 +105,14 @@ export const stagesContent = {
       features: [
         { title: "Reading Foundation", desc: "We teach children to read fluently from letters to sentences and short stories." },
         { title: "Creative Writing", desc: "We develop written expression skills in a fun way that encourages writing." },
-        { title: "Mental Math", desc: "We build a strong mathematical foundation with interactive methods." },
+        { title: "Islamic Education", desc: "We instill core Islamic values and concepts in a simple, child-friendly way." },
         { title: "Love of Learning", desc: "We create a fun learning environment that makes children love to learn and discover." },
       ],
     },
     middle: {
       title: "Middle Stage",
       badge: "Grades 6-9",
-      subtitle: "We develop analytical thinking and deep understanding skills, focusing on core subjects in the UAE curriculum.",
+      subtitle: "We develop analytical thinking and deep understanding skills, focusing on Arabic and Islamic Education in the UAE curriculum.",
       cta: "Book a trial class",
       grades: [
         { id: 6, label: "Grade 6" },
@@ -130,7 +130,7 @@ export const stagesContent = {
     secondary: {
       title: "Secondary Stage",
       badge: "Grades 10-12",
-      subtitle: "We prepare students for final exams and EmSAT with intensive follow-up and comprehensive reviews.",
+      subtitle: "We elevate students' mastery of Arabic and Islamic Education with intensive follow-up and comprehensive reviews ahead of final exams.",
       cta: "Book a trial class",
       grades: [
         { id: 10, label: "Grade 10" },
@@ -138,7 +138,7 @@ export const stagesContent = {
         { id: 12, label: "Grade 12" },
       ],
       features: [
-        { title: "EmSAT Preparation", desc: "Custom plan for EmSAT exams with practice tests and past papers." },
+        { title: "Advanced Mastery", desc: "We focus on advanced Arabic and Islamic Education skills with applied practice and model exercises." },
         { title: "Intensive Reviews", desc: "Review sessions before every exam covering the entire curriculum." },
         { title: "Custom Plan", desc: "We design a study schedule that fits the student's level and goals." },
         { title: "Mental Support", desc: "We help students handle exam pressure and enter with confidence." },
