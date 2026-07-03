@@ -65,8 +65,8 @@ export default function LearnArabicHero() {
           </div>
 
           {/* Vibrant Glow effects */}
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-1/4 left-1/4 w-[30rem] h-[30rem] bg-[#ff85b8]/20 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 right-1/4 w-96 h-96 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 60%)" }} />
+          <div className="absolute bottom-1/4 left-1/4 w-[30rem] h-[30rem] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(255,133,184,0.3) 0%, rgba(255,133,184,0) 60%)" }} />
         </div>
 
         <div className="container mx-auto px-4 md:px-8 lg:px-12 relative z-40 flex justify-center">

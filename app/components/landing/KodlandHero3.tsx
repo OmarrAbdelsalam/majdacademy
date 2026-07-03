@@ -62,8 +62,8 @@ export default function KodlandHero3({ locale }: { locale: string }) {
         className={`absolute top-0 ${isRTL ? 'right-0' : 'left-0'} w-1/2 h-full pointer-events-none`}
         style={{ backgroundImage: isRTL ? "linear-gradient(to left, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0))" : "linear-gradient(to right, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0))" }}
       />
-      <div className="absolute top-20 -left-20 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: "rgba(244, 114, 182, 0.25)" }} />
-      <div className="absolute bottom-10 right-20 w-[450px] h-[450px] rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: "rgba(251, 207, 232, 0.65)" }} />
+      <div className="absolute top-20 -left-20 w-80 h-80 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(244, 114, 182, 0.25) 0%, rgba(244, 114, 182, 0) 70%)" }} />
+      <div className="absolute bottom-10 right-20 w-[450px] h-[450px] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(251, 207, 232, 0.65) 0%, rgba(251, 207, 232, 0) 70%)" }} />
 
       <div className="container mx-auto px-4 md:px-8 lg:px-12 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">

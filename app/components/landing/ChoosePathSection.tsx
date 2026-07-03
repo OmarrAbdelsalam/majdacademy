@@ -63,8 +63,8 @@ export default function ChoosePathSection() {
   return (
     <section id="choose-path" className="py-16 md:py-24 bg-[#fafafb] relative overflow-hidden" dir={isAr ? "rtl" : "ltr"}>
       {/* Decorative background shapes */}
-      <div className="absolute top-1/3 right-0 w-72 h-72 bg-[#f6428c]/5 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-1/3 left-0 w-72 h-72 bg-[#e8347d]/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/3 right-0 w-72 h-72 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(246, 66, 140, 0.05) 0%, rgba(246, 66, 140, 0) 70%)" }} />
+      <div className="absolute bottom-1/3 left-0 w-72 h-72 pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(232, 52, 125, 0.05) 0%, rgba(232, 52, 125, 0) 70%)" }} />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
         {/* Section Header */}
