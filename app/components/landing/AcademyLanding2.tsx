@@ -2,16 +2,13 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import AcademyNavbar from "../layout/AcademyNavbar";
 import KodlandHero3 from "./KodlandHero3";
-import InterestsSection from "./InterestsSection";
-import WhyMajdFeatures from "./WhyMajdFeatures";
-import SubjectsSection from "./SubjectsSection";
-import StatsAndPathsSection from "./StatsAndPathsSection";
-import TrialStepsSection from "./TrialStepsSection";
-import PackagesSection from "./PackagesSection";
-import FAQSection from "./FAQSection";
-import KodlandFooter from "../layout/KodlandFooter";
-
 // Below-fold and non-critical components loaded dynamically
+const InterestsSection = dynamic(() => import("./InterestsSection"));
+const WhyMajdFeatures = dynamic(() => import("./WhyMajdFeatures"));
+const SubjectsSection = dynamic(() => import("./SubjectsSection"));
+const PackagesSection = dynamic(() => import("./PackagesSection"));
+const FAQSection = dynamic(() => import("./FAQSection"));
+const KodlandFooter = dynamic(() => import("../layout/KodlandFooter"));
 const GuaranteesSection = dynamic(() => import("./GuaranteesSection"));
 const WhatsAppReviewsSlider = dynamic(() => import("./WhatsAppReviewsSlider"));
 const FloatingWhatsApp = dynamic(() => import("../layout/FloatingWhatsApp"));
