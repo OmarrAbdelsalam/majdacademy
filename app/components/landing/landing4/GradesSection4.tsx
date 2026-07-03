@@ -65,7 +65,7 @@ export default function GradesSection4({ content }: { content: any }) {
               className="bg-white p-[20px] rounded-[15px] shadow-sm border border-gray-100 flex flex-col items-center justify-center gap-[15px] transition-shadow text-center relative overflow-hidden group"
             >
               {/* Micro-interaction Hover Background */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-[var(--brand-pink-light)] opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300" style={{ backgroundImage: "linear-gradient(to top right, rgba(255,255,255,0), var(--brand-pink-light))" }}></div>
 
               <div className="w-[60px] h-[60px] rounded-full bg-[var(--brand-pink-light)] text-[var(--brand)] flex items-center justify-center text-[21px] font-bold shadow-inner">
                 {card.age.replace(/[^0-9-]/g, '')}

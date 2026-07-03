@@ -164,11 +164,11 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="relative pt-32 pb-12 md:pt-40 md:pb-16 overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 z-0 bg-white" />
+        <div className="absolute inset-0 z-0" style={{ backgroundColor: "#ffffff" }} />
         <div
           className="absolute inset-0 z-[1]"
           style={{
-            background: "radial-gradient(140% 95% at 50% 0%, #fce7f3 0%, #f9a8d4 50%, #ffffff 100%)"
+            backgroundImage: "linear-gradient(180deg, #fce7f3 0%, #f9a8d4 40%, #ffffff 100%)"
           }}
         />
         <div className="relative z-10 max-w-[1300px] mx-auto px-4 sm:px-6 text-center">

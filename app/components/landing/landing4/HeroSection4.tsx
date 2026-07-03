@@ -91,7 +91,8 @@ export default function HeroSection4({ content }: { content: any }) {
           viewport={{ once: true }}
         >
           <motion.div 
-            className="relative w-full aspect-square md:aspect-[4/3] rounded-[24px] overflow-hidden shadow-2xl bg-gradient-to-tr from-[var(--brand-light)] to-[var(--brand-pink-light)] flex items-center justify-center border-4 border-white"
+            className="relative w-full aspect-square md:aspect-[4/3] rounded-[24px] overflow-hidden shadow-2xl flex items-center justify-center border-4 border-white"
+            style={{ backgroundImage: "linear-gradient(to top right, var(--brand-light), var(--brand-pink-light))" }}
             variants={floatVariants}
             animate="animate"
           >

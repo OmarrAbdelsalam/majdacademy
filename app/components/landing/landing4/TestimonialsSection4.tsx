@@ -8,7 +8,7 @@ export default function TestimonialsSection4({ content }: { content: any }) {
   const marqueeItems = [...content.testimonials.items, ...content.testimonials.items];
 
   return (
-    <section className="w-full py-[80px] overflow-hidden bg-gradient-to-b from-[#fdf2f8] to-white relative">
+    <section className="w-full py-[80px] overflow-hidden relative" style={{ backgroundImage: "linear-gradient(to bottom, #fdf2f8, #ffffff)" }}>
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/0 via-[var(--brand-pink-light)] to-white/0 opacity-50"></div>
       
@@ -36,7 +36,7 @@ export default function TestimonialsSection4({ content }: { content: any }) {
       <div className="relative w-full flex flex-col gap-[30px] px-[10px] md:px-0">
         
         {/* Row 1: Scrolling Right to Left */}
-        <div className="flex w-full overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_100px,_black_calc(100%-100px),transparent_100%)]">
+        <div className="flex w-full overflow-hidden" style={{ WebkitMaskImage: "linear-gradient(to right, rgba(0,0,0,0) 0, black 100px, black calc(100% - 100px), rgba(0,0,0,0) 100%)", maskImage: "linear-gradient(to right, rgba(0,0,0,0) 0, black 100px, black calc(100% - 100px), rgba(0,0,0,0) 100%)" }}>
           <motion.div
             className="flex gap-[24px] min-w-max"
             animate={{ x: ["0%", "-50%"] }}
@@ -61,7 +61,7 @@ export default function TestimonialsSection4({ content }: { content: any }) {
                   &quot;{t.text}&quot;
                 </p>
                 <div className="mt-auto pt-[20px] border-t border-gray-50 flex items-center gap-[15px]">
-                  <div className="w-[40px] h-[40px] rounded-full bg-gradient-to-tr from-[var(--brand)] to-[var(--brand-pink)] flex items-center justify-center text-white font-bold text-[17px]">
+                  <div className="w-[40px] h-[40px] rounded-full flex items-center justify-center text-white font-bold text-[17px]" style={{ backgroundImage: "linear-gradient(to top right, var(--brand), var(--brand-pink))" }}>
                     {t.name.charAt(0)}
                   </div>
                   <div className="font-bold text-[17px] text-[#262626]">{t.name}</div>

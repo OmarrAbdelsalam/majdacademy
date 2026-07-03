@@ -83,7 +83,8 @@ export default function FeaturesSection4({ content }: { content: any }) {
         >
           <motion.div 
             variants={itemRightVariants}
-            className="w-full h-full min-h-[400px] bg-gradient-to-bl from-[var(--brand)] via-[var(--brand-pink)] to-[var(--brand-purple)] rounded-[24px] p-[40px] text-white flex flex-col justify-center shadow-2xl relative overflow-hidden group"
+            className="w-full h-full min-h-[400px] rounded-[24px] p-[40px] text-white flex flex-col justify-center shadow-2xl relative overflow-hidden group"
+            style={{ backgroundImage: "linear-gradient(to bottom left, var(--brand), var(--brand-pink), var(--brand-purple))" }}
           >
             {/* Glassmorphism subtle overlay */}
             <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>

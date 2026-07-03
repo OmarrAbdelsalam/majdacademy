@@ -118,7 +118,7 @@ export default function WhatsAppReviewsSlider() {
                   className="flex-shrink-0"
                 >
                   {/* Card with Gradient Background as the frame */}
-                  <div className="relative bg-gradient-to-br from-[#e8347d] via-[#f6428c] to-[#ff66a3] rounded-[32px] p-3 sm:p-4 shadow-[0_12px_30px_rgba(246,66,140,0.2)] hover:shadow-[0_20px_50px_rgba(246,66,140,0.4)] hover:-translate-y-2 transition-all duration-500 flex flex-col group border-[4px] border-white/20 mx-auto w-full max-w-[550px]">
+                  <div className="relative rounded-[32px] p-3 sm:p-4 shadow-[0_12px_30px_rgba(246,66,140,0.2)] hover:shadow-[0_20px_50px_rgba(246,66,140,0.4)] hover:-translate-y-2 transition-all duration-500 flex flex-col group border-[4px] border-white/20 mx-auto w-full max-w-[550px]" style={{ backgroundImage: "linear-gradient(to bottom right, #e8347d, #f6428c, #ff66a3)" }}>
                     
                     {/* Simulated Phone Header (Dynamic Island vibe) */}
                     <div className="flex justify-center mb-4 mt-1">

@@ -62,8 +62,8 @@ export default function KodlandHero3({ locale }: { locale: string }) {
         className={`absolute top-0 ${isRTL ? 'right-0' : 'left-0'} w-1/2 h-full pointer-events-none`}
         style={{ backgroundImage: isRTL ? "linear-gradient(to left, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0))" : "linear-gradient(to right, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0))" }}
       />
-      <div className="absolute top-20 -left-20 w-80 h-80 bg-[#f472b6]/25 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-20 w-[450px] h-[450px] bg-[#fbcfe8]/65 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-20 -left-20 w-80 h-80 rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: "rgba(244, 114, 182, 0.25)" }} />
+      <div className="absolute bottom-10 right-20 w-[450px] h-[450px] rounded-full blur-3xl pointer-events-none" style={{ backgroundColor: "rgba(251, 207, 232, 0.65)" }} />
 
       <div className="container mx-auto px-4 md:px-8 lg:px-12 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
@@ -114,7 +114,7 @@ export default function KodlandHero3({ locale }: { locale: string }) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
             >
-              <div className="relative z-10 w-full max-w-[400px] aspect-square flex justify-center items-end [mask-image:linear-gradient(to_bottom,black_60%,transparent_95%)] [-webkit-mask-image:linear-gradient(to_bottom,black_60%,transparent_95%)]">
+              <div className="relative z-10 w-full max-w-[400px] aspect-square flex justify-center items-end" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 60%, rgba(0,0,0,0) 95%)", maskImage: "linear-gradient(to bottom, black 60%, rgba(0,0,0,0) 95%)" }}>
                 <img 
                   src="/girlboy.png" 
                   alt="Students" 
@@ -171,7 +171,7 @@ export default function KodlandHero3({ locale }: { locale: string }) {
           >
 
             {/* Image Area with bottom fade mask */}
-            <div className="relative z-10 w-full max-w-[500px] lg:max-w-[650px] xl:max-w-[750px] aspect-square flex justify-center items-end [mask-image:linear-gradient(to_bottom,black_60%,transparent_95%)] [-webkit-mask-image:linear-gradient(to_bottom,black_60%,transparent_95%)]">
+            <div className="relative z-10 w-full max-w-[500px] lg:max-w-[650px] xl:max-w-[750px] aspect-square flex justify-center items-end" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 60%, rgba(0,0,0,0) 95%)", maskImage: "linear-gradient(to bottom, black 60%, rgba(0,0,0,0) 95%)" }}>
               <img 
                 src="/girlboy.png" 
                 alt="Students" 

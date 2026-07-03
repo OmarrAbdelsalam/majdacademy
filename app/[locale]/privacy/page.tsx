@@ -45,8 +45,8 @@ export default function PrivacyPage() {
       <main className="flex-1">
         {/* Hero */}
         <section className="relative w-full min-h-[50vh] flex flex-col items-center justify-center overflow-hidden pt-[60px] pb-8">
-          <div className="absolute inset-0 z-0 bg-white" />
-          <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(140% 95% at 50% 0%, #fce7f3 0%, #f9a8d4 50%, #ffffff 100%)" }} />
+          <div className="absolute inset-0 z-0" style={{ backgroundColor: '#ffffff' }} />
+          <div className="absolute inset-0 z-[1]" style={{ backgroundImage: "linear-gradient(180deg, #fce7f3 0%, #f9a8d4 40%, #ffffff 100%)" }} />
           <div className="relative z-10 text-center mt-16 sm:mt-24 px-4">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}

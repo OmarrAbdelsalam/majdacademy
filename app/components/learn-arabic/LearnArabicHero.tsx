@@ -38,8 +38,8 @@ export default function LearnArabicHero() {
           <div 
             className="absolute top-0 left-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09]"
             style={{
-              WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",
-              maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)"
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)",
+              maskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)"
             }}
           >
             <img 
@@ -53,8 +53,8 @@ export default function LearnArabicHero() {
           <div 
             className="absolute top-0 right-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09]"
             style={{
-              WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)",
-              maskImage: "radial-gradient(ellipse at center, black 20%, transparent 80%)"
+              WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)",
+              maskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)"
             }}
           >
             <img 
