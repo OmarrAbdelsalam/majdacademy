@@ -29,7 +29,8 @@ export function createPageMetadata(
   const title = config.title[lang];
   const description = config.description[lang];
   const keywords = config.keywords[lang];
-  const ogImage = config.ogImage || "/academy-hero.png";
+  const ogImage = config.ogImage || "https://majdedu.com/majd.png";
+  const ogImageUrl = ogImage.startsWith("http") ? ogImage : `${BASE_URL}${ogImage}`;
 
   const pagePath = config.path === "/" ? "" : config.path;
   const canonicalUrl = `${BASE_URL}/${lang}${pagePath}`;
@@ -48,7 +49,7 @@ export function createPageMetadata(
     openGraph: {
       title,
       description,
-      images: [ogImage],
+      images: [ogImageUrl],
       locale: lang === "ar" ? "ar_AE" : "en_US",
       siteName: "Majd Academy",
       type: "website",
@@ -57,7 +58,7 @@ export function createPageMetadata(
       card: "summary_large_image",
       title,
       description,
-      images: [ogImage],
+      images: [ogImageUrl],
     },
   };
 }
