@@ -36,7 +36,7 @@ export default function LearnArabicHero() {
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
           {/* Subtle Arabic Typography Watermark Image (Left) */}
           <div 
-            className="absolute top-0 left-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09]"
+            className="absolute top-0 left-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09] hidden md:block"
             style={{
               WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)",
               maskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)"
@@ -51,7 +51,7 @@ export default function LearnArabicHero() {
 
           {/* Subtle Arabic Typography Watermark Image (Right) */}
           <div 
-            className="absolute top-0 right-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09]"
+            className="absolute top-0 right-[5%] w-[80%] md:w-[50%] h-full opacity-[0.09] hidden md:block"
             style={{
               WebkitMaskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)",
               maskImage: "radial-gradient(ellipse at center, black 20%, rgba(0,0,0,0) 80%)"
@@ -92,7 +92,7 @@ export default function LearnArabicHero() {
               </h1>
 
               {/* Description */}
-              <p className="text-[13px] sm:text-xl lg:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto font-medium drop-shadow-sm px-4 sm:px-0">
+              <p className="text-[16px] sm:text-xl lg:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto font-medium drop-shadow-sm px-4 sm:px-0">
                 {c.subtitle}
               </p>
 
