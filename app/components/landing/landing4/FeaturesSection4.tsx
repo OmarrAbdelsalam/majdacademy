@@ -89,7 +89,7 @@ export default function FeaturesSection4({ content }: { content: any }) {
             <div className="absolute inset-0 bg-white/5 backdrop-blur-[2px]"></div>
             
             {/* Shimmer animation for premium feel */}
-            <div className="absolute inset-0 translate-x-[-150%] skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shimmer_2s_infinite]"></div>
+            <div className="absolute inset-0 translate-x-[-150%] skew-x-[-20deg] bg-gradient-to-r from-white/0 via-white/20 to-white/0 group-hover:animate-[shimmer_2s_infinite]"></div>
 
             <div className="relative z-10">
               <h3 className="text-[32px] font-bold mb-[30px] flex items-center gap-3">

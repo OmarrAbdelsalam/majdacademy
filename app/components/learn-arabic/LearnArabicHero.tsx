@@ -28,7 +28,8 @@ export default function LearnArabicHero() {
   return (
     <>
       <section 
-        className="relative w-full min-h-[85vh] sm:min-h-[90vh] bg-gradient-to-b from-[#e8347d] via-[#f7599a] to-white pt-28 sm:pt-32 pb-16 flex items-center" 
+        className="relative w-full min-h-[85vh] sm:min-h-[90vh] pt-28 sm:pt-32 pb-16 flex items-center" 
+        style={{ backgroundImage: "linear-gradient(to bottom, #e8347d, #f7599a, #ffffff)" }}
         dir={isRTL ? "rtl" : "ltr"}
       >
         {/* Background Wrapper */}
@@ -112,7 +113,7 @@ export default function LearnArabicHero() {
         </div>
         
         {/* Bottom section fade to melt into the next section */}
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-30" />
+        <div className="absolute bottom-0 left-0 w-full h-40 pointer-events-none z-30" style={{ backgroundImage: "linear-gradient(to top, #ffffff, rgba(255,255,255,0))" }} />
       </section>
       <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant="learn-arabic" />
     </>

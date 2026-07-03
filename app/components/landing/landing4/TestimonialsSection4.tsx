@@ -10,7 +10,7 @@ export default function TestimonialsSection4({ content }: { content: any }) {
   return (
     <section className="w-full py-[80px] overflow-hidden bg-gradient-to-b from-[#fdf2f8] to-white relative">
       {/* Background decorations */}
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[var(--brand-pink-light)] to-transparent opacity-50"></div>
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-white/0 via-[var(--brand-pink-light)] to-white/0 opacity-50"></div>
       
       <div className="max-w-[1140px] mx-auto flex flex-col items-center gap-[20px] px-[10px] mb-[40px]">
         <motion.h2 

@@ -58,7 +58,10 @@ export default function KodlandHero3({ locale }: { locale: string }) {
       </div>
 
       {/* Background Decorative Elements */}
-      <div className={`absolute top-0 ${isRTL ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'} w-1/2 h-full from-[#fbcfe8]/50 to-transparent pointer-events-none`} />
+      <div 
+        className={`absolute top-0 ${isRTL ? 'right-0' : 'left-0'} w-1/2 h-full pointer-events-none`}
+        style={{ backgroundImage: isRTL ? "linear-gradient(to left, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0))" : "linear-gradient(to right, rgba(251, 207, 232, 0.5), rgba(255, 255, 255, 0))" }}
+      />
       <div className="absolute top-20 -left-20 w-80 h-80 bg-[#f472b6]/25 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-20 w-[450px] h-[450px] bg-[#fbcfe8]/65 rounded-full blur-3xl pointer-events-none" />
 
@@ -181,7 +184,7 @@ export default function KodlandHero3({ locale }: { locale: string }) {
       </div>
       
       {/* Bottom section fade to melt into the next section */}
-      <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white to-transparent pointer-events-none z-30" />
+      <div className="absolute bottom-0 left-0 w-full h-40 pointer-events-none z-30" style={{ backgroundImage: "linear-gradient(to top, #ffffff, rgba(255,255,255,0))" }} />
       
       <CountryWelcomeModal isOpen={isCountryModalOpen} onClose={() => setIsCountryModalOpen(false)} initialStep={1} intent="booking" />
       <BookingModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant={pathname?.includes("/learn-arabic") ? "learn-arabic" : "default"} />

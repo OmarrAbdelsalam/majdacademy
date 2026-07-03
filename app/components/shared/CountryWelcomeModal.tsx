@@ -123,7 +123,7 @@ export default function CountryWelcomeModal({
                       onClick={() => setStep(2)}
                       className="group relative flex items-center p-4 sm:p-5 rounded-[20px] border border-gray-100 bg-white hover:border-[#f04da1] transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(240,77,161,0.12)] overflow-hidden text-start"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#f04da1]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#f04da1]/5 to-[#f04da1]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
                       <div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#fef0f8] flex items-center justify-center text-[#f04da1] shrink-0 ml-4 rtl:ml-4 ltr:mr-4">
                          <BookOpen className="w-6 h-6 sm:w-7 sm:h-7" />
@@ -147,7 +147,7 @@ export default function CountryWelcomeModal({
                       onClick={handleNonNative}
                       className="group relative flex items-center p-4 sm:p-5 rounded-[20px] border border-gray-100 bg-white hover:border-[#2563eb] transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_30px_rgba(37,99,235,0.12)] overflow-hidden text-start"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/5 to-[#2563eb]/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
                       <div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-[#eff6ff] flex items-center justify-center text-[#2563eb] shrink-0 ml-4 rtl:ml-4 ltr:mr-4">
                          <Languages className="w-6 h-6 sm:w-7 sm:h-7" />

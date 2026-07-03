@@ -95,7 +95,7 @@ function ProductsContent() {
                 </h3>
                 
                 {/* Subtle highlight overlay */}
-                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none rounded-t-[24px]"></div>
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-white/0 pointer-events-none rounded-t-[24px]"></div>
               </div>
             </Link>
           ))}

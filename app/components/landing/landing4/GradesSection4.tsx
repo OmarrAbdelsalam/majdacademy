@@ -93,7 +93,7 @@ export default function GradesSection4({ content }: { content: any }) {
               className="bg-white py-[15px] px-[10px] rounded-[10px] shadow-sm text-center border border-gray-100 hover:border-[var(--brand)] cursor-pointer relative overflow-hidden group"
             >
               {/* Shimmer effect on hover */}
-              <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-[rgba(236,72,153,0.1)] to-transparent skew-x-12"></div>
+              <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-white/0 via-[rgba(236,72,153,0.1)] to-white/0 skew-x-12"></div>
               
               <span className="text-[17px] font-medium text-[#444] group-hover:text-[var(--brand)] transition-colors relative z-10">
                 الصف {grade}
