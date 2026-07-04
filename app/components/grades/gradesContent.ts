@@ -266,7 +266,7 @@ export const gradesContent: {
       name: "الصف العاشر",
       stage: "secondary",
       stageName: "المرحلة الثانوية",
-      description: "بداية المرحلة الثانوية — نبني أساساً أكاديمياً قوياً في اللغة العربية والتربية الإسلامية مع مراجعات منتظمة.",
+      description: "بداية المرحلة الثانوية — نبني أساساً أكاديمياً قوياً في اللغة العربية مع مراجعات منتظمة.",
       subjects: [
         {
           name: "اللغة العربية",
@@ -280,7 +280,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "تأسيس متقدم", desc: "نبني أساساً متقدماً في اللغة العربية والتربية الإسلامية لضمان جاهزية الطالب." },
+        { title: "تأسيس متقدم", desc: "نبني أساساً متقدماً في اللغة العربية لضمان جاهزية الطالب." },
         { title: "مراجعات منظمة", desc: "حصص مراجعة دورية تغطي المنهج بشكل منظم ومرتب." },
         { title: "استراتيجيات الامتحان", desc: "نعلّمه كيفية إدارة وقته والإجابة بذكاء في الامتحانات." },
         { title: "خطة دراسية مخصصة", desc: "نصمم جدولاً دراسياً يتناسب مع مستواه وأهدافه الأكاديمية." },
@@ -292,7 +292,7 @@ export const gradesContent: {
       name: "الصف الحادي عشر",
       stage: "secondary",
       stageName: "المرحلة الثانوية",
-      description: "سنة حاسمة — نكثّف التركيز على المواضيع الأساسية في اللغة العربية والتربية الإسلامية مع متابعة مستمرة.",
+      description: "سنة حاسمة — نكثّف التركيز على المواضيع الأساسية في اللغة العربية مع متابعة مستمرة.",
       subjects: [
         {
           name: "اللغة العربية",
@@ -306,7 +306,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "تدريب مكثف", desc: "نماذج وتدريبات مكثفة على مهارات اللغة العربية والتربية الإسلامية." },
+        { title: "تدريب مكثف", desc: "نماذج وتدريبات مكثفة على مهارات اللغة العربية." },
         { title: "مراجعات أسبوعية", desc: "حصص مراجعة أسبوعية تضمن ترسيخ كافة أجزاء المنهج." },
         { title: "تقوية نقاط الضعف", desc: "نحدد نقاط الضعف ونعمل على تقويتها بشكل مركّز." },
         { title: "دعم نفسي ومعنوي", desc: "نساعد الطالب على التعامل مع الضغوطات والمحافظة على تركيزه." },
@@ -580,7 +580,7 @@ export const gradesContent: {
       name: "Grade 10",
       stage: "secondary",
       stageName: "Secondary Stage",
-      description: "The start of secondary — we build a strong academic foundation in Arabic and Islamic Education with regular reviews.",
+      description: "The start of secondary — we build a strong academic foundation in Arabic with regular reviews.",
       subjects: [
         {
           name: "Arabic Language",
@@ -594,7 +594,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "Advanced Foundation", desc: "We build an advanced foundation in Arabic and Islamic Education so the student is fully ready." },
+        { title: "Advanced Foundation", desc: "We build an advanced foundation in Arabic so the student is fully ready." },
         { title: "Organized Reviews", desc: "Regular review sessions covering the curriculum in an organized manner." },
         { title: "Exam Strategies", desc: "We teach time management and smart answering techniques for exams." },
         { title: "Custom Study Plan", desc: "We design a schedule that fits their level and academic goals." },
@@ -606,7 +606,7 @@ export const gradesContent: {
       name: "Grade 11",
       stage: "secondary",
       stageName: "Secondary Stage",
-      description: "A crucial year — we intensify focus on core Arabic and Islamic Education topics with continuous follow-up.",
+      description: "A crucial year — we intensify focus on core Arabic topics with continuous follow-up.",
       subjects: [
         {
           name: "Arabic Language",
@@ -620,7 +620,7 @@ export const gradesContent: {
         },
       ],
       features: [
-        { title: "Intensive Training", desc: "Intensive models and exercises for Arabic and Islamic Education skills." },
+        { title: "Intensive Training", desc: "Intensive models and exercises for Arabic skills." },
         { title: "Weekly Reviews", desc: "Weekly review sessions ensuring nothing from the curriculum is forgotten." },
         { title: "Weakness Strengthening", desc: "We identify weak points and work on them with focused attention." },
         { title: "Mental & Moral Support", desc: "We help students handle pressure and maintain their focus." },

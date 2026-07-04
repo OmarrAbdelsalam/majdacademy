@@ -5,7 +5,6 @@ import KodlandHero3 from "./KodlandHero3";
 // Below-fold and non-critical components loaded dynamically
 const InterestsSection = dynamic(() => import("./InterestsSection"));
 const WhyMajdFeatures = dynamic(() => import("./WhyMajdFeatures"));
-const SubjectsSection = dynamic(() => import("./SubjectsSection"));
 const PackagesSection = dynamic(() => import("./PackagesSection"));
 const FAQSection = dynamic(() => import("./FAQSection"));
 const KodlandFooter = dynamic(() => import("../layout/KodlandFooter"));
@@ -26,7 +25,6 @@ export default function AcademyLanding2({ locale, isCurriculums }: { locale: Loc
         <KodlandHero3 locale={locale} />
         <InterestsSection locale={locale} />
         <WhyMajdFeatures locale={locale} />
-        <SubjectsSection locale={locale} />
         {isCurriculums && <PackagesSection locale={locale} />}
         <FAQSection locale={locale} />
         <GuaranteesSection />

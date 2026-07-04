@@ -9,7 +9,7 @@ export const landingContent = {
       badge1: "المنهج الإماراتي",
       badge1sub: "وزارة التربية والتعليم",
       badge2: "اللغة العربية",
-      badge2sub: "والتربية الإسلامية",
+      badge2sub: "لجميع المستويات",
       badge3: "الصف 1 - 12",
       badge3sub: "جميع المراحل",
     },
@@ -17,14 +17,14 @@ export const landingContent = {
       heading: "من الروضة إلى الثاني عشر، أبناؤكم في أيدٍ",
       headingHighlight: "أمينة",
       cards: [
-        { age: "سن 4-5", title: "مرحلة الروضة", description: "نُرسّخ أساساً تعليمياً ممتعاً من خلال الألعاب والأناشيد، لأن حبّ التعلم يبدأ من أول يوم.", link: "اعرف أكثر" },
-        { age: "الصف 1-5", title: "المرحلة الابتدائية", description: "نبني أساساً متيناً في القراءة والكتابة والتعبير بأسلوب ممتع يُحبّب الطفلَ في التعلم منذ البداية.", link: "اعرف أكثر" },
-        { age: "الصف 6-9", title: "المرحلة المتوسطة", description: "نُطوّر مهارات التفكير التحليلي والفهم العميق مع التركيز على اللغة العربية والتربية الإسلامية بالمنهج الإماراتي.", link: "اعرف أكثر" },
-        { age: "الصف 10-12", title: "المرحلة الثانوية", description: "نرتقي بمستوى الطالب في اللغة العربية والتربية الإسلامية بمتابعة مكثفة ومراجعات شاملة.", link: "اعرف أكثر" },
+        { age: "سن 4-5", title: "مرحلة الروضة", description: "نُرسّخ أساساً ممتعاً لنطق الحروف والتعرف على الكلمات الأولى من خلال الألعاب والأناشيد، لنحبّب الطفل في لغته منذ اليوم الأول.", link: "اعرف أكثر" },
+        { age: "الصف 1-5", title: "المرحلة الابتدائية", description: "نؤسس الطفل في النطق السليم، والإملاء، والقراءة بطلاقة، لنقضي على أي تعثر في مراحله الدراسية الأولى.", link: "اعرف أكثر" },
+        { age: "الصف 6-9", title: "المرحلة المتوسطة", description: "نُحبّبه في دراسة النصوص والتعبير، ونعالج ضعف القواعد النحوية والإملائية ليتجاوز عقبة اللغة العربية بكل ثقة.", link: "اعرف أكثر" },
+        { age: "الصف 10-12", title: "المرحلة الثانوية", description: "تجهيز مكثف لامتحانات اللغة العربية (نحو، بلاغة، ونصوص) بأسلوب يضمن له فهم المنهج وتحقيق العلامة الكاملة.", link: "اعرف أكثر" },
       ],
       ctaBadge: "لغير الناطقين بالعربية · جميع الأعمار",
       ctaTitle: "دورة اللغة العربية",
-      ctaDesc: "نُعلّم العربية من الصفر بأسلوب تفاعلي ممتع — قراءةً وكتابةً ومحادثةً، لأي عمر ودون ارتباط بمنهج محدد.",
+      ctaDesc: "برنامج متكامل لتعليم اللغة العربية لغير الناطقين بها من الصفر؛ نركز على المحادثة والقراءة والكتابة بأسلوب تفاعلي يناسب جميع المستويات.",
       ctaButton: "سجّل الآن",
     },
     stats: {
@@ -39,9 +39,9 @@ export const landingContent = {
     paths: {
       title: "فلسفة واحدة ومسارات\nمتعددة لكل مرحلة",
       items: [
-        { age: "الصف 1-5", description: "يتعلم الأطفال من خلال اللعب والتجارب العملية. بمرافقة معلمهم، يستكشفون أشياء جديدة في بيئة آمنة تشجعهم على طرح الأسئلة.", tags: ["حصص قصيرة", "تعلّم ممتع", "تنمية الفضول"] },
-        { age: "الصف 6-9", description: "يشرع الطلاب في بناء مهارات التفكير التحليلي والعمل على مشاريع حقيقية، مع تطوير قدراتهم في حل المشكلات والتفكير المنطقي.", tags: ["تفكير تحليلي", "مشاريع حقيقية", "متابعة مستمرة"] },
-        { age: "الصف 10-12", description: "نرتقي بمستوى الطالب في اللغة العربية والتربية الإسلامية بمراجعات مكثفة وخطط دراسية مخصصة تتناسب مع مستواه وأهدافه.", tags: ["مهارات متقدمة", "خطة مخصصة", "مراجعات مكثفة"] },
+        { age: "الصف 1-5", description: "يتعلم الأطفال أساسيات لغتهم من خلال القصص والألعاب اللغوية. نرافقهم في خطواتهم الأولى ليكتسبوا مهارات القراءة والكتابة في بيئة مشجعة ومحفزة.", tags: ["حصص قصيرة", "تعلّم ممتع", "تنمية الفضول"] },
+        { age: "الصف 6-9", description: "يشرع الطلاب في تذوق النصوص الأدبية وفهم القواعد النحوية بعمق. ندرّبهم على التعبير الكتابي والشفهي بطلاقة ووضوح.", tags: ["تفكير تحليلي", "مشاريع حقيقية", "متابعة مستمرة"] },
+        { age: "الصف 10-12", description: "نقدم خططاً دراسية مخصصة للمرحلة الثانوية، مع التركيز على المراجعات المكثفة لأسئلة الامتحانات في فروع النحو والبلاغة والأدب.", tags: ["مهارات متقدمة", "خطة مخصصة", "مراجعات مكثفة"] },
       ],
       link: "اكتشف الباقات ←",
     },
@@ -71,8 +71,8 @@ export const landingContent = {
       titleHighlight: "لأبنائك",
       cta: "احجز حصتك المجانية",
       items: [
-        { title: "الباقة الشاملة", description: "المادتان معاً بسعر أفضل", price: "1600", period: "درهم / شهرياً", features: ["اللغة العربية + التربية الإسلامية", "10 حصص شهرياً مع معلمين متخصصين", "متابعة مستمرة لولي الأمر عبر واتساب", "حصص مراجعة قبل الامتحانات"] },
-        { title: "الباقة الأساسية", description: "مادة واحدة بمتابعة مستمرة للعرب", price: "1000", period: "درهم / شهرياً", features: ["مادة واحدة (اللغة العربية أو التربية الإسلامية)", "6 حصص شهرياً مع معلم متخصص", "حصة تجريبية مجانية أولى", "تقرير شهري لولي الأمر"] },
+        { title: "الباقة المكثفة", description: "10 حصص مع متابعة مستمرة ومراجعات", price: "1600", period: "درهم / شهرياً", features: ["اللغة العربية", "10 حصص شهرياً مع معلمين متخصصين", "متابعة مستمرة لولي الأمر عبر واتساب", "حصص مراجعة قبل الامتحانات"] },
+        { title: "الباقة الأساسية", description: "6 حصص لتأسيس ومتابعة الطالب", price: "1000", period: "درهم / شهرياً", features: ["اللغة العربية", "6 حصص شهرياً مع معلم متخصص", "حصة تجريبية مجانية أولى", "تقرير شهري لولي الأمر"] },
       ],
     },
     guarantees: {
@@ -101,10 +101,10 @@ export const landingContent = {
       cta: "انضم إلى عائلة مَجْد",
       items: [
         { name: "أم عبدالله", grade: "الصف الرابع", subject: "اللغة العربية", text: "كان عبدالله يكره حصة اللغة العربية، غير أنه بعد انضمامه إلى مَجْد بات يطلب مني بنفسه حضور الحصة. أسلوب المعلمة رائع حقاً." },
-        { name: "أم شمّا", grade: "الصف السابع", subject: "التربية الإسلامية", text: "كانت شمّا تعاني مع الحفظ، لكن المعلمة علّمتها أن تفهم المعنى أولاً ثم تحفظ. ارتفعت درجاتها من 70 إلى 95." },
+        { name: "أم شمّا", grade: "الصف السابع", subject: "اللغة العربية", text: "كانت شمّا تعاني مع قواعد النحو، لكن المعلمة علّمتها أن تفهم المعنى وتستنتج القاعدة. ارتفعت درجاتها من 70 إلى 95." },
         { name: "أم راشد", grade: "الصف العاشر", subject: "اللغة العربية", text: "حصل راشد على 98 في امتحان اللغة العربية النهائي. كان المعلم يتابعه يومياً ويراجع معه كل شيء. لم أكن أتوقع هذه النتيجة صراحةً." },
         { name: "أبو حمدان", grade: "الصف الثاني", subject: "اللغة العربية", text: "حمدان في السابعة من عمره وبات يقرأ بمفرده. الحصص قصيرة ومركّزة ولا يشعر بالملل منها. كان هذا أفضل قرار اتخذناه." },
-        { name: "أم مريم", grade: "الصف التاسع", subject: "التربية الإسلامية", text: "كانت مريم تخشى الامتحانات، إلا أن المعلمة بنت لديها الثقة بالنفس فصارت تدخل الامتحان بكل اطمئنان. حصلت على العلامة الكاملة في الفصل الثاني." },
+        { name: "أم مريم", grade: "الصف التاسع", subject: "اللغة العربية", text: "كانت مريم تخشى امتحانات النصوص والتعبير، إلا أن المعلمة بنت لديها الثقة بالنفس فصارت تدخل الامتحان بكل اطمئنان. حصلت على العلامة الكاملة في الفصل الثاني." },
       ],
     },
     footer: {
@@ -112,7 +112,7 @@ export const landingContent = {
       col1Title: "الأكاديمية",
       col1Links: ["عن مَجْد", "أسلوبنا", "المعلمون", "انضم معلماً", "الأسئلة الشائعة", "تواصل معنا"],
       col2Title: "المواد الدراسية",
-      col2Links: ["اللغة العربية", "التربية الإسلامية", "العربية لغير الناطقين"],
+      col2Links: ["اللغة العربية", "العربية لغير الناطقين"],
       col3Title: "تواصل معنا",
       col3Desc: "تابع آخر العروض والأخبار التعليمية",
       col3Placeholder: "البريد الإلكتروني",
@@ -127,10 +127,10 @@ export const landingContent = {
       title2: "مَجد؟",
       footer: "تابعوا تقدّم أبنائكم واطلعوا على مسارهم التعليمي، واحصلوا على ملاحظات المعلم بعد كل حصة.",
       features: [
-        { title: "منهج إماراتي معتمد", desc: "نُدرّس وفق المنهج المعتمد من وزارة التربية والتعليم؛ وهو مطابق لما يدرسه الطالب في المدرسة، ولكن بأسلوب أكثر تفاعلية وفاعلية." },
-        { title: "حصص إلكترونية تفاعلية", desc: "حصص فردية مع معلمين متخصصين يتابعون أبناءكم خطوة بخطوة لضمان استيعابهم التام." },
-        { title: "معلمون خبراء في تخصصاتهم", desc: "فريقنا مؤهل ومتخصص في المنهج الإماراتي، ويتقن إيصال المعلومات بكفاءة عالية." },
-        { title: "متابعة مستمرة لأولياء الأمور", desc: "تقارير دورية وتواصل مباشر، لتبقوا على دراية تامة بتطور مستوى أبنائكم." },
+        { title: "منهج إماراتي معتمد", desc: "نغطي كافة فروع المنهج الإماراتي المعتمد من وزارة التربية والتعليم، ونعالج نقاط ضعف الطالب لنضمن له التفوق الأكاديمي." },
+        { title: "حصص إلكترونية تفاعلية", desc: "نتجاوز التلقين التقليدي إلى نقاشات وقصص حية، في حصص فردية تفاعلية تجعل لغة الضاد حيةً وممتعة." },
+        { title: "معلمون خبراء في تخصصاتهم", desc: "نخبة من المعلمين الناطقين بالفصحى، مدربون على تبسيط قواعد النحو والإملاء المعقدة بطرق تربوية مبتكرة." },
+        { title: "متابعة مستمرة لأولياء الأمور", desc: "نشارككم تفاصيل التطور اللغوي لأبنائكم خطوة بخطوة؛ كيف تتحسن قراءتهم، وكيف تنمو حصيلتهم اللغوية." },
       ]
     },
     subjectsSection: {
@@ -152,7 +152,7 @@ export const landingContent = {
       badge1: "UAE Curriculum",
       badge1sub: "Ministry of Education",
       badge2: "Arabic",
-      badge2sub: "& Islamic Education",
+      badge2sub: "All Levels",
       badge3: "Grades 1 - 12",
       badge3sub: "All Levels",
     },
@@ -162,8 +162,8 @@ export const landingContent = {
       cards: [
         { age: "Ages 4-5", title: "Kindergarten Stage", description: "We build a joyful learning foundation through play and songs — so they love learning from day one.", link: "Learn more" },
         { age: "Grades 1-5", title: "Primary Stage", description: "We build a strong foundation in reading, writing, and expression with an engaging approach that makes children love learning.", link: "Learn more" },
-        { age: "Grades 6-9", title: "Middle Stage", description: "We develop analytical thinking and deep understanding skills, focusing on Arabic and Islamic Education in the UAE curriculum.", link: "Learn more" },
-        { age: "Grades 10-12", title: "Secondary Stage", description: "We elevate students' mastery of Arabic and Islamic Education with intensive follow-up and comprehensive reviews.", link: "Learn more" },
+        { age: "Grades 6-9", title: "Middle Stage", description: "We develop analytical thinking and deep understanding skills, focusing on Arabic in the UAE curriculum.", link: "Learn more" },
+        { age: "Grades 10-12", title: "Secondary Stage", description: "We elevate students' mastery of Arabic with intensive follow-up and comprehensive reviews.", link: "Learn more" },
       ],
       ctaBadge: "For Non-Arabic Speakers · All Ages",
       ctaTitle: "Arabic Language Course",
@@ -184,7 +184,7 @@ export const landingContent = {
       items: [
         { age: "Grades 1-5", description: "Kids learn through play and hands-on experiments. With their teacher by their side, they try new things in a safe space where they feel comfortable asking questions.", tags: ["Short sessions", "Fun learning", "Developing curiosity"] },
         { age: "Grades 6-9", description: "Students begin building analytical thinking skills and working on real projects. We develop their problem-solving and logical thinking.", tags: ["Analytical thinking", "Real projects", "Continuous follow-up"] },
-        { age: "Grades 10-12", description: "We elevate students' Arabic and Islamic Education with intensive reviews and customized study plans that suit their level and goals.", tags: ["Advanced skills", "Custom plan", "Intensive reviews"] },
+        { age: "Grades 10-12", description: "We elevate students' Arabic with intensive reviews and customized study plans that suit their level and goals.", tags: ["Advanced skills", "Custom plan", "Intensive reviews"] },
       ],
       link: "Discover packages →",
     },
@@ -214,8 +214,8 @@ export const landingContent = {
       titleHighlight: "for your kids",
       cta: "Book Your Free Class",
       items: [
-        { title: "Comprehensive Package", description: "Both subjects at a better price", price: "1600", period: "AED / month", features: ["Arabic + Islamic Education", "10 sessions/month with specialized teachers", "Continuous parent follow-up via WhatsApp", "Review sessions before exams"] },
-        { title: "Basic Package", description: "One subject with continuous follow-up for Arabs", price: "1000", period: "AED / month", features: ["One subject (Arabic or Islamic Ed.)", "6 sessions/month with a specialized teacher", "Free trial session", "Monthly report for parents"] },
+        { title: "Intensive Package", description: "10 sessions with continuous follow-up and reviews", price: "1600", period: "AED / month", features: ["Arabic Language", "10 sessions/month with specialized teachers", "Continuous parent follow-up via WhatsApp", "Review sessions before exams"] },
+        { title: "Basic Package", description: "6 sessions to build foundation and follow-up", price: "1000", period: "AED / month", features: ["Arabic Language", "6 sessions/month with a specialized teacher", "Free trial session", "Monthly report for parents"] },
       ],
     },
     guarantees: {
@@ -244,10 +244,10 @@ export const landingContent = {
       cta: "Join the Majd Family",
       items: [
         { name: "Abdullah's Mom", grade: "Grade 4", subject: "Arabic", text: "Abdullah used to hate Arabic class, but after starting with Majd he now asks to attend the session himself. The teacher's approach is amazing." },
-        { name: "Shamma's Mom", grade: "Grade 7", subject: "Islamic Education", text: "Shamma struggled with memorization, but the teacher helped her understand the meaning first. Her grades went from 70 to 95." },
+        { name: "Shamma's Mom", grade: "Grade 7", subject: "Arabic", text: "Shamma struggled with grammar rules, but the teacher helped her understand the meaning first. Her grades went from 70 to 95." },
         { name: "Rashid's Mom", grade: "Grade 10", subject: "Arabic", text: "Rashid scored 98 in the final Arabic exam. The teacher followed up with him daily and reviewed everything. I honestly didn't expect this result." },
         { name: "Hamdan's Dad", grade: "Grade 2", subject: "Arabic", text: "Hamdan is 7 years old and now reads on his own. The sessions are short, focused, and he never gets bored. Best decision we made." },
-        { name: "Maryam's Mom", grade: "Grade 9", subject: "Islamic Education", text: "Maryam used to fear exams. The teacher built her confidence and now she enters exams feeling relaxed. She got full marks in the second term." },
+        { name: "Maryam's Mom", grade: "Grade 9", subject: "Arabic", text: "Maryam used to fear reading and writing exams. The teacher built her confidence and now she enters exams feeling relaxed. She got full marks in the second term." },
       ],
     },
     footer: {
@@ -255,7 +255,7 @@ export const landingContent = {
       col1Title: "Academy",
       col1Links: ["About Majd", "Our Method", "Teachers", "Teach with Us", "FAQ", "Contact Us"],
       col2Title: "Subjects",
-      col2Links: ["Arabic Language", "Islamic Education", "Arabic for Non-Speakers"],
+      col2Links: ["Arabic Language", "Arabic for Non-Speakers"],
       col3Title: "Contact Us",
       col3Desc: "Stay updated with our latest offers and educational news",
       col3Placeholder: "Email address",

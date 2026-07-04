@@ -15,7 +15,10 @@ export default function GradeSubjects({ grade }: { grade: number }) {
   if (!c) return null;
 
   const isArabic = lang === "ar";
-  const subjects = c.subjects;
+  const subjects = c.subjects.filter(
+    (subject) =>
+      subject.name !== "التربية الإسلامية" && subject.name !== "Islamic Education"
+  );
 
   return (
     <>

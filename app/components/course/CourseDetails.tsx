@@ -103,7 +103,7 @@ export default function CourseDetails({ course, isGradePage, isSubjectPage, grad
                   <h2 className="text-[26px] font-black text-[#262626] mb-6">
                     {lang === "ar" ? "المواد الدراسية المتوفرة" : "Available Subjects"}
                   </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     <Link
                       href={`/${lang}/grade/${gradeSlug}/arabic`}
                       className="group p-8 bg-white border-2 border-gray-100 hover:border-[#ef5da8] rounded-[32px] flex flex-col gap-3 transition-all duration-300 shadow-sm hover:shadow-md"
@@ -118,23 +118,6 @@ export default function CourseDetails({ course, isGradePage, isSubjectPage, grad
                         {lang === "ar" 
                           ? "تأسيس شامل ومكثف في اللغة العربية يغطي القراءة، الكتابة، التحدث والنطق السليم للحروف." 
                           : "Comprehensive Arabic foundation covering reading, writing, speaking, and proper pronunciation."}
-                      </p>
-                    </Link>
-
-                    <Link
-                      href={`/${lang}/grade/${gradeSlug}/islamic`}
-                      className="group p-8 bg-white border-2 border-gray-100 hover:border-[#ef5da8] rounded-[32px] flex flex-col gap-3 transition-all duration-300 shadow-sm hover:shadow-md"
-                    >
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-[20px] font-black text-[#262626] group-hover:text-[#ef5da8] transition-colors">
-                          {lang === "ar" ? "التربية الإسلامية" : "Islamic Studies"}
-                        </h3>
-                        <ArrowIcon className="w-5 h-5 text-gray-400 group-hover:text-[#ef5da8] transition-all transform group-hover:-translate-x-1 ltr:group-hover:translate-x-1" />
-                      </div>
-                      <p className="text-gray-500 text-[15px] leading-relaxed">
-                        {lang === "ar"
-                          ? "تعليم العقيدة، السيرة النبوية، العبادات، والأخلاق الإسلامية بالإضافة إلى قصار السور بطريقة مبسطة."
-                          : "Teaching Islamic creed, Prophet's biography, worship, manners, and short Quranic chapters simplified."}
                       </p>
                     </Link>
                   </div>

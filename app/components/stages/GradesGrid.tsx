@@ -36,21 +36,21 @@ export default function GradesGrid({ stage }: { stage: StageKey }) {
           {c.grades.map((grade, i) => (
             <Link 
               key={grade.id} 
-              href={`/${lang}/grade/${getGradeSlug(grade.id)}`}
-              className="w-[calc(50%-10px)] sm:w-[180px] md:w-[200px] flex-none"
+              href={`/${lang}/grade/${getGradeSlug(grade.id)}/arabic`}
+              className="w-[calc(50%-10px)] sm:w-[180px] md:w-[220px] lg:w-[240px] flex-none"
             >
               <div
-                className="rounded-[32px] p-8 flex flex-col items-center justify-center min-h-[220px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"
+                className="rounded-[32px] p-8 flex flex-col items-center justify-center min-h-[220px] md:min-h-[250px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"
                 style={{ background: cardColors[i % cardColors.length] }}
               >
                 <span
-                  className="text-[48px] font-black mb-3 transition-transform duration-300 group-hover:scale-110"
+                  className="text-[48px] md:text-[60px] font-black mb-4 transition-transform duration-300 group-hover:scale-110"
                   style={{ color: "#262626" }}
                 >
                   {grade.id}
                 </span>
                 <span
-                  style={{ fontSize: "17px", fontWeight: 700, color: "rgba(38,38,38,0.7)" }}
+                  className="text-[17px] md:text-[18px] font-bold text-black/70 text-center"
                 >
                   {grade.label}
                 </span>

@@ -23,10 +23,10 @@ const content = {
     stages: {
       label: "المراحل الدراسية",
       items: [
-        { label: "مرحلة الروضة", href: "/ar/grade/kg-1" },
-        { label: "المرحلة الابتدائية", href: "/ar/grade/grade-1" },
-        { label: "المرحلة الإعدادية", href: "/ar/grade/grade-6" },
-        { label: "المرحلة الثانوية", href: "/ar/grade/grade-10" },
+        { label: "مرحلة الروضة", href: "/ar/grade/kg-1/arabic" },
+        { label: "المرحلة الابتدائية", href: "/ar/grade/grade-1/arabic" },
+        { label: "المرحلة الإعدادية", href: "/ar/grade/grade-6/arabic" },
+        { label: "المرحلة الثانوية", href: "/ar/grade/grade-10/arabic" },
       ],
     },
     packagesLabel: "الباقات",
@@ -52,10 +52,10 @@ const content = {
     stages: {
       label: "Grade Levels",
       items: [
-        { label: "Kindergarten", href: "/en/grade/kg-1" },
-        { label: "Primary", href: "/en/grade/grade-1" },
-        { label: "Middle School", href: "/en/grade/grade-6" },
-        { label: "High School", href: "/en/grade/grade-10" },
+        { label: "Kindergarten", href: "/en/grade/kg-1/arabic" },
+        { label: "Primary", href: "/en/grade/grade-1/arabic" },
+        { label: "Middle School", href: "/en/grade/grade-6/arabic" },
+        { label: "High School", href: "/en/grade/grade-10/arabic" },
       ],
     },
     packagesLabel: "Packages",

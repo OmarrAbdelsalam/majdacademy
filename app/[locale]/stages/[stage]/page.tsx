@@ -7,7 +7,6 @@ import KodlandFooter from "../../../components/layout/KodlandFooter";
 import FloatingWhatsApp from "../../../components/layout/FloatingWhatsApp";
 import StageHero from "../../../components/stages/StageHero";
 import GradesGrid from "../../../components/stages/GradesGrid";
-import SubjectsSection from "../../../components/landing/SubjectsSection";
 import StageFeatures from "../../../components/stages/StageFeatures";
 import PackagesSection from "../../../components/landing/PackagesSection";
 import StageCTA from "../../../components/stages/StageCTA";
@@ -30,7 +29,6 @@ export default function StagePage() {
       <main className="flex-1">
         <StageHero stage={currentStage} />
         <GradesGrid stage={currentStage} />
-        <SubjectsSection locale={locale} />
         <StageFeatures stage={currentStage} />
         
         {/* Packages Section for Stages */}
