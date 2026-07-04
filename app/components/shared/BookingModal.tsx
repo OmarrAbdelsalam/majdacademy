@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLandingContent } from "../landing/useLandingContent";
 import { useCountry, usePricing } from "../../i18n/CountryContext";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectSeparator, SelectTrigger, SelectValue } from "@/components/ui/select";
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -155,6 +156,20 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
   // User explicitly said do NOT modify anything in Learn Arabic. So we leave it as is.
   const currentLearnArabicPackages = isArabic ? learnArabicPackages.ar : learnArabicPackages.en;
 
+  // Auto-select if there is only one option
+  useEffect(() => {
+    if (!isOpen) return;
+    if (isLearnArabic) {
+      if (currentLearnArabicLevels.length === 1 && !selectedLevel) setSelectedLevel(currentLearnArabicLevels[0].id);
+      if (currentLearnArabicPackages.length === 1 && !selectedPackage) setSelectedPackage(currentLearnArabicPackages[0].id);
+    } else {
+      if (grades.length === 1 && !selectedGrade) setSelectedGrade(grades[0]);
+      if (currentSubjects.length === 1 && !selectedSubject) setSelectedSubject(currentSubjects[0].id);
+      if (currentPackages.length === 1 && !selectedPackage) setSelectedPackage(currentPackages[0].id);
+    }
+  }, [isOpen, isLearnArabic, currentLearnArabicLevels, currentLearnArabicPackages, currentSubjects, currentPackages, selectedLevel, selectedPackage, selectedGrade, selectedSubject]);
+
+
   // Time Blocks — fetched dynamically from teacher_settings DB
   const availableDaysList = dynamicDaysList || [];
   // Days that have blocks (for display), and all days (to show "no appointments" message)
@@ -162,10 +177,23 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
   const allConfiguredDays = availableDaysList; // includes days with 0 blocks (fully booked)
 
   const formatTime = (hour24: number, isArabic: boolean) => {
-    const periodAr = hour24 >= 12 ? "م" : "ص";
-    const periodEn = hour24 >= 12 ? "PM" : "AM";
-    const hour12 = hour24 % 12 || 12;
+    let wrappedHour = hour24 % 24;
+    if (wrappedHour < 0) wrappedHour += 24;
+    
+    const periodAr = wrappedHour >= 12 ? "م" : "ص";
+    const periodEn = wrappedHour >= 12 ? "PM" : "AM";
+    const hour12 = wrappedHour % 12 || 12;
     return isArabic ? `${hour12} ${periodAr}` : `${hour12} ${periodEn}`;
+  };
+
+  const formatExactTime = (hour24: number, isArabic: boolean) => {
+    let wrappedHour = hour24 % 24;
+    if (wrappedHour < 0) wrappedHour += 24;
+    
+    const periodAr = (wrappedHour >= 12 && wrappedHour < 24) ? "م" : "ص";
+    const periodEn = (wrappedHour >= 12 && wrappedHour < 24) ? "PM" : "AM";
+    const hour12 = wrappedHour % 12 || 12;
+    return isArabic ? `${hour12}:00 ${periodAr}` : `${hour12}:00 ${periodEn}`;
   };
 
   const getLocalTimeRange = (start: number, end: number, offset: number, isArabic: boolean) => {
@@ -176,9 +204,10 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
 
   const getPeriodLabel = (startHour: number) => {
     const hour = (startHour + 24) % 24;
-    if (hour >= 5 && hour < 12) return { ar: "فترة صباحية", en: "Morning Period" };
-    if (hour >= 12 && hour < 17) return { ar: "فترة الظهيرة", en: "Afternoon Period" };
-    return { ar: "فترة مسائية", en: "Evening Period" };
+    // Morning: 4 AM to 3:59 PM (12 hours)
+    if (hour >= 4 && hour < 16) return { ar: "فترة صباحية", en: "Morning" };
+    // Evening: 4 PM to 3:59 AM (12 hours)
+    return { ar: "فترة مسائية", en: "Evening" };
   };
 
   const selectedDayData = availableDaysList.find(d => d.id === selectedDay);
@@ -613,11 +642,7 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                             onClick={() => {
                               if (day.blocks.length === 0) return;
                               setSelectedDay(day.id);
-                              if (day.blocks.length === 1) {
-                                setSelectedHourBlock(day.blocks[0].id);
-                              } else {
-                                setSelectedHourBlock(null);
-                              }
+                              setSelectedHourBlock(null);
                             }}
                             className={`w-full py-3 px-4 rounded-2xl text-[14px] font-bold transition-all duration-200 text-start ${
                               day.blocks.length === 0
@@ -656,34 +681,56 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                               : "A specific time for the trial session will be scheduled within this period."}
                           </p>
 
-                          <div className="grid grid-cols-2 gap-4">
-                            {groupedBlocks && Object.values(groupedBlocks).map((group, idx) => (
-                              <div key={idx}>
-                                <p className="text-[13px] text-[#262626]/50 mb-2 font-bold px-1">
-                                  {isArabic ? group.labelAr : group.labelEn}
-                                </p>
-                                <div className="flex flex-col gap-2">
-                                  {group.blocks.map((block) => {
-                                    const localTime = getLocalTimeRange(block.startDubai, block.endDubai, activeCountry.timeOffset || 0, isArabic);
+                          <div className="space-y-4 mt-3" dir={isArabic ? "rtl" : "ltr"}>
+                            {(() => {
+                              const allHours: { h: number; localWrapped: number; blockId: string }[] = [];
+                              selectedDayData?.blocks.forEach((block) => {
+                                for (let h = block.startDubai; h < block.endDubai; h++) {
+                                  const localHour24 = (h + (activeCountry.timeOffset || 0)) % 24;
+                                  const localWrapped = localHour24 < 0 ? localHour24 + 24 : localHour24;
+                                  allHours.push({ h, localWrapped, blockId: block.id });
+                                }
+                              });
+
+                              allHours.sort((a, b) => a.localWrapped - b.localWrapped);
+
+                              if (!groupedBlocks || Object.keys(groupedBlocks).length === 0) return null;
+
+                              return (
+                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                  {[groupedBlocks["Morning"], groupedBlocks["Evening"]].map((group, index) => {
+                                    if (!group || group.blocks.length === 0) return <div key={index}></div>;
                                     return (
-                                      <motion.button
-                                        key={block.id}
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => setSelectedHourBlock(block.id)}
-                                        className={`py-3 px-3 rounded-xl text-[13px] font-bold transition-all duration-200 text-center ${
-                                          selectedHourBlock === block.id
-                                            ? "bg-[#ef5da8] text-white shadow-md"
-                                            : "bg-[var(--color-highlight)]/30 text-[#262626] hover:bg-[var(--color-highlight)]"
-                                        }`}
-                                      >
-                                        {localTime}
-                                      </motion.button>
+                                      <div key={index} className="space-y-3">
+                                        <h4 className="text-[13px] font-bold text-[#262626]/50 px-1 text-center">
+                                          {isArabic ? group.labelAr : group.labelEn}
+                                        </h4>
+                                        <div className="flex flex-col gap-3">
+                                          {group.blocks.map((block) => {
+                                            const localTimeStr = getLocalTimeRange(block.startDubai, block.endDubai, activeCountry.timeOffset || 0, isArabic);
+                                            return (
+                                              <motion.button
+                                                key={block.id}
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setSelectedHourBlock(block.id)}
+                                                className={`py-3 px-2 rounded-2xl text-[14px] font-bold transition-all duration-200 text-center border flex items-center justify-center ${
+                                                  selectedHourBlock === block.id
+                                                    ? "bg-[#ef5da8] text-white border-[#ef5da8] shadow-md"
+                                                    : "bg-[#ef5da8]/20 text-[#262626] border-transparent hover:border-[#ef5da8]/40 hover:bg-[#ef5da8]/30"
+                                                }`}
+                                              >
+                                                <span dir={isArabic ? "rtl" : "ltr"} className="inline-block">{localTimeStr}</span>
+                                              </motion.button>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
                                     );
                                   })}
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })()}
                           </div>
                           <p className="text-[11px] text-center text-[#262626]/50 mt-3 font-medium">
                             {isArabic ? `الأوقات بتوقيت ${activeCountry.labelAr}` : `Times in ${activeCountry.labelEn} time`}
@@ -989,11 +1036,7 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                           whileTap={{ scale: 0.97 }}
                           onClick={() => {
                             setSelectedDay(day.id);
-                            if (day.blocks.length === 1) {
-                              setSelectedHourBlock(day.blocks[0].id);
-                            } else {
-                              setSelectedHourBlock(null);
-                            }
+                            setSelectedHourBlock(null);
                           }}
                           className={`w-full py-3 px-3 rounded-2xl text-[14px] font-bold transition-all duration-200 text-center ${
                             selectedDay === day.id
@@ -1024,34 +1067,45 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                               : "A specific time for the trial session will be scheduled within this period."}
                           </p>
 
-                          <div className="grid grid-cols-2 gap-4">
-                            {groupedBlocks && Object.values(groupedBlocks).map((group, idx) => (
-                              <div key={idx}>
-                                <p className="text-[13px] text-[#262626]/50 mb-2 font-bold px-1">
-                                  {isArabic ? group.labelAr : group.labelEn}
-                                </p>
-                                <div className="flex flex-col gap-2">
-                                  {group.blocks.map((block) => {
-                                    const localTime = getLocalTimeRange(block.startDubai, block.endDubai, activeCountry.timeOffset || 0, isArabic);
+                          <div className="space-y-4 mt-3" dir={isArabic ? "rtl" : "ltr"}>
+                            {(() => {
+                              if (!groupedBlocks || Object.keys(groupedBlocks).length === 0) return null;
+
+                              return (
+                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                  {[groupedBlocks["Morning"], groupedBlocks["Evening"]].map((group, index) => {
+                                    if (!group || group.blocks.length === 0) return <div key={index}></div>;
                                     return (
-                                      <motion.button
-                                        key={block.id}
-                                        whileHover={{ scale: 1.03 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={() => setSelectedHourBlock(block.id)}
-                                        className={`py-3 px-3 rounded-xl text-[13px] font-bold transition-all duration-200 text-center ${
-                                          selectedHourBlock === block.id
-                                            ? "bg-[#ef5da8] text-white shadow-md"
-                                            : "bg-[var(--color-highlight)]/30 text-[#262626] hover:bg-[var(--color-highlight)]"
-                                        }`}
-                                      >
-                                        {localTime}
-                                      </motion.button>
+                                      <div key={index} className="space-y-3">
+                                        <h4 className="text-[13px] font-bold text-[#262626]/50 px-1 text-center">
+                                          {isArabic ? group.labelAr : group.labelEn}
+                                        </h4>
+                                        <div className="flex flex-col gap-3">
+                                          {group.blocks.map((block) => {
+                                            const localTimeStr = getLocalTimeRange(block.startDubai, block.endDubai, activeCountry.timeOffset || 0, isArabic);
+                                            return (
+                                              <motion.button
+                                                key={block.id}
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                onClick={() => setSelectedHourBlock(block.id)}
+                                                className={`py-3 px-2 rounded-2xl text-[14px] font-bold transition-all duration-200 text-center border flex items-center justify-center ${
+                                                  selectedHourBlock === block.id
+                                                    ? "bg-[#ef5da8] text-white border-[#ef5da8] shadow-md"
+                                                    : "bg-[#ef5da8]/20 text-[#262626] border-transparent hover:border-[#ef5da8]/40 hover:bg-[#ef5da8]/30"
+                                                }`}
+                                              >
+                                                <span dir={isArabic ? "rtl" : "ltr"} className="inline-block">{localTimeStr}</span>
+                                              </motion.button>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
                                     );
                                   })}
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })()}
                           </div>
                           
                           <p className="text-[11px] text-center text-[#262626]/50 mt-3 font-medium">

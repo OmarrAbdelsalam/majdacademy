@@ -212,6 +212,17 @@ function SettingsContent() {
                     onChange={(val) => setWorkingHours({...workingHours, [dayIdx]: { ...config, end: val }})}
                   />
                 </div>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setWorkingHours({...workingHours, [dayIdx]: { ...config, start: "00:00", end: "24:00" }});
+                    showToast(`تم تفعيل 24 ساعة ليوم ${daysAr[dayIdx]}`);
+                  }}
+                  className="text-[12px] font-bold bg-[#ef5da8]/10 text-[#ef5da8] px-3 py-2 rounded-full hover:bg-[#ef5da8]/20 transition-colors whitespace-nowrap self-end sm:self-auto w-full sm:w-auto text-center"
+                >
+                  متاح 24 ساعة
+                </button>
               </div>
             </div>
           ))}
@@ -306,6 +317,7 @@ function CustomTimePicker({ value, onChange }: { value: string, onChange: (val: 
 
   const formatDisplayTime = (time24: string) => {
     if (!time24) return "09:00 AM";
+    if (time24 === "24:00") return "12:00 AM";
     const [h, m] = time24.split(":");
     let hour = parseInt(h, 10);
     const ampm = hour >= 12 ? "PM" : "AM";
@@ -322,6 +334,7 @@ function CustomTimePicker({ value, onChange }: { value: string, onChange: (val: 
         options.push(`${h}:${m}`);
       }
     }
+    options.push("24:00");
     return options;
   };
 
