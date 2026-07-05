@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useLang } from "../../i18n/LangContext";
+import { useCountry } from "../../i18n/CountryContext";
 import AcademyNavbar from "../../components/layout/AcademyNavbar";
 import KodlandFooter from "../../components/layout/KodlandFooter";
 import FloatingWhatsApp from "../../components/layout/FloatingWhatsApp";
@@ -77,7 +78,24 @@ const content = {
 
 export default function TeachWithUsPage() {
   const { isRTL, lang } = useLang();
-  const c = content[lang as keyof typeof content] || content.ar;
+  const { activeCountry } = useCountry();
+
+  const countryAr = activeCountry.id === 'other' ? 'بلدك' : activeCountry.labelAr;
+  const countryEn = activeCountry.id === 'other' ? 'your country' : activeCountry.labelEn;
+
+  const dynamicContent = {
+    ...content,
+    ar: {
+      ...content.ar,
+      heroDesc: `نبحث عن معلمين متميزين يشاركوننا شغفنا بالتعليم. إذا عندك خبرة في المنهج المعتمد في ${countryAr} وتحب تأثر في حياة الطلاب — مكانك معنا.`,
+    },
+    en: {
+      ...content.en,
+      heroDesc: `We're looking for outstanding teachers who share our passion for education. If you have experience with the ${countryEn} curriculum and love making an impact — your place is with us.`,
+    }
+  };
+
+  const c = dynamicContent[lang as keyof typeof dynamicContent] || dynamicContent.ar;
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

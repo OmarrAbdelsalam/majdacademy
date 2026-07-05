@@ -143,9 +143,9 @@ export async function POST(request: Request) {
         `,
         start: { dateTime: foundSlotStart.toISOString() },
         end: { dateTime: foundSlotEnd.toISOString() },
-        attendees: [
+        attendees: studentEmail && !studentEmail.includes('@placeholder.com') ? [
           { email: studentEmail }
-        ],
+        ] : [],
         conferenceData: {
           createRequest: {
             requestId: `majd-${Date.now()}`,

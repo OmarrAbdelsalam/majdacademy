@@ -62,7 +62,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       `,
       start: { dateTime: startDateTime.toISOString(), timeZone: TIMEZONE },
       end: { dateTime: endDateTime.toISOString(), timeZone: TIMEZONE },
-      attendees: subscriber.student_email ? [{ email: subscriber.student_email }] : [],
+      attendees: subscriber.student_email && !subscriber.student_email.includes('@placeholder.com') ? [{ email: subscriber.student_email }] : [],
       conferenceData: {
         createRequest: {
           requestId: `majd-session-${session.id}`,

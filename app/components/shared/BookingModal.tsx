@@ -15,13 +15,9 @@ const grades = Array.from({ length: 12 }, (_, i) => i + 1);
 const subjects = {
   ar: [
     { id: "arabic", label: "اللغة العربية" },
-    { id: "islamic", label: "التربية الإسلامية" },
-    { id: "both", label: "الاثنين معاً" },
   ],
   en: [
     { id: "arabic", label: "Arabic Language" },
-    { id: "islamic", label: "Islamic Education" },
-    { id: "both", label: "Both Subjects" },
   ],
 };
 
@@ -221,13 +217,13 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
   }, {} as Record<string, { labelAr: string; labelEn: string; blocks: any[] }>);
 
   // For learn-arabic: step 1 = level, step 2 = package, step 3 = time, step 4 = contact
-  // For default: step 1 = grade, step 2 = subject, step 3 = package, step 4 = time, step 5 = contact
-  const totalSteps = isLearnArabic ? 4 : 5;
+  // For default: step 1 = grade, step 2 = package, step 3 = time, step 4 = contact
+  const totalSteps = 4;
 
   const canProceedStep1 = isLearnArabic ? selectedLevel !== null : selectedGrade !== null;
-  const canProceedStep2 = isLearnArabic ? selectedPackage !== null : selectedSubject !== null;
-  const canProceedStep3 = isLearnArabic ? selectedHourBlock !== null : selectedPackage !== null;
-  const canProceedStep4 = isLearnArabic ? false : selectedHourBlock !== null;
+  const canProceedStep2 = selectedPackage !== null;
+  const canProceedStep3 = selectedHourBlock !== null;
+  const canProceedStep4 = false;
   const canSubmit = name.trim().length > 0 && phone.trim().length >= 9;
 
   const handleNext = (nextStep: number) => {
@@ -604,21 +600,24 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                     exit="exit"
                     transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
                   >
-                    <p className="text-[15px] font-semibold text-[#262626] mb-4">
-                      {isArabic ? "اختر اليوم" : "Select day"}
-                    </p>
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-[15px] font-semibold text-[#262626]">
+                        {isArabic ? "اختر اليوم" : "Select day"}
+                      </p>
+                      {dynamicDaysList === null && (
+                        <div className="flex items-center gap-2">
+                          <svg className="w-4 h-4 animate-spin text-[#ef5da8]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          <span className="text-[12px] text-[#262626]/50 font-medium">
+                            {isArabic ? "جاري التحميل..." : "Loading..."}
+                          </span>
+                        </div>
+                      )}
+                    </div>
 
-                    {dynamicDaysList === null ? (
-                      <div className="flex flex-col items-center justify-center py-8 gap-3">
-                        <svg className="w-8 h-8 animate-spin text-[#ef5da8]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <p className="text-[13px] text-[#262626]/50 font-medium">
-                          {isArabic ? "جاري تحميل المواعيد..." : "Loading schedule..."}
-                        </p>
-                      </div>
-                    ) : daysWithBlocks.length === 0 ? (
+                    {dynamicDaysList !== null && daysWithBlocks.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-8 gap-3 text-center">
                         <div className="w-14 h-14 rounded-full bg-[#ef5da8]/10 flex items-center justify-center">
                           <svg className="w-7 h-7 text-[#ef5da8]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -634,32 +633,43 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 gap-2.5 mb-5">
-                        {allConfiguredDays.map((day) => (
-                          <motion.button
-                            key={day.id}
-                            whileHover={day.blocks.length > 0 ? { scale: 1.02 } : {}}
-                            whileTap={day.blocks.length > 0 ? { scale: 0.97 } : {}}
-                            onClick={() => {
-                              if (day.blocks.length === 0) return;
-                              setSelectedDay(day.id);
-                              setSelectedHourBlock(null);
-                            }}
-                            className={`w-full py-3 px-4 rounded-2xl text-[14px] font-bold transition-all duration-200 text-start ${
-                              day.blocks.length === 0
-                                ? "bg-black/[0.03] text-[#262626]/20 cursor-not-allowed line-through"
-                                : selectedDay === day.id
-                                ? "bg-[#262626] text-white shadow-md"
-                                : "bg-white text-[#262626] hover:bg-[#ef5da8]/10 border border-black/5"
-                            }`}
-                          >
-                            {isArabic ? day.dayAr : day.dayEn}
-                            {day.blocks.length === 0 && (
-                              <span className="block text-[10px] font-medium mt-0.5 no-underline" style={{ textDecoration: 'none' }}>
-                                {isArabic ? "محجوز بالكامل" : "Fully booked"}
-                              </span>
-                            )}
-                          </motion.button>
-                        ))}
+                        {CONFIGURED_DAYS.map((day) => {
+                          const isLoading = dynamicDaysList === null;
+                          const dynDay = availableDaysList.find(d => d.id === day.id);
+                          const blocks = dynDay ? dynDay.blocks : [];
+                          const hasBlocks = blocks.length > 0;
+                          const isUnavailable = !isLoading && !hasBlocks;
+
+                          return (
+                            <motion.button
+                              key={day.id}
+                              whileHover={!isLoading && hasBlocks ? { scale: 1.02 } : {}}
+                              whileTap={!isLoading && hasBlocks ? { scale: 0.97 } : {}}
+                              onClick={() => {
+                                if (isLoading || isUnavailable) return;
+                                setSelectedDay(day.id);
+                                setSelectedHourBlock(null);
+                              }}
+                              disabled={isLoading || isUnavailable}
+                              className={`w-full py-3 px-4 rounded-2xl text-[14px] font-bold transition-all duration-200 text-start ${
+                                isLoading
+                                  ? "bg-white text-[#262626]/60 border border-black/5 cursor-wait"
+                                  : isUnavailable
+                                  ? "bg-black/[0.03] text-[#262626]/20 cursor-not-allowed line-through"
+                                  : selectedDay === day.id
+                                  ? "bg-[#262626] text-white shadow-md"
+                                  : "bg-white text-[#262626] hover:bg-[#ef5da8]/10 border border-black/5"
+                              }`}
+                            >
+                              {isArabic ? day.dayAr : day.dayEn}
+                              {isUnavailable && (
+                                <span className="block text-[10px] font-medium mt-0.5 no-underline" style={{ textDecoration: 'none' }}>
+                                  {isArabic ? "محجوز بالكامل" : "Fully booked"}
+                                </span>
+                              )}
+                            </motion.button>
+                          );
+                        })}
                       </div>
                     )}
 
@@ -835,7 +845,7 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                     </motion.button>
 
                     <p className="text-center text-[12px] text-[#262626]/40 mt-3 font-medium">
-                      {isArabic ? "هنتواصل معاك خلال ساعات قليلة" : "We'll contact you within a few hours"}
+                      {isArabic ? "سنتواصل معك خلال ساعات قليلة" : "We'll contact you within a few hours"}
                     </p>
                   </motion.div>
                 )}
@@ -889,69 +899,10 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                   </motion.div>
                 )}
 
-                {/* Default (Arabs): Step 2 = Subject */}
+                {/* Default (Arabs): Step 2 = Package */}
                 {!isLearnArabic && step === 2 && (
                   <motion.div
                     key="step2"
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-                  >
-                    <p className="text-[15px] font-semibold text-[#262626] mb-4">
-                      {isArabic ? "يبي يدرس إيش؟" : "What would they like to study?"}
-                    </p>
-
-                    <div className="flex flex-col gap-2.5">
-                      {currentSubjects.map((subject) => (
-                        <motion.button
-                          key={subject.id}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.97 }}
-                          onClick={() => setSelectedSubject(subject.id)}
-                          className={`w-full py-4 px-5 rounded-2xl text-[15px] font-semibold transition-all duration-200 flex items-center gap-3 ${
-                            selectedSubject === subject.id
-                              ? "bg-[#262626] text-white shadow-lg"
-                              : "bg-white text-[#262626]/70 hover:bg-[#ef5da8]/5 hover:text-[#262626]"
-                          }`}
-                        >
-                          <span className="flex-1 text-start">{subject.label}</span>
-                          {selectedSubject === subject.id && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              className="w-5 h-5 rounded-full bg-[var(--color-highlight)] flex items-center justify-center"
-                            >
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#262626" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M20 6L9 17l-5-5" />
-                              </svg>
-                            </motion.div>
-                          )}
-                        </motion.button>
-                      ))}
-                    </div>
-
-                    <motion.button
-                      whileHover={canProceedStep2 ? { scale: 1.02, y: -2 } : {}}
-                      whileTap={canProceedStep2 ? { scale: 0.98 } : {}}
-                      onClick={() => canProceedStep2 && handleNext(3)}
-                      disabled={!canProceedStep2}
-                      className={`w-full mt-7 py-4 rounded-full font-bold text-[16px] transition-all duration-300 ${
-                        canProceedStep2
-                          ? "bg-[var(--color-highlight)] text-[#262626] "
-                          : "bg-black/5 text-[#262626]/25 cursor-not-allowed"
-                      }`}
-                    >
-                      {isArabic ? "التالي" : "Next step"}
-                    </motion.button>
-                  </motion.div>
-                )}
-
-                {/* Default (Arabs): Step 3 = Package */}
-                {!isLearnArabic && step === 3 && (
-                  <motion.div
-                    key="step3"
                     variants={slideVariants}
                     initial="enter"
                     animate="center"
@@ -999,12 +950,12 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                     </div>
 
                     <motion.button
-                      whileHover={canProceedStep3 ? { scale: 1.02, y: -2 } : {}}
-                      whileTap={canProceedStep3 ? { scale: 0.98 } : {}}
-                      onClick={() => canProceedStep3 && handleNext(4)}
-                      disabled={!canProceedStep3}
+                      whileHover={canProceedStep2 ? { scale: 1.02, y: -2 } : {}}
+                      whileTap={canProceedStep2 ? { scale: 0.98 } : {}}
+                      onClick={() => canProceedStep2 && handleNext(3)}
+                      disabled={!canProceedStep2}
                       className={`w-full mt-7 py-4 rounded-full font-bold text-[16px] transition-all duration-300 ${
-                        canProceedStep3
+                        canProceedStep2
                           ? "bg-[var(--color-highlight)] text-[#262626] "
                           : "bg-black/5 text-[#262626]/25 cursor-not-allowed"
                       }`}
@@ -1014,10 +965,10 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                   </motion.div>
                 )}
 
-                {/* Default (Arabs): Step 4 = Time */}
-                {!isLearnArabic && !isSuccess && step === 4 && (
+                {/* Default (Arabs): Step 3 = Time */}
+                {!isLearnArabic && !isSuccess && step === 3 && (
                   <motion.div
-                    key="step4"
+                    key="step3"
                     variants={slideVariants}
                     initial="enter"
                     animate="center"
@@ -1116,12 +1067,12 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                     </AnimatePresence>
 
                     <motion.button
-                      whileHover={canProceedStep4 ? { scale: 1.02, y: -2 } : {}}
-                      whileTap={canProceedStep4 ? { scale: 0.98 } : {}}
-                      onClick={() => canProceedStep4 && handleNext(5)}
-                      disabled={!canProceedStep4}
+                      whileHover={canProceedStep3 ? { scale: 1.02, y: -2 } : {}}
+                      whileTap={canProceedStep3 ? { scale: 0.98 } : {}}
+                      onClick={() => canProceedStep3 && handleNext(4)}
+                      disabled={!canProceedStep3}
                       className={`w-full mt-7 py-4 rounded-full font-bold text-[16px] transition-all duration-300 ${
-                        canProceedStep4
+                        canProceedStep3
                           ? "bg-[var(--color-highlight)] text-[#262626] "
                           : "bg-black/5 text-[#262626]/25 cursor-not-allowed"
                       }`}
@@ -1131,10 +1082,10 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                   </motion.div>
                 )}
 
-                {/* Default (Arabs): Step 5 = Contact */}
-                {!isLearnArabic && step === 5 && (
+                {/* Default (Arabs): Step 4 = Contact */}
+                {!isLearnArabic && step === 4 && (
                   <motion.div
-                    key="step5"
+                    key="step4"
                     variants={slideVariants}
                     initial="enter"
                     animate="center"
@@ -1215,7 +1166,7 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                     </motion.button>
 
                     <p className="text-center text-[12px] text-[#262626]/40 mt-3 font-medium">
-                      {isArabic ? "هنتواصل معاك خلال ساعات قليلة" : "We'll contact you within a few hours"}
+                      {isArabic ? "سنتواصل معك خلال ساعات قليلة" : "We'll contact you within a few hours"}
                     </p>
                   </motion.div>
                 )}

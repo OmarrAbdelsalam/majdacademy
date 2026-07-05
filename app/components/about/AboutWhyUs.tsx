@@ -1,18 +1,23 @@
 "use client";
 import React, { useState } from "react";
 import { useLang } from "../../i18n/LangContext";
+import { useCountry } from "../../i18n/CountryContext";
 import BookingModal from "../shared/BookingModal";
 
 export default function AboutWhyUs() {
   const { isRTL } = useLang();
+  const { activeCountry } = useCountry();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const countryAr = activeCountry.id === 'other' ? 'بلدك' : activeCountry.labelAr;
+  const countryEn = activeCountry.id === 'other' ? 'your country' : activeCountry.labelEn;
 
   const content = {
     ar: {
       heading: "ليش",
       highlight: "مَجد؟",
       items: [
-        "معلمون متخصصون بالمنهج الإماراتي",
+        `معلمون متخصصون بالمنهج المعتمد في ${countryAr}`,
         "حصص فردية ومجموعات صغيرة",
         "متابعة مستمرة مع أولياء الأمور",
         "تقوية في النحو والإملاء والتعبير الكتابي",
@@ -25,8 +30,8 @@ export default function AboutWhyUs() {
       heading: "Why",
       highlight: "Majd?",
       items: [
-        "Teachers specialized in the UAE curriculum",
-        "Individual and small group sessions",
+        `Teachers specialized in the ${countryEn} curriculum`,
+        "1-on-1 & small group sessions",
         "Continuous follow-up with parents",
         "Grammar, spelling & writing support",
         "Flexible scheduling",
