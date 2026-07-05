@@ -32,7 +32,7 @@ export default function SubjectsSection({ locale }: { locale: string }) {
 
           {/* Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-[900px] mx-auto">
-            {subjects.map((subject, i) => (
+            {subjects.map((subject: any, i: number) => (
               <div
                 key={i}
                 className="rounded-[32px] p-8 flex flex-col justify-between min-h-[420px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"

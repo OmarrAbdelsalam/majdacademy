@@ -65,7 +65,7 @@ export default function KodlandFooter5() {
             <div>
               <p className="text-[13px] font-medium mb-4" style={{ color: "rgba(38,38,38,0.5)" }}>{content.footer.col1Title}</p>
               <ul className="flex flex-col gap-3">
-                {content.footer.col1Links.map((link, i) => {
+                {content.footer.col1Links.map((link: any, i: number) => {
                   const teachLabel = lang === "ar" ? "انضم كمعلم" : "Teach with Us";
                   const contactLabel = lang === "ar" ? "تواصل معنا" : "Contact Us";
                   const isTeachLink = link === teachLabel;
@@ -91,7 +91,7 @@ export default function KodlandFooter5() {
             <div>
               <p className="text-[13px] font-medium mb-4" style={{ color: "rgba(38,38,38,0.5)" }}>{content.footer.col2Title}</p>
               <ul className="flex flex-col gap-3">
-                {content.footer.col2Links.map((link, i) => (
+                {content.footer.col2Links.map((link: any, i: number) => (
                   <li key={i}><a href={landingPath} className="text-[15px] font-medium text-[#262626] hover:text-[#ef5da8] transition-colors">{link}</a></li>
                 ))}
               </ul>

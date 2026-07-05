@@ -6,7 +6,7 @@ import InteractiveFeatureList from "../shared/InteractiveFeatureList";
 export default function WhyMajdFeatures({ locale }: { locale: string }) {
   const content = getLandingContent(locale);
 
-  const features = content.whyMajd.features.map((feature, i) => ({
+  const features = content.whyMajd.features.map((feature: any, i: number) => ({
     ...feature,
     icon: [
       <GraduationCap key="0" className="w-6 h-6" strokeWidth={1.5} />,

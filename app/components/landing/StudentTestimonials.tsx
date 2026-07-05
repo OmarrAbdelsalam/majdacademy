@@ -7,7 +7,7 @@ export default function StudentTestimonials() {
   const content = useLandingContent();
   const [activeId, setActiveId] = useState(2);
   const activeItem = content.testimonials.items[activeId];
-  const sideItems = content.testimonials.items.filter((_, i) => i !== activeId);
+  const sideItems = content.testimonials.items.filter((_: any, i: number) => i !== activeId);
 
   return (
     <section id="testimonials" className="py-8 md:py-12 bg-white overflow-hidden">

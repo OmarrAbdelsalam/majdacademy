@@ -48,7 +48,7 @@ export default function InterestsSection({ locale }: { locale: string }) {
 
         {isCurriculums ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {content.interests.cards.map((item, i) => (
+            {content.interests.cards.map((item: any, i: number) => (
               <div
                 key={i}
                 className="rounded-[32px] p-8 flex flex-col justify-between min-h-[420px] lg:min-h-0 transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"
@@ -100,7 +100,7 @@ export default function InterestsSection({ locale }: { locale: string }) {
           <>
             {/* Top row — 3 cards (kindergarten, primary, middle) */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {topCards.map((item, i) => (
+              {topCards.map((item: { age: string, title: string, description: string, link: string }, i: number) => (
                 <div
                   key={i}
                   className="rounded-[32px] p-8 flex flex-col justify-between min-h-[420px] transition-all duration-300 hover:-translate-y-2 border border-transparent hover:border-[#262626]/10 hover:shadow-xl group cursor-pointer"

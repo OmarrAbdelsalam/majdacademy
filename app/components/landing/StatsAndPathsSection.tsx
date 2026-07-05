@@ -57,7 +57,7 @@ export default function StatsAndPathsSection() {
               color: "#262626" }}
           >
             {content.stats.line1pre} <span className="inline-block px-2 py-0.5 rounded-lg text-white" style={{ background: "#498bff" }}>{content.stats.line1num}</span>{" "}
-            {content.stats.line1post.split(" ").map((word, i) => (
+            {content.stats.line1post.split(" ").map((word: string, i: number) => (
               <React.Fragment key={i}>
                 <span className={word === "ناجح" || word === "successful" ? "hidden sm:inline" : ""}>{word}</span>
                 {i < content.stats.line1post.split(" ").length - 1 && " "}
@@ -94,7 +94,7 @@ export default function StatsAndPathsSection() {
 
                 {/* Tabs */}
                 <div className="flex flex-col gap-1">
-                  {content.paths.items.map((path, i) => (
+                  {content.paths.items.map((path: any, i: number) => (
                     <div key={i}>
                       <button
                         onClick={() => setActiveTab(activeTab === i ? -1 : i)}

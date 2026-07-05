@@ -55,7 +55,7 @@ export default function AboutWhyUs() {
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-12">
-            {c.items.map((item, i) => (
+            {c.items.map((item: string, i: number) => (
               <div
                 key={i}
                 className="flex items-center gap-4 rounded-[32px] p-5 transition-all duration-300 hover:-translate-y-0.5"

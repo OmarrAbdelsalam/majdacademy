@@ -633,7 +633,14 @@ export default function BookingModal({ isOpen, onClose, variant = "default" }: B
                       </div>
                     ) : (
                       <div className="grid grid-cols-2 gap-2.5 mb-5">
-                        {CONFIGURED_DAYS.map((day) => {
+                        {[
+                          { id: "sunday", dayAr: "الأحد", dayEn: "Sunday" },
+                          { id: "monday", dayAr: "الاثنين", dayEn: "Monday" },
+                          { id: "tuesday", dayAr: "الثلاثاء", dayEn: "Tuesday" },
+                          { id: "wednesday", dayAr: "الأربعاء", dayEn: "Wednesday" },
+                          { id: "thursday", dayAr: "الخميس", dayEn: "Thursday" },
+                          { id: "saturday", dayAr: "السبت", dayEn: "Saturday" },
+                        ].map((day: { id: string, dayAr: string, dayEn: string }) => {
                           const isLoading = dynamicDaysList === null;
                           const dynDay = availableDaysList.find(d => d.id === day.id);
                           const blocks = dynDay ? dynDay.blocks : [];

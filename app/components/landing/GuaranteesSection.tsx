@@ -80,7 +80,7 @@ export default function GuaranteesSection() {
 
               {/* Guarantees grid */}
               <div className="flex flex-wrap justify-center gap-4 max-w-[1000px] mx-auto">
-                {content.guarantees.items.map((item, i) => (
+                {content.guarantees.items.map((item: string, i: number) => (
                   <div 
                     key={i} 
                     className={`flex items-center gap-3 px-4 py-4 rounded-2xl bg-white/80 backdrop-blur-sm transition-all hover:bg-white hover:-translate-y-0.5 w-full ${i < 3 ? 'sm:w-[calc(33.333%-11px)]' : 'sm:w-[calc(50%-8px)]'}`}

@@ -42,7 +42,7 @@ export default function AboutValues() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 max-w-[800px] mx-auto">
-                {c.items.map((item, i) => (
+                {c.items.map((item: string, i: number) => (
                   <div
                     key={i}
                     className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/80 backdrop-blur-sm transition-all hover:bg-white hover:-translate-y-0.5"

@@ -254,7 +254,7 @@ export default function AcademyNavbar({
                       className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[200px]"
                       style={{ [isArabic ? "right" : "left"]: 0 }}
                     >
-                      {c.stages.items.map((item, i) => (
+                      {c.stages.items.map((item: any, i: number) => (
                         <a
                           key={i}
                           href={item.href}
@@ -289,7 +289,7 @@ export default function AcademyNavbar({
               </button>
 
               {/* Other Nav Links */}
-              {c.nav.map((item, i) => (
+              {c.nav.map((item: any, i: number) => (
                 <a
                   key={i}
                   href={item.href}
@@ -324,7 +324,7 @@ export default function AcademyNavbar({
                       className="absolute top-full mt-2 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 min-w-[200px]"
                       style={{ [isArabic ? "right" : "left"]: 0 }}
                     >
-                      {c.about.items.map((item, i) => (
+                      {c.about.items.map((item: any, i: number) => (
                         <a
                           key={i}
                           href={item.href}
@@ -494,7 +494,7 @@ export default function AcademyNavbar({
                       className="overflow-hidden"
                     >
                       <div className="pb-3 flex flex-col gap-1">
-                        {c.stages.items.map((item, i) => (
+                        {c.stages.items.map((item: any, i: number) => (
                           <a
                             key={i}
                             href={item.href}
@@ -529,7 +529,7 @@ export default function AcademyNavbar({
               </button>
 
               {/* Other Nav Links */}
-              {c.nav.map((item, i) => (
+              {c.nav.map((item: any, i: number) => (
                 <a
                   key={i}
                   href={item.href}
@@ -580,7 +580,7 @@ export default function AcademyNavbar({
                       className="overflow-hidden"
                     >
                       <div className="pb-3 flex flex-col gap-1">
-                        {c.about.items.map((item, i) => (
+                        {c.about.items.map((item: any, i: number) => (
                           <a
                             key={i}
                             href={item.href}

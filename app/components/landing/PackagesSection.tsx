@@ -14,7 +14,7 @@ export default function PackagesSection({ locale }: { locale: string }) {
   const { formatPrice } = usePricing();
   const { lang } = useLang();
 
-  const packages = content.packages.items.map((pkg, index) => {
+  const packages = content.packages.items.map((pkg: any, index: number) => {
     const { price, currency, icon } = formatPrice(pkg.price);
     const periodContent = (
       <span className="inline-flex items-center gap-1">

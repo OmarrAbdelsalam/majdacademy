@@ -206,7 +206,7 @@ export default function TeachWithUsPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {c.benefits.map((item, i) => (
+            {c.benefits.map((item: any, i: number) => (
               <motion.div
                 key={i}
                 className="p-8 rounded-[32px] bg-[#f8f9fa] hover:-translate-y-2 hover:shadow-xl hover:border-[#262626]/10 border border-transparent transition-all duration-300 group"

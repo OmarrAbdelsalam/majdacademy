@@ -27,7 +27,7 @@ export default function SubjectWhyUs({ subject }: { subject: SubjectKey }) {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 max-w-[1000px] mx-auto">
-                  {c.whyUs.map((item, i) => (
+                  {c.whyUs.map((item: string, i: number) => (
                     <div key={i} className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-white/80 backdrop-blur-sm transition-all hover:bg-white hover:-translate-y-0.5">
                       <div className="w-7 h-7 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(239,93,168,0.15)" }}>
                         <svg className="w-4 h-4 text-[#ef5da8]" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
