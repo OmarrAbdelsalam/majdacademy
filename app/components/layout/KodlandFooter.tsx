@@ -51,7 +51,7 @@ export default function KodlandFooter() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
 
             {/* Column 1 — Mission Statement */}
-            <div>
+            <div dir="rtl">
               <p className="text-[#262626] font-bold text-[18px] font-arabic mb-4">
                 ﴿وَعَلَّمَ آدَمَ الْأَسْمَاءَ كُلَّهَا﴾
               </p>
