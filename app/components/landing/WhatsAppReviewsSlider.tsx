@@ -69,6 +69,34 @@ export default function WhatsAppReviewsSlider() {
     setCurrentIndex((prev) => (prev - 1 + (reviews.length - Math.floor(visibleCount) + 1)) % (reviews.length - Math.floor(visibleCount) + 1));
   };
 
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      if (isAr) prevSlide();
+      else nextSlide();
+    } else if (isRightSwipe) {
+      if (isAr) nextSlide();
+      else prevSlide();
+    }
+  };
+
   return (
     <section id="reviews" className="w-full bg-white relative overflow-hidden py-16 md:py-24" dir={isAr ? "rtl" : "ltr"}>
       
@@ -100,22 +128,26 @@ export default function WhatsAppReviewsSlider() {
         </div>
 
         {/* Carousel Container */}
-        <div className="relative w-full max-w-[1400px] mx-auto px-2 sm:px-6 z-10">
+        <div className="relative w-full max-w-[1400px] mx-auto z-10">
           
           {/* Slider Content Wrapper */}
-          <div className="overflow-hidden py-8 px-4 -mx-4">
+          <div 
+            className="overflow-hidden py-8 px-2 sm:px-6"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             <div 
-              className="flex gap-6 transition-transform duration-500 ease-in-out items-center"
+              className="flex transition-transform duration-500 ease-in-out items-center w-full"
               style={{
-                transform: `translateX(${isAr ? (currentIndex * (100 / visibleCount)) : -(currentIndex * (100 / visibleCount))}%)`,
-                width: `${(reviews.length / visibleCount) * 100}%`
+                transform: `translateX(${isAr ? currentIndex * (100 / visibleCount) : -currentIndex * (100 / visibleCount)}%)`,
               }}
             >
               {reviews.map((review, idx) => (
                 <div 
                   key={idx}
-                  style={{ width: `calc(${100 / reviews.length}% - ${((visibleCount - 1) * 24) / reviews.length}px)` }}
-                  className="flex-shrink-0"
+                  style={{ flex: `0 0 ${100 / visibleCount}%` }}
+                  className="min-w-0 px-3"
                 >
                   {/* Card with Gradient Background as the frame */}
                   <div className="relative rounded-[32px] p-3 sm:p-4 shadow-[0_12px_30px_rgba(246,66,140,0.2)] hover:shadow-[0_20px_50px_rgba(246,66,140,0.4)] hover:-translate-y-2 transition-all duration-500 flex flex-col group border-[4px] border-white/20 mx-auto w-full max-w-[550px]" style={{ backgroundImage: "linear-gradient(to bottom right, #e8347d, #f6428c, #ff66a3)" }}>
@@ -153,7 +185,7 @@ export default function WhatsAppReviewsSlider() {
             <>
               <button 
                 onClick={isAr ? prevSlide : nextSlide}
-                className={`absolute top-1/2 -right-2 md:-right-6 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40`}
+                className={`hidden md:flex absolute top-1/2 -right-4 md:-right-8 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40`}
                 aria-label="Next slide"
               >
                 <ChevronRight className="w-6 h-6" />
@@ -161,7 +193,7 @@ export default function WhatsAppReviewsSlider() {
               
               <button 
                 onClick={isAr ? nextSlide : prevSlide}
-                className={`absolute top-1/2 -left-2 md:-left-6 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40`}
+                className={`hidden md:flex absolute top-1/2 -left-4 md:-left-8 -translate-y-1/2 w-12 h-12 rounded-full bg-white border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.12)] items-center justify-center text-[#262626] hover:bg-[#f6428c] hover:text-white transition-all z-40`}
                 aria-label="Previous slide"
               >
                 <ChevronLeft className="w-6 h-6" />
